@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.mavenproject1.LoginController">
    <left>
       <AnchorPane prefHeight="200.0" prefWidth="350.0" style="-fx-background-color: #0598ff;" BorderPane.alignment="CENTER">
          <children>
@@ -28,33 +28,33 @@
          </children></AnchorPane>
    </left>
    <center>
-      <AnchorPane prefHeight="200.0" prefWidth="415.0" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="200.0" prefWidth="450.0" BorderPane.alignment="CENTER">
          <children>
-            <TextField layoutX="101.0" layoutY="165.0" promptText="Username" style="-fx-background-color: transparent; -fx-border-color: #0598ff; -fx-border-width: 0px 0px 2px 0px;" />
-            <PasswordField layoutX="101.0" layoutY="232.0" promptText="Password" style="-fx-background-color: transpaernt; -fx-border-color: #0598ff; -fx-border-width: 0px 0px 2px 0px;" />
-            <Button layoutX="95.0" layoutY="339.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="163.0" style="-fx-background-color: #0598ff;" text="Login" textFill="WHITE">
+            <TextField layoutX="169.0" layoutY="165.0" promptText="Username" style="-fx-background-color: transparent; -fx-border-color: #0598ff; -fx-border-width: 0px 0px 2px 0px;" />
+            <PasswordField layoutX="169.0" layoutY="232.0" promptText="Password" style="-fx-background-color: transpaernt; -fx-border-color: #0598ff; -fx-border-width: 0px 0px 2px 0px;" />
+            <Button layoutX="163.0" layoutY="339.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="163.0" style="-fx-background-color: #0598ff;" text="Login" textFill="WHITE">
                <font>
                   <Font size="15.0" />
                </font>
             </Button>
-            <Hyperlink alignment="CENTER" contentDisplay="CENTER" layoutX="93.0" layoutY="417.0" prefHeight="25.0" prefWidth="165.0" text="Forgot Your Password ?" />
-            <Text fill="#0598ff" layoutX="117.0" layoutY="125.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User Login">
+            <Hyperlink alignment="CENTER" contentDisplay="CENTER" layoutX="161.0" layoutY="417.0" prefHeight="25.0" prefWidth="165.0" text="Forgot Your Password ?" />
+            <Text fill="#0598ff" layoutX="185.0" layoutY="125.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User Login">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
             </Text>
             <Button layoutX="284.0" layoutY="14.0" mnemonicParsing="false" style="-fx-background-color: transparent;" />
-            <ImageView fitHeight="28.0" fitWidth="35.0" layoutX="58.0" layoutY="165.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="28.0" fitWidth="35.0" layoutX="126.0" layoutY="165.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../icon/user.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="34.0" fitWidth="35.0" layoutX="55.0" layoutY="229.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="34.0" fitWidth="35.0" layoutX="123.0" layoutY="229.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../icon/secure.png" />
                </image>
             </ImageView>
-            <Button layoutX="322.0" layoutY="-1.0" mnemonicParsing="false" style="-fx-background-color: transparent;" text="X" textFill="#0598ff">
+            <Button layoutX="407.0" layoutY="12.0" mnemonicParsing="false" onMouseClicked="#handleClose" style="-fx-background-color: transparent;" text="X" textFill="#0598ff">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
