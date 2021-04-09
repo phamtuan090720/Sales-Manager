@@ -29,7 +29,6 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 /**
  * FXML Controller class
@@ -82,7 +81,7 @@ public class LoginController implements Initializable {
                       String alert = "Wellcome "+nv.getTenNhanVien()+"!";
                       showDialog(alert, null, "Successful");
                       if("quanLy".equals(nv.getNghiepVu())){
-                          LoadScene("primary.fxml", event);
+                          LoadScene("home.fxml", event);
                       }
                       else{
                           LoadScene("secondary.fxml", event);
@@ -92,12 +91,12 @@ public class LoginController implements Initializable {
                       lbErro.setText("Password or Username not correct");
                   } }
         } catch (SQLException ex) {
-            Logger.getLogger(PrimaryController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SecondaryController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     public void LoadScene (String fxml,ActionEvent event) throws IOException{
         Parent root =  FXMLLoader.load(getClass().getResource(fxml));
-        Scene scene = new Scene(root,900, 600);
+        Scene scene = new Scene(root);
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         window.setResizable(true);
         window.setScene(scene);

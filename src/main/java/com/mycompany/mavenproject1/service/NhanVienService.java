@@ -9,8 +9,10 @@ import com.mycompany.mavenproject1.pojo.NhanVien;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLDataException;
 import java.sql.SQLException;
-import javafx.scene.control.Alert;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -40,5 +42,32 @@ public class NhanVienService {
             return nv;
         }   
     }
+    public List<NhanVien> getListNhanVien(String kw) throws SQLException{
+        if(kw==null)
+            throw new SQLDataException();
+            String sql = "SELECT * FROM salemanager.nhanvien where TenNhanVien like concat('%',?,'%');";
+            PreparedStatement stm = this.conn.prepareStatement(sql);
+            stm.setString(1, kw);
+            ResultSet rs = stm.executeQuery();
+             List<NhanVien> listNhanVien = new ArrayList<>();
+             while(rs.next()){
+                 NhanVien nhanVien = new NhanVien();
+                 nhanVien.setMaNhanVien(rs.getInt("MaNhanVien"));
+                 nhanVien.setTenNhanVien(rs.getString("TenNhanVien"));
+                 nhanVien.setNghiepVu(rs.getString("NghiepVu"));
+                 nhanVien.setTaiKhoan(rs.getString("TaiKhoan"));
+                 nhanVien.setMatKhau(rs.getString("MatKhau"));
+                 listNhanVien.add(nhanVien);
+             }
+         return listNhanVien;
+    }
+     public boolean deleleNhanVien(int nhanVienid) throws SQLException {
+        String sql = "DELETE FROM salemanager.nhanvien WHERE id=?";
+        PreparedStatement stm = this.conn.prepareStatement(sql);
+        stm.setInt(1, nhanVienid);
+        int row = stm.executeUpdate();
+        return row > 0;
+    }
+    
     
 }
