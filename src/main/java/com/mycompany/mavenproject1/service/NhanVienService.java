@@ -19,7 +19,8 @@ import java.util.List;
  * @author Admin
  */
 public class NhanVienService {
-     private Connection conn; 
+     private Connection conn;
+     public NhanVien nhanVienLogin;
      public NhanVienService(Connection conn) {
         this.conn = conn;
     }
@@ -38,7 +39,9 @@ public class NhanVienService {
             nv.setMaNhanVien(rs.getInt("MaNhanVien"));
             nv.setTaiKhoan(rs.getString("TaiKhoan"));
             nv.setTenNhanVien(rs.getString("TenNhanVien"));
-            nv.setNghiepVu(rs.getString("NghiepVu"));
+            nv.setNghiepVu(rs.getInt("NghiepVuID"));
+            nv.setMatKhau(rs.getString("MatKhau"));
+            this.nhanVienLogin = nv;
             return nv;
         }   
     }
@@ -54,20 +57,40 @@ public class NhanVienService {
                  NhanVien nhanVien = new NhanVien();
                  nhanVien.setMaNhanVien(rs.getInt("MaNhanVien"));
                  nhanVien.setTenNhanVien(rs.getString("TenNhanVien"));
-                 nhanVien.setNghiepVu(rs.getString("NghiepVu"));
+                 nhanVien.setNghiepVu(rs.getInt("NghiepVuID"));
                  nhanVien.setTaiKhoan(rs.getString("TaiKhoan"));
                  nhanVien.setMatKhau(rs.getString("MatKhau"));
                  listNhanVien.add(nhanVien);
              }
          return listNhanVien;
     }
+    public boolean addNhanVien(NhanVien nv) throws SQLException {
+        String sql = "INSERT INTO `salemanager`.`nhanvien` (`TenNhanVien`, `NghiepVuID`, `TaiKhoan`, `MatKhau`) VALUES (?, ?, ?, ?);";
+        PreparedStatement stm = this.conn.prepareStatement(sql);
+        stm.setString(1, nv.getTenNhanVien());
+        stm.setInt(2, nv.getNghiepVu());
+        stm.setString(3, nv.getTaiKhoan());
+        stm.setString(4, nv.getMatKhau());
+        int row = stm.executeUpdate();
+        return row > 0;
+    }
      public boolean deleleNhanVien(int nhanVienid) throws SQLException {
-        String sql = "DELETE FROM salemanager.nhanvien WHERE id=?";
+        String sql = "DELETE FROM salemanager.nhanvien WHERE MaNhanVien=?";
         PreparedStatement stm = this.conn.prepareStatement(sql);
         stm.setInt(1, nhanVienid);
         int row = stm.executeUpdate();
         return row > 0;
     }
-    
+    public boolean updateNhanVien(NhanVien nv) throws SQLException {
+        String sql = "UPDATE `salemanager`.`nhanvien` SET `TenNhanVien` = ?, `NghiepVuID` = ?, `TaiKhoan` = ?, `MatKhau` = ? WHERE (`MaNhanVien` = ?);";
+        PreparedStatement stm = this.conn.prepareStatement(sql);
+        stm.setString(1, nv.getTenNhanVien());
+        stm.setInt(2, nv.getNghiepVu());
+        stm.setString(3, nv.getTaiKhoan());
+        stm.setString(4, nv.getMatKhau());
+        stm.setInt(5,nv.getMaNhanVien());
+        int row = stm.executeUpdate();
+        return row > 0;
+    }
     
 }

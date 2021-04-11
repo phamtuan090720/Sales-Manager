@@ -10,15 +10,17 @@ package com.mycompany.mavenproject1.pojo;
  * @author Admin
  */
 public class NhanVien {
-    private int MaNhanVien;
-    private String TenNhanVien;
-    private String NghiepVu;
-    private String TaiKhoan;    
-    private String MatKhau;
+
     @Override
     public String toString() {
         return "NhanVien{" + "MaNhanVien=" + MaNhanVien + ", TenNhanVien=" + TenNhanVien + ", NghiepVu=" + NghiepVu + ", TaiKhoan=" + TaiKhoan + ", MatKhau=" + MatKhau + '}';
     }
+
+    private int MaNhanVien;
+    private String TenNhanVien;
+    private int NghiepVu;
+    private String TaiKhoan;
+    private String MatKhau;
 
     public int getMaNhanVien() {
         return MaNhanVien;
@@ -36,11 +38,11 @@ public class NhanVien {
         this.TenNhanVien = TenNhanVien;
     }
 
-    public String getNghiepVu() {
+    public int getNghiepVu() {
         return NghiepVu;
     }
 
-    public void setNghiepVu(String NghiepVu) {
+    public void setNghiepVu(int NghiepVu) {
         this.NghiepVu = NghiepVu;
     }
 
@@ -59,4 +61,5 @@ public class NhanVien {
     public void setMatKhau(String MatKhau) {
         this.MatKhau = MatKhau;
     }
+
 }

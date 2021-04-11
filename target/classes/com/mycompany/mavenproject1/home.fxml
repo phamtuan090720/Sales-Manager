@@ -2,6 +2,8 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
@@ -92,7 +94,7 @@
                </font>
             </Button>
          </children></AnchorPane>
-      <AnchorPane fx:id="PaneEmployee" layoutX="326.0" layoutY="37.0" prefHeight="200.0" prefWidth="200.0" stylesheets="@homeManagement.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <AnchorPane layoutX="326.0" layoutY="37.0" prefHeight="200.0" prefWidth="200.0" stylesheets="@homeManagement.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <GridPane prefHeight="400.0" prefWidth="740.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
                <columnConstraints>
@@ -127,6 +129,39 @@
                   </Button>
                </children>
             </GridPane>
+            <GridPane layoutY="7.0" AnchorPane.bottomAnchor="500.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="7.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="370.20001220703125" minWidth="0.0" prefWidth="169.59998168945313" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="669.4000244140625" minWidth="10.0" prefWidth="196.39996337890628" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="669.4000244140625" minWidth="10.0" prefWidth="388.4000366210937" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <ComboBox fx:id="cbNghiepVu" prefHeight="26.0" prefWidth="171.0" promptText="Nghiệp Vụ" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <TextField fx:id="txtPasswordEmployee" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label text="Mật Khẩu" GridPane.rowIndex="2" />
+                  <TextField fx:id="txtAccountEmployee" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label text="Tài Khoản" GridPane.rowIndex="1" />
+                  <TextField fx:id="txtNameEmployee" GridPane.columnIndex="1" />
+                  <Label text="Tên Nhân Viên" />
+               </children>
+               <padding>
+                  <Insets left="20.0" right="50.0" />
+               </padding>
+            </GridPane>
+            <AnchorPane layoutY="227.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="423.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="227.0">
+               <children>
+                  <Button fx:id="btnAddEmployee" layoutX="6.0" layoutY="12.0" mnemonicParsing="false" onAction="#addNhanVien" prefHeight="30.0" prefWidth="100.0" text="Add" />
+                  <Button fx:id="btnUpdateEmpyee" disable="true" layoutX="120.0" layoutY="12.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Update" AnchorPane.leftAnchor="120.0" />
+                  <Button fx:id="btnDeleteEmployee" disable="true" layoutX="399.0" layoutY="11.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Delete" AnchorPane.leftAnchor="230.0" />
+                  <Button fx:id="btnRsInputEmployee" layoutX="342.0" layoutY="10.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Reset" AnchorPane.leftAnchor="340.0" />
+               </children>
+            </AnchorPane>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="PaneDasboard" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">

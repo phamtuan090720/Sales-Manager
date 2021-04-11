@@ -5,7 +5,9 @@
  */
 package com.mycompany.mavenproject1;
 
+import com.mycompany.mavenproject1.pojo.NghiepVu;
 import com.mycompany.mavenproject1.pojo.NhanVien;
+import com.mycompany.mavenproject1.service.NghiepVuService;
 import com.mycompany.mavenproject1.service.NhanVienService;
 import com.mycompany.mavenproject1.service.jdbcUtil;
 import java.io.IOException;
@@ -76,11 +78,14 @@ public class LoginController implements Initializable {
           try {
               try (Connection conn = jdbcUtil.getConn()) {
                   NhanVienService nvsv = new NhanVienService(conn);
+                  NghiepVuService nghiepVuSv = new NghiepVuService(conn);
                   NhanVien nv = nvsv.Login(username, password);
                   if(nv!=null){
                       String alert = "Wellcome "+nv.getTenNhanVien()+"!";
                       showDialog(alert, null, "Successful");
-                      if("quanLy".equals(nv.getNghiepVu())){
+                       int idNghiepVu = nv.getNghiepVu();
+                       NghiepVu nghiepVu = nghiepVuSv.getNghepVuById(idNghiepVu);
+                      if("quanLy".equals(nghiepVu.getTenNghiepVu())){
                           LoadScene("home.fxml", event);
                       }
                       else{
@@ -89,7 +94,9 @@ public class LoginController implements Initializable {
                   }
                   else {
                       lbErro.setText("Password or Username not correct");
-                  } }
+                  }
+                  conn.close();
+              }
         } catch (SQLException ex) {
             Logger.getLogger(SecondaryController.class.getName()).log(Level.SEVERE, null, ex);
         }
