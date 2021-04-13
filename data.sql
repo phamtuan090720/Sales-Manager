@@ -133,19 +133,20 @@ DROP TABLE IF EXISTS `hanghoa`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `hanghoa` (
   `idHangHoa` int NOT NULL AUTO_INCREMENT,
-  `tenHang` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
-  `loaiHangId` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `tenHang` varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `loaiHangId` int NOT NULL,
   `xuatXuId` int NOT NULL,
   `ngaySX` datetime DEFAULT NULL,
   `hanSD` datetime DEFAULT NULL,
-  `giaBan` double NOT NULL,
-  `donViTinh` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `giaBan` decimal(10,0) NOT NULL,
+  `donViTinh` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `soLuong` int NOT NULL,
   PRIMARY KEY (`idHangHoa`),
   KEY `fk_hanghoa_xuatxu_idx` (`xuatXuId`),
-  CONSTRAINT `fk_hanghoa_loaihang1` FOREIGN KEY (`idHangHoa`) REFERENCES `loaihang` (`idloaiHang`),
+  KEY `fk_hanghoa_loaihang1_idx` (`loaiHangId`),
+  CONSTRAINT `fk_hanghoa_loaihang1` FOREIGN KEY (`loaiHangId`) REFERENCES `loaihang` (`idloaiHang`),
   CONSTRAINT `fk_hanghoa_xuatxu` FOREIGN KEY (`xuatXuId`) REFERENCES `xuatxuhanghoa` (`idxuatxuhanghoa`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -154,7 +155,7 @@ CREATE TABLE `hanghoa` (
 
 LOCK TABLES `hanghoa` WRITE;
 /*!40000 ALTER TABLE `hanghoa` DISABLE KEYS */;
-INSERT INTO `hanghoa` VALUES (1,'Aquafina Chai 1 Lit','1',2,NULL,NULL,10000,'chai',100),(2,'Aquafina chai 500ml','1',2,NULL,NULL,5000,'chai',100);
+INSERT INTO `hanghoa` VALUES (1,'Aquafina Chai 1 Lit',1,2,NULL,NULL,10000,'chai',100),(2,'Aquafina chai 500ml',1,2,NULL,NULL,5000,'chai',100),(4,'Tuân',3,1,'2021-04-14 00:00:00','2021-04-14 00:00:00',10000,'Người',10000);
 /*!40000 ALTER TABLE `hanghoa` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -167,7 +168,7 @@ DROP TABLE IF EXISTS `hoadon`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `hoadon` (
   `idHoaDon` int NOT NULL AUTO_INCREMENT,
-  `NgayLap` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `NgayLap` varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `ThanhTien` double NOT NULL,
   `VAT` double NOT NULL,
   `IDNhanVienBanHang` int NOT NULL,
@@ -198,9 +199,9 @@ DROP TABLE IF EXISTS `khachhangthanthiet`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `khachhangthanthiet` (
   `idKhachHangThanThiet` int NOT NULL AUTO_INCREMENT,
-  `CMND` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
-  `SDT` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
-  `DiaChi` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `CMND` varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `SDT` varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `DiaChi` varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `Diem` int NOT NULL,
   PRIMARY KEY (`idKhachHangThanThiet`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -250,8 +251,8 @@ DROP TABLE IF EXISTS `loaihang`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `loaihang` (
   `idloaiHang` int NOT NULL AUTO_INCREMENT,
-  `tenLoaiHang` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
-  `moTa` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `tenLoaiHang` varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `moTa` varchar(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`idloaiHang`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -275,7 +276,7 @@ DROP TABLE IF EXISTS `nghiepvu`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `nghiepvu` (
   `idnghiepvu` int NOT NULL AUTO_INCREMENT,
-  `tenNghiepVu` varchar(45) COLLATE utf8mb4_vietnamese_ci NOT NULL,
+  `tenNghiepVu` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_vietnamese_ci NOT NULL,
   PRIMARY KEY (`idnghiepvu`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -299,14 +300,14 @@ DROP TABLE IF EXISTS `nhanvien`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `nhanvien` (
   `MaNhanVien` int NOT NULL AUTO_INCREMENT,
-  `TenNhanVien` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `TenNhanVien` varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `NghiepVuID` int NOT NULL,
-  `TaiKhoan` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
-  `MatKhau` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `TaiKhoan` varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `MatKhau` varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`MaNhanVien`),
   KEY `fk_nhanvien_nghiepvu1_idx` (`NghiepVuID`),
   CONSTRAINT `fk_nhanvien_nghiepvu1` FOREIGN KEY (`NghiepVuID`) REFERENCES `nghiepvu` (`idnghiepvu`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -381,7 +382,7 @@ CREATE TABLE `phieunhaphang` (
   `IDPhieuNhapHang` int NOT NULL AUTO_INCREMENT,
   `NgayTao` datetime NOT NULL,
   `SoLuong` int NOT NULL,
-  `NhaCungCap` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `NhaCungCap` varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `IDQuanLy` int NOT NULL,
   PRIMARY KEY (`IDPhieuNhapHang`),
   KEY `quanly_IDQuanLy_idx` (`IDQuanLy`),
@@ -517,8 +518,8 @@ DROP TABLE IF EXISTS `xuatxuhanghoa`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `xuatxuhanghoa` (
   `idxuatxuhanghoa` int NOT NULL AUTO_INCREMENT,
-  `noiXuatXu` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
-  `moTa` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `noiXuatXu` varchar(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `moTa` varchar(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`idxuatxuhanghoa`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -546,4 +547,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-04-13 18:56:13
+-- Dump completed on 2021-04-14  1:47:42

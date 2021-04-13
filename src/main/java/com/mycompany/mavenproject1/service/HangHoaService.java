@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package com.mycompany.mavenproject1.service;
+
 import com.mycompany.mavenproject1.pojo.HangHoa;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,13 +19,17 @@ import java.util.List;
  * @author Admin
  */
 public class HangHoaService {
-     private Connection conn;
-     public HangHoaService(Connection conn) {
+
+    private Connection conn;
+
+    public HangHoaService(Connection conn) {
         this.conn = conn;
     }
-    public List<HangHoa> getListHangHoa(String kw) throws SQLException{
-        if (kw == null)
+
+    public List<HangHoa> getListHangHoa(String kw) throws SQLException {
+        if (kw == null) {
             throw new SQLDataException();
+        }
         String sql = "SELECT * FROM salemanager.hanghoa WHERE tenHang like concat('%', ?, '%')";
         PreparedStatement stm = this.conn.prepareStatement(sql);
         stm.setString(1, kw);
@@ -44,5 +49,51 @@ public class HangHoaService {
             products.add(p);
         }
         return products;
+    }
+
+    public boolean addHangHoa(HangHoa hh) throws SQLException {
+        String sql = "INSERT INTO `salemanager`.`hanghoa` (`tenHang`, `loaiHangId`, `xuatXuId`, `ngaySX`, `hanSD`, `giaBan`, `donViTinh`, `soLuong`) VALUES (?,?,?,?, ?, ?, ?, ?);";
+        PreparedStatement stm = this.conn.prepareStatement(sql);
+        stm.setString(1, hh.getTenHang());
+        stm.setInt(2, hh.getLoaiHang());
+        stm.setInt(3, hh.getXuatXu());
+        stm.setDate(4, hh.getNgaySX());
+        stm.setDate(5, hh.getHanSD());
+        stm.setBigDecimal(6, hh.getGiaBan());
+        stm.setString(7, hh.getDonViTinh());
+        stm.setInt(8, hh.getSoLuong());
+        int row = stm.executeUpdate();
+        return row > 0;
+    }
+      public boolean updateHangHoa(HangHoa hh) throws SQLException {
+        String sql = "UPDATE `salemanager`.`hanghoa` SET "
+                + "`tenHang` = ?,"
+                + " `loaiHangId` = ?,"
+                + " `xuatXuId` = ?,"
+                + " `ngaySX` = ?,"
+                + " `hanSD` = ?,"
+                + " `giaBan` = ?,"
+                + " `donViTinh` = ?,"
+                + " `soLuong` = ?"
+                + " WHERE (`idHangHoa` = ?);";
+        PreparedStatement stm = this.conn.prepareStatement(sql);
+        stm.setString(1, hh.getTenHang());
+        stm.setInt(2, hh.getLoaiHang());
+        stm.setInt(3, hh.getXuatXu());
+        stm.setDate(4, hh.getNgaySX());
+        stm.setDate(5, hh.getHanSD());
+        stm.setBigDecimal(6, hh.getGiaBan());
+        stm.setString(7, hh.getDonViTinh());
+        stm.setInt(8, hh.getSoLuong());
+        stm.setInt(9, hh.getIdHangHoa());
+        int row = stm.executeUpdate();
+        return row > 0;
+    }
+     public boolean deleleHangHoa(int hangHoaId) throws SQLException {
+        String sql = "DELETE FROM `salemanager`.`hanghoa` WHERE (`idHangHoa` = ?);";
+        PreparedStatement stm = this.conn.prepareStatement(sql);
+        stm.setInt(1, hangHoaId);
+        int row = stm.executeUpdate();
+        return row > 0;
     }
 }

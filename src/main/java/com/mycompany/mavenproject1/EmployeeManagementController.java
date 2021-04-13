@@ -83,7 +83,7 @@ public class EmployeeManagementController implements Initializable {
         this.btnRsInputEmployee.setOnMouseClicked(e -> {
             ResetInputEmployee();
         });
-         this.tbEmployee.setRowFactory(obj -> {
+        this.tbEmployee.setRowFactory(obj -> {
             TableRow r = new TableRow();
             r.setOnMouseClicked(evt -> {
 
@@ -138,7 +138,7 @@ public class EmployeeManagementController implements Initializable {
                                 nvUpdate.setMatKhau(txtPasswordEmployee.getText());
                                 Connection conn = jdbcUtil.getConn();
                                 NhanVienService s = new NhanVienService(conn);
-                                if (s.updateNhanVien(nvUpdate)==true) {
+                                if (s.updateNhanVien(nvUpdate) == true) {
                                     Utils.getBox("SUCCESSFUL", Alert.AlertType.INFORMATION).show();
                                     SetDisableButtonEmployee(true);
                                     ResetInputEmployee();
@@ -159,12 +159,13 @@ public class EmployeeManagementController implements Initializable {
             });
             return r;
         });
-    }    
+    }
 
-      public void ResetInputEmployee() {
-        this.txtAccountEmployee.setText("");
-        this.txtNameEmployee.setText("");
-        this.txtPasswordEmployee.setText("");
+    public void ResetInputEmployee() {
+        this.txtAccountEmployee.setText(null);
+        this.txtNameEmployee.setText(null);
+        this.txtPasswordEmployee.setText(null);
+        this.cbNghiepVu.getSelectionModel().select(null);
         this.btnAddEmployee.setDisable(false);
     }
 
@@ -205,29 +206,35 @@ public class EmployeeManagementController implements Initializable {
         colPassword.setCellValueFactory(new PropertyValueFactory("MatKhau"));
         this.tbEmployee.getColumns().addAll(colId, colName, colAccount, colPassword);
     }
+
     @FXML
     private void addNhanVien(ActionEvent event) {
         try {
             Connection conn = jdbcUtil.getConn();
             NhanVienService s = new NhanVienService(conn);
             NhanVien nv = new NhanVien();
-            nv.setTenNhanVien(txtNameEmployee.getText());
-            nv.setNghiepVu(this.cbNghiepVu.getSelectionModel().getSelectedItem().getIdNghiepVu());
-            nv.setTaiKhoan(txtAccountEmployee.getText());
-            nv.setMatKhau(txtPasswordEmployee.getText());
-            if (s.addNhanVien(nv) == true) {
-                Utils.getBox("SUCCESSFUL", Alert.AlertType.INFORMATION).show();
-                this.LoadDataTableEmployee("");
-                SetDisableButtonEmployee(true);
-                ResetInputEmployee();
-            } else {
-                Utils.getBox("FAILED", Alert.AlertType.INFORMATION).show();
+            try {
+                nv.setTenNhanVien(txtNameEmployee.getText());
+                nv.setNghiepVu(this.cbNghiepVu.getSelectionModel().getSelectedItem().getIdNghiepVu());
+                nv.setTaiKhoan(txtAccountEmployee.getText());
+                nv.setMatKhau(txtPasswordEmployee.getText());
+                if (s.addNhanVien(nv) == true) {
+                    Utils.getBox("SUCCESSFUL", Alert.AlertType.INFORMATION).show();
+                    this.LoadDataTableEmployee("");
+                    SetDisableButtonEmployee(true);
+                    ResetInputEmployee();
+                    conn.close();
+                } else {
+                    Utils.getBox("FAILED", Alert.AlertType.INFORMATION).show();
+                    conn.close();
+                }
+            } catch (NullPointerException e) {
+                Utils.getBox("Vui Lòng Nhập Đầy Đủ Thông Tin", Alert.AlertType.INFORMATION).show();
             }
 
         } catch (SQLException ex) {
             Logger.getLogger(EmployeeManagementController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-}
 
+}

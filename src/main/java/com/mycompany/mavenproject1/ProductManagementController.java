@@ -1,4 +1,3 @@
-
 package com.mycompany.mavenproject1;
 
 import com.mycompany.mavenproject1.pojo.HangHoa;
@@ -12,16 +11,23 @@ import com.mycompany.mavenproject1.service.jdbcUtil;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
@@ -29,13 +35,13 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+
 /**
  * FXML Controller class
  *
  * @author Admin
  */
 public class ProductManagementController implements Initializable {
-
 
     @FXML
     private Button btnAddProduct;
@@ -63,6 +69,7 @@ public class ProductManagementController implements Initializable {
     private DatePicker txtHanSuDung;
     @FXML
     private TextField txtDonVi;
+
     /**
      * Initializes the controller class.
      */
@@ -74,17 +81,23 @@ public class ProductManagementController implements Initializable {
             XuatXuService xxs = new XuatXuService(conn);
             this.cbLoaiHang.setItems(FXCollections.observableList(lhs.getListLoaiHang()));
             this.cbXuatXu.setItems(FXCollections.observableList(xxs.getListXuatXu()));
-            conn.close();  
+            conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(ProductManagementController.class.getName()).log(Level.SEVERE, null, ex);
         }
         // TODO
         LoadTable();
         LoadData("");
-     this.tbProduct.setRowFactory(obj -> {
+        txtNgaySanXuat.getEditor().setDisable(true);
+        txtHanSuDung.getEditor().setDisable(true);
+        btnRsInputProduct.setOnMouseClicked(e->{
+            ResetInput();
+        });
+        this.tbProduct.setRowFactory(obj -> {
             TableRow r = new TableRow();
-            r.setOnMouseClicked(e->{
+            r.setOnMouseClicked(e -> {
                 try {
+                    SetDisableButtonProduct(false);
                     Connection conn = jdbcUtil.getConn();
                     HangHoa hh = this.tbProduct.getSelectionModel().getSelectedItem();
                     XuatXuService xxs = new XuatXuService(conn);
@@ -95,22 +108,93 @@ public class ProductManagementController implements Initializable {
                     txtSoLuong.setText(Integer.toString(hh.getSoLuong()));
                     cbLoaiHang.getSelectionModel().select(lhs.getLoaiHangById(hh.getLoaiHang()));
                     cbXuatXu.getSelectionModel().select(xxs.getXuatXuById(hh.getXuatXu()));
-                    SetDisableButtonProduct(false);
+                    if (hh.getNgaySX()!= null) {
+                        txtNgaySanXuat.setValue(convertToLocalDateViaSqlDate(hh.getNgaySX()));
+                    }
+                    else{
+                         txtNgaySanXuat.setValue(null);
+                    }
+                    if (hh.getHanSD()!= null) {
+                        txtHanSuDung.setValue(convertToLocalDateViaSqlDate(hh.getHanSD()));
+                    }
+                    else{
+                        txtHanSuDung.setValue(null);
+                    }
+                    btnDeleteProduct.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent e) {
+                            Utils.getBox("Ban chac chan xoa khong?", Alert.AlertType.CONFIRMATION)
+                                    .showAndWait().ifPresent(bt -> {
+                                        if (bt == ButtonType.OK) {
+                                            try {
+                                                Connection conn = jdbcUtil.getConn();
+                                                HangHoaService s = new HangHoaService(conn);
+
+                                                if (s.deleleHangHoa(hh.getIdHangHoa())) {
+                                                    Utils.getBox("SUCCESSFUL", Alert.AlertType.INFORMATION).show();
+                                                    LoadData("");
+                                                    SetDisableButtonProduct(true);
+                                                } else {
+                                                    Utils.getBox("FAILED", Alert.AlertType.ERROR).show();
+                                                }
+
+                                                conn.close();
+                                            } catch (SQLException ex) {
+
+                                                ex.printStackTrace();
+                                                Logger.getLogger(EmployeeManagementController.class.getName()).log(Level.SEVERE, null, ex);
+                                            }
+                                        }
+                                    });
+                        }
+                    });
                     conn.close();
                 } catch (SQLException ex) {
                     Logger.getLogger(ProductManagementController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                    
+
             });
             return r;
-     });
-        
-    }    
-    
+        });
+
+    }
+
+    public LocalDate convertToLocalDateViaSqlDate(Date dateToConvert) {
+        return new java.sql.Date(dateToConvert.getTime()).toLocalDate();
+    }
+
     @FXML
     private void addProduct(ActionEvent event) {
+        Connection conn;
+        try {
+            conn = jdbcUtil.getConn();
+            HangHoaService s = new HangHoaService(conn);
+            HangHoa hh = new HangHoa();
+            hh.setTenHang(txtHangHoa.getText());
+            hh.setLoaiHang(this.cbLoaiHang.getSelectionModel().getSelectedItem().getIdloaiHang());
+            hh.setXuatXu(this.cbXuatXu.getSelectionModel().getSelectedItem().getIdXuatXu());
+            hh.setDonViTinh(txtDonVi.getText());
+            hh.setGiaBan(new BigDecimal(txtGiaBan.getText()));
+            hh.setSoLuong(Integer.parseInt(txtGiaBan.getText()));
+            try {
+                hh.setNgaySX(Date.valueOf(txtNgaySanXuat.getValue()));
+                hh.setHanSD(Date.valueOf(txtHanSuDung.getValue()));
+            } catch (NullPointerException e) {
+                System.out.println("NullPointerException thrown!");
+            }
+            if (s.addHangHoa(hh) == true) {
+                Utils.getBox("SUCCESSFUL", Alert.AlertType.INFORMATION).show();
+                this.LoadData("");
+            } else {
+                Utils.getBox("FAILED", Alert.AlertType.INFORMATION).show();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductManagementController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
-    private void LoadData(String kw){
+
+    private void LoadData(String kw) {
         try {
             this.tbProduct.getItems().clear();
             Connection conn = jdbcUtil.getConn();
@@ -122,7 +206,8 @@ public class ProductManagementController implements Initializable {
             Logger.getLogger(ProductManagementController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-     public void SetDisableButtonProduct(boolean isAction) {
+
+    public void SetDisableButtonProduct(boolean isAction) {
         if (isAction == true) {
             btnDeleteProduct.setDisable(true);
             btnUpdateProduct.setDisable(true);
@@ -134,7 +219,20 @@ public class ProductManagementController implements Initializable {
         }
 
     }
-    private void LoadTable(){
+    public void ResetInput(){
+        txtDonVi.setText("");
+        txtGiaBan.setText("");
+        txtHanSuDung.setValue(null);
+        txtNgaySanXuat.setValue(null);
+        txtHangHoa.setText("");
+        txtSoLuong.setText("");
+        cbLoaiHang.getSelectionModel().select(null);
+        cbXuatXu.getSelectionModel().select(null);
+        
+  
+    }
+
+    private void LoadTable() {
         TableColumn colId = new TableColumn("Mã Hàng Hóa");
         colId.setCellValueFactory(new PropertyValueFactory("idHangHoa"));
         TableColumn colName = new TableColumn("Tên Hàng Hóa");
@@ -149,10 +247,7 @@ public class ProductManagementController implements Initializable {
         colSoLuong.setCellValueFactory(new PropertyValueFactory("soLuong"));
         TableColumn colDonVi = new TableColumn("Đơn Vị Tính");
         colDonVi.setCellValueFactory(new PropertyValueFactory("donViTinh"));
-        this.tbProduct.getColumns().addAll(colId, colName, colNgaySX, colHanSD,colGiaBan,colSoLuong,colDonVi);  
+        this.tbProduct.getColumns().addAll(colId, colName, colNgaySX, colHanSD, colGiaBan, colSoLuong, colDonVi);
     }
 
 }
-
-
-
