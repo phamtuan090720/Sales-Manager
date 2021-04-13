@@ -1,12 +1,11 @@
 com\mycompany\mavenproject1\Utils.class
 com\mycompany\mavenproject1\App.class
-com\mycompany\mavenproject1\HomeController$1.class
-com\mycompany\mavenproject1\SecondaryController.class
-com\mycompany\mavenproject1\pojo\NhanVien.class
-com\mycompany\mavenproject1\HomeController.class
 module-info.class
 com\mycompany\mavenproject1\LoginController.class
 com\mycompany\mavenproject1\service\jdbcUtil.class
+com\mycompany\mavenproject1\service\NhanVienService.class
+com\mycompany\mavenproject1\SecondaryController.class
+com\mycompany\mavenproject1\pojo\NhanVien.class
+com\mycompany\mavenproject1\HomeController.class
 com\mycompany\mavenproject1\service\NghiepVuService.class
 com\mycompany\mavenproject1\pojo\NghiepVu.class
-com\mycompany\mavenproject1\service\NhanVienService.class

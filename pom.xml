@@ -37,6 +37,13 @@
             <version>5.8.0-M1</version>
             <scope>test</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.controlsfx/controlsfx -->
+        <dependency>
+            <groupId>org.controlsfx</groupId>
+            <artifactId>controlsfx</artifactId>
+            <version>11.1.0</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/de.jensd/fontawesomefx-commons -->
         <dependency>
             <groupId>de.jensd</groupId>

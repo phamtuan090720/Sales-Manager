@@ -21,6 +21,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -30,6 +31,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 /**
@@ -38,7 +40,7 @@ import javafx.stage.Stage;
  * @author MyPC
  */
 public class LoginController implements Initializable {
-
+    
     @FXML
     private TextField txtUsername;
     @FXML
@@ -47,64 +49,78 @@ public class LoginController implements Initializable {
     private Button btnLogin;
     @FXML
     private Label lbErro;
+    public NhanVien nhanVienLogin;
+    
+    public NhanVien getNhanVienLogin() {
+        return nhanVienLogin;
+    }
+    
+    public void setNhanVienLogin(NhanVien nhanVienLogin) {
+        this.nhanVienLogin = nhanVienLogin;
+    }
 
     /**
      * Initializes the controller class.
+     *
      * @param url
      * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-    }       
+    }    
     
     @FXML
     public void handleClose(MouseEvent event) {
         System.exit(0);
     }
-
-    public void showDialog(String info,String header,String title){
+    
+    public void showDialog(String info, String header, String title) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setContentText(info);
         alert.setHeaderText(header);
         alert.setTitle(title);
         alert.showAndWait();
         
-    } 
-
+    }    
+    
     @FXML
     private void handleLogin(ActionEvent event) throws IOException {
-          String username = txtUsername.getText();
-          String password = txtPassword.getText();
-          try {
-              try (Connection conn = jdbcUtil.getConn()) {
-                  NhanVienService nvsv = new NhanVienService(conn);
-                  NghiepVuService nghiepVuSv = new NghiepVuService(conn);
-                  NhanVien nv = nvsv.Login(username, password);
-                  if(nv!=null){
-                      String alert = "Wellcome "+nv.getTenNhanVien()+"!";
-                      showDialog(alert, null, "Successful");
-                       int idNghiepVu = nv.getNghiepVu();
-                       NghiepVu nghiepVu = nghiepVuSv.getNghepVuById(idNghiepVu);
-                      if("quanLy".equals(nghiepVu.getTenNghiepVu())){
-                          LoadScene("home.fxml", event);
-                      }
-                      else{
-                          LoadScene("secondary.fxml", event);
-                      }
-                  }
-                  else {
-                      lbErro.setText("Password or Username not correct");
-                  }
-                  conn.close();
-              }
+        String username = txtUsername.getText();
+        String password = txtPassword.getText();
+        try {
+            try (Connection conn = jdbcUtil.getConn()) {
+                NhanVienService nvsv = new NhanVienService(conn);
+                NghiepVuService nghiepVuSv = new NghiepVuService(conn);
+                NhanVien nv = nvsv.Login(username, password);
+                if (nv != null) {
+                    String alert = "Wellcome " + nv.getTenNhanVien() + "!";
+                    showDialog(alert, null, "Successful");
+                    int idNghiepVu = nv.getNghiepVu();
+                    NghiepVu nghiepVu = nghiepVuSv.getNghepVuById(idNghiepVu);
+                    App.setNvLogin(nv);
+                    if ("quanLy".equals(nghiepVu.getTenNghiepVu())) {
+                        LoadScene("home.fxml", event);
+                    } else {
+                        LoadScene("secondary.fxml", event);
+                    }
+                } else {
+                    lbErro.setText("Password or Username not correct");
+                }
+                conn.close();
+            }
         } catch (SQLException ex) {
             Logger.getLogger(SecondaryController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    public void LoadScene (String fxml,ActionEvent event) throws IOException{
-        Parent root =  FXMLLoader.load(getClass().getResource(fxml));
+
+    public void SetUserLogin(NhanVien nv) {
+        this.nhanVienLogin = nv;
+    }
+
+    public void LoadScene(String fxml, ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource(fxml));
         Scene scene = new Scene(root);
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setResizable(true);
         window.setScene(scene);
         window.show();

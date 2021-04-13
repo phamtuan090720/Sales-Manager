@@ -1,5 +1,6 @@
 package com.mycompany.mavenproject1;
 
+import com.mycompany.mavenproject1.pojo.NhanVien;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,6 +16,15 @@ import javafx.stage.StageStyle;
 public class App extends Application {
 
     private static Scene scene;
+    public static NhanVien nvLogin;
+
+    public static NhanVien getNvLogin() {
+        return nvLogin;
+    }
+
+    public static void setNvLogin(NhanVien nvLogin) {
+        App.nvLogin = nvLogin;
+    }
 
     @Override
     public void start(Stage stage) throws IOException {
