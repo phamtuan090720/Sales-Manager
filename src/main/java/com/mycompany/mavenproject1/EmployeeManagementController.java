@@ -6,14 +6,11 @@
 package com.mycompany.mavenproject1;
 
 import com.mycompany.mavenproject1.Utils;
-import com.mycompany.mavenproject1.Utils;
-import com.mycompany.mavenproject1.Utils;
 import com.mycompany.mavenproject1.pojo.NghiepVu;
 import com.mycompany.mavenproject1.pojo.NhanVien;
 import com.mycompany.mavenproject1.service.NghiepVuService;
 import com.mycompany.mavenproject1.service.NhanVienService;
 import com.mycompany.mavenproject1.service.jdbcUtil;
-import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;

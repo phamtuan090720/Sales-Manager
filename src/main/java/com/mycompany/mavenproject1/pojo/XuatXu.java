@@ -13,7 +13,7 @@ public class XuatXu {
 
     @Override
     public String toString() {
-        return "XuatXu{" + "idXuatXu=" + idXuatXu + ", noiXuatXu=" + noiXuatXu + ", moTa=" + moTa + '}';
+        return this.noiXuatXu;
     }
     private int idXuatXu;
     private String noiXuatXu;

@@ -13,7 +13,7 @@ public class LoaiHang {
 
     @Override
     public String toString() {
-        return "LoaiHang{" + "idloaiHang=" + idloaiHang + ", tenLoaiHang=" + tenLoaiHang + ", moTa=" + moTa + '}';
+        return this.tenLoaiHang;
     }
     private int idloaiHang;
     private String tenLoaiHang;

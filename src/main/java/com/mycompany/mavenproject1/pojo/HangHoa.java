@@ -5,6 +5,7 @@
  */
 package com.mycompany.mavenproject1.pojo;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 
 /**
@@ -23,7 +24,15 @@ public class HangHoa {
     private int xuatXu;
     private Date ngaySX;
     private Date hanSD;
-    private double giaBan;
+    private BigDecimal giaBan;
+
+    public BigDecimal getGiaBan() {
+        return giaBan;
+    }
+
+    public void setGiaBan(BigDecimal giaBan) {
+        this.giaBan = giaBan;
+    }
     private String donViTinh;
     private int soLuong;
 
@@ -75,13 +84,6 @@ public class HangHoa {
         this.hanSD = hanSD;
     }
 
-    public double getGiaBan() {
-        return giaBan;
-    }
-
-    public void setGiaBan(double giaBan) {
-        this.giaBan = giaBan;
-    }
 
     public String getDonViTinh() {
         return donViTinh;

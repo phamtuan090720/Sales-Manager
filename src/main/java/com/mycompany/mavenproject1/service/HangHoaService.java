@@ -36,7 +36,7 @@ public class HangHoaService {
             p.setTenHang(rs.getString("tenHang"));
             p.setLoaiHang(rs.getInt("loaiHangId"));
             p.setXuatXu(rs.getInt("xuatXuId"));
-            p.setGiaBan(rs.getDouble("giaBan"));
+            p.setGiaBan(rs.getBigDecimal("giaBan"));
             p.setDonViTinh(rs.getString("donViTinh"));
             p.setSoLuong(rs.getInt("soLuong"));
             p.setNgaySX(rs.getDate("ngaySX"));
