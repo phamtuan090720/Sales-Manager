@@ -92,5 +92,26 @@ public class NhanVienService {
         int row = stm.executeUpdate();
         return row > 0;
     }
+    public NhanVien findAccount(String kw) throws SQLException{
+        
+        NhanVien nv = null;
+        String sql = "SELECT * FROM salemanager.nhanvien where TaiKhoan=?;";
+        PreparedStatement stm = this.conn.prepareStatement(sql);
+        stm.setString(1, kw);
+        ResultSet rs = stm.executeQuery();
+        if(!rs.next()){
+            return nv;
+        }
+        else{
+            nv = new NhanVien();
+            nv.setMaNhanVien(rs.getInt("MaNhanVien"));
+            nv.setTaiKhoan(rs.getString("TaiKhoan"));
+            nv.setTenNhanVien(rs.getString("TenNhanVien"));
+            nv.setNghiepVu(rs.getInt("NghiepVuID"));
+            nv.setMatKhau(rs.getString("MatKhau"));
+            return nv;
+        }   
+        
+    };
     
 }

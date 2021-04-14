@@ -242,24 +242,30 @@ public class EmployeeManagementController implements Initializable {
                 if (checkValidateInphut() == true) {
                     Utils.getBox("Vui Lòng Nhập Đầy Đủ Thông Tin", Alert.AlertType.INFORMATION).show();
                 } else {
-                    nv.setTaiKhoan(txtAccountEmployee.getText());
-                    nv.setMatKhau(txtPasswordEmployee.getText());
-                    nv.setTenNhanVien(txtNameEmployee.getText());
-                    try {
-                        nv.setNghiepVu(this.cbNghiepVu.getSelectionModel().getSelectedItem().getIdNghiepVu());
-                        if (s.addNhanVien(nv) == true) {
-                            Utils.getBox("SUCCESSFUL", Alert.AlertType.INFORMATION).show();
-                            this.LoadDataTableEmployee("");
-                            SetDisableButtonEmployee(true);
-                            ResetInputEmployee();
-                            conn.close();
-                        } else {
-                            Utils.getBox("FAILED", Alert.AlertType.INFORMATION).show();
-                            conn.close();
+                    if (s.findAccount(txtAccountEmployee.getText()) != null) {
+                        Utils.getBox("Tài Khoản Đã Tồn Tại", Alert.AlertType.INFORMATION).show();
+                    } else {
+                        nv.setTaiKhoan(txtAccountEmployee.getText());
+                        nv.setMatKhau(txtPasswordEmployee.getText());
+                        nv.setTenNhanVien(txtNameEmployee.getText());
+                        try {
+                            nv.setNghiepVu(this.cbNghiepVu.getSelectionModel().getSelectedItem().getIdNghiepVu());
+                            if (s.addNhanVien(nv) == true) {
+                                conn.close();
+                                Utils.getBox("SUCCESSFUL", Alert.AlertType.INFORMATION).show();
+                                SetDisableButtonEmployee(true);
+                                LoadDataTableEmployee("");
+                                this.ResetInputEmployee();
+                            } else {
+                                Utils.getBox("FAILED", Alert.AlertType.INFORMATION).show();
+                                conn.close();
+                            }
+                        } catch (NullPointerException e) {
+                            Utils.getBox("Vui Lòng Nhập Đầy Đủ Thông Tin", Alert.AlertType.INFORMATION).show();
                         }
-                    } catch (NullPointerException e) {
-                        Utils.getBox("Vui Lòng Nhập Đầy Đủ Thông Tin", Alert.AlertType.INFORMATION).show();
+
                     }
+
                 }
             } catch (NullPointerException e) {
                 Utils.getBox("Vui Lòng Nhập Đầy Đủ Thông Tin", Alert.AlertType.INFORMATION).show();

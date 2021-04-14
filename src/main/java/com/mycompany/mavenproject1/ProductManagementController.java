@@ -19,6 +19,8 @@ import java.time.ZoneId;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -75,6 +77,8 @@ public class ProductManagementController implements Initializable {
     private Button rsDateSX;
     @FXML
     private Button rsDateHSD;
+    @FXML
+    private Button btnSeachHH;
 
     /**
      * Initializes the controller class.
@@ -94,8 +98,37 @@ public class ProductManagementController implements Initializable {
         // TODO
         LoadTable();
         LoadData("");
+        txtGiaBan.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue,
+                    String newValue) {
+                try {
+                    if (!newValue.matches("\\d*")) {
+                        txtGiaBan.setText(newValue.replaceAll("[^\\d]", ""));
+                    }
+                } catch (NullPointerException e) {
+
+                }
+            }
+        });
+
+        txtSoLuong.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue,
+                    String newValue) {
+                try {
+                    if (!newValue.matches("\\d*")) {
+                        txtSoLuong.setText(newValue.replaceAll("[^\\d]", ""));
+                    }
+                } catch (NullPointerException e) {
+
+                }
+            }
+        });
+
         txtNgaySanXuat.getEditor().setDisable(true);
         txtHanSuDung.getEditor().setDisable(true);
+
         btnRsInputProduct.setOnMouseClicked(e -> {
             ResetInput();
         });
@@ -111,12 +144,18 @@ public class ProductManagementController implements Initializable {
                     HangHoa hh = this.tbProduct.getSelectionModel().getSelectedItem();
                     XuatXuService xxs = new XuatXuService(conn);
                     LoaiHangService lhs = new LoaiHangService(conn);
-                    txtHangHoa.setText(hh.getTenHang());
-                    txtDonVi.setText(hh.getDonViTinh());
-                    txtGiaBan.setText(hh.getGiaBan().toString());
-                    txtSoLuong.setText(Integer.toString(hh.getSoLuong()));
-                    cbLoaiHang.getSelectionModel().select(lhs.getLoaiHangById(hh.getLoaiHang()));
-                    cbXuatXu.getSelectionModel().select(xxs.getXuatXuById(hh.getXuatXu()));
+                    try {
+                        txtHangHoa.setText(hh.getTenHang());
+                        txtDonVi.setText(hh.getDonViTinh());
+                        txtGiaBan.setText(hh.getGiaBan().toString());
+                        txtSoLuong.setText(Integer.toString(hh.getSoLuong()));
+                        cbLoaiHang.getSelectionModel().select(lhs.getLoaiHangById(hh.getLoaiHang()));
+                        cbXuatXu.getSelectionModel().select(xxs.getXuatXuById(hh.getXuatXu()));
+
+                    } catch (NullPointerException evnt) {
+
+                    }
+
                     if (hh.getNgaySX() != null) {
                         txtNgaySanXuat.setValue(convertToLocalDateViaSqlDate(hh.getNgaySX()));
                     } else {
@@ -159,37 +198,42 @@ public class ProductManagementController implements Initializable {
                     btnUpdateProduct.setOnAction(new EventHandler<ActionEvent>() {
                         @Override
                         public void handle(ActionEvent e) {
-                            Connection conn;
-                            try {
-                                conn = jdbcUtil.getConn();
-                                HangHoaService s = new HangHoaService(conn);
-                                HangHoa hhUpdate = new HangHoa();
+                            if (checkIsEmptyInput() != true) {
+                                Connection conn;
                                 try {
-                                    hhUpdate.setIdHangHoa(hh.getIdHangHoa());
-                                    hhUpdate.setTenHang(txtHangHoa.getText());
-                                    hhUpdate.setLoaiHang(cbLoaiHang.getSelectionModel().getSelectedItem().getIdloaiHang());
-                                    hhUpdate.setXuatXu(cbXuatXu.getSelectionModel().getSelectedItem().getIdXuatXu());
-                                    hhUpdate.setDonViTinh(txtDonVi.getText());
-                                    hhUpdate.setGiaBan(new BigDecimal(txtGiaBan.getText()));
-                                    hhUpdate.setSoLuong(Integer.parseInt(txtSoLuong.getText()));
+                                    conn = jdbcUtil.getConn();
+                                    HangHoaService s = new HangHoaService(conn);
+                                    HangHoa hhUpdate = new HangHoa();
                                     try {
-                                        hhUpdate.setNgaySX(Date.valueOf(txtNgaySanXuat.getValue()));
-                                        hhUpdate.setHanSD(Date.valueOf(txtHanSuDung.getValue()));
+                                        hhUpdate.setIdHangHoa(hh.getIdHangHoa());
+                                        hhUpdate.setTenHang(txtHangHoa.getText());
+                                        hhUpdate.setLoaiHang(cbLoaiHang.getSelectionModel().getSelectedItem().getIdloaiHang());
+                                        hhUpdate.setXuatXu(cbXuatXu.getSelectionModel().getSelectedItem().getIdXuatXu());
+                                        hhUpdate.setDonViTinh(txtDonVi.getText());
+                                        hhUpdate.setGiaBan(new BigDecimal(txtGiaBan.getText()));
+                                        hhUpdate.setSoLuong(Integer.parseInt(txtSoLuong.getText()));
+                                        try {
+                                            hhUpdate.setNgaySX(Date.valueOf(txtNgaySanXuat.getValue()));
+                                            hhUpdate.setHanSD(Date.valueOf(txtHanSuDung.getValue()));
+                                        } catch (NullPointerException evnt) {
+                                            System.out.println("NullPointerException thrown!");
+                                        }
+                                        if (s.updateHangHoa(hhUpdate) == true) {
+                                            Utils.getBox("SUCCESSFUL", Alert.AlertType.INFORMATION).show();
+                                            LoadData("");
+                                        } else {
+                                            Utils.getBox("FAILED", Alert.AlertType.INFORMATION).show();
+                                        }
                                     } catch (NullPointerException evnt) {
-                                        System.out.println("NullPointerException thrown!");
+                                        Utils.getBox("Vui Lòng Nhập Đầy Đủ Thông Tin", Alert.AlertType.INFORMATION).show();
                                     }
-                                    if (s.updateHangHoa(hhUpdate) == true) {
-                                        Utils.getBox("SUCCESSFUL", Alert.AlertType.INFORMATION).show();
-                                        LoadData("");
-                                    } else {
-                                        Utils.getBox("FAILED", Alert.AlertType.INFORMATION).show();
-                                    }
-                                } catch (NullPointerException evnt) {
-                                    Utils.getBox("Vui Lòng Nhập Đầy Đủ Thông Tin", Alert.AlertType.INFORMATION).show();
+                                    conn.close();
+                                } catch (SQLException ex) {
+                                    Logger.getLogger(EmployeeManagementController.class.getName()).log(Level.SEVERE, null, ex);
                                 }
-                                conn.close();
-                            } catch (SQLException ex) {
-                                Logger.getLogger(EmployeeManagementController.class.getName()).log(Level.SEVERE, null, ex);
+
+                            } else {
+                                Utils.getBox("Vui Lòng Không Bỏ Trống Các Ô Nhập Liệu", Alert.AlertType.INFORMATION).show();
                             }
 
                         }
@@ -202,11 +246,11 @@ public class ProductManagementController implements Initializable {
             });
             return r;
         });
-        rsDateHSD.setOnMouseClicked(e->{
-             txtHanSuDung.setValue(null);
+        rsDateHSD.setOnMouseClicked(e -> {
+            txtHanSuDung.setValue(null);
         });
-        rsDateSX.setOnMouseClicked(e->{
-             txtNgaySanXuat.setValue(null);
+        rsDateSX.setOnMouseClicked(e -> {
+            txtNgaySanXuat.setValue(null);
         });
     }
 
@@ -216,36 +260,40 @@ public class ProductManagementController implements Initializable {
 
     @FXML
     private void addProduct(ActionEvent event) {
-        Connection conn;
-        try {
-            conn = jdbcUtil.getConn();
-            HangHoaService s = new HangHoaService(conn);
-            HangHoa hh = new HangHoa();
+        if (checkIsEmptyInput() != true) {
+            Connection conn;
             try {
-                hh.setTenHang(txtHangHoa.getText());
-                hh.setLoaiHang(this.cbLoaiHang.getSelectionModel().getSelectedItem().getIdloaiHang());
-                hh.setXuatXu(this.cbXuatXu.getSelectionModel().getSelectedItem().getIdXuatXu());
-                hh.setDonViTinh(txtDonVi.getText());
-                hh.setGiaBan(new BigDecimal(txtGiaBan.getText()));
-                hh.setSoLuong(Integer.parseInt(txtSoLuong.getText()));
+                conn = jdbcUtil.getConn();
+                HangHoaService s = new HangHoaService(conn);
+                HangHoa hh = new HangHoa();
                 try {
-                    hh.setNgaySX(Date.valueOf(txtNgaySanXuat.getValue()));
-                    hh.setHanSD(Date.valueOf(txtHanSuDung.getValue()));
+                    hh.setTenHang(txtHangHoa.getText());
+                    hh.setLoaiHang(this.cbLoaiHang.getSelectionModel().getSelectedItem().getIdloaiHang());
+                    hh.setXuatXu(this.cbXuatXu.getSelectionModel().getSelectedItem().getIdXuatXu());
+                    hh.setDonViTinh(txtDonVi.getText());
+                    hh.setGiaBan(new BigDecimal(txtGiaBan.getText()));
+                    hh.setSoLuong(Integer.parseInt(txtSoLuong.getText()));
+                    try {
+                        hh.setNgaySX(Date.valueOf(txtNgaySanXuat.getValue()));
+                        hh.setHanSD(Date.valueOf(txtHanSuDung.getValue()));
+                    } catch (NullPointerException e) {
+                        System.out.println("NullPointerException thrown!");
+                    }
+                    if (s.addHangHoa(hh) == true) {
+                        Utils.getBox("SUCCESSFUL", Alert.AlertType.INFORMATION).show();
+                        this.LoadData("");
+                    } else {
+                        Utils.getBox("FAILED", Alert.AlertType.INFORMATION).show();
+                    }
                 } catch (NullPointerException e) {
-                    System.out.println("NullPointerException thrown!");
+                    Utils.getBox("Vui Lòng Nhập Đầy Đủ Thông Tin", Alert.AlertType.INFORMATION).show();
                 }
-                if (s.addHangHoa(hh) == true) {
-                    Utils.getBox("SUCCESSFUL", Alert.AlertType.INFORMATION).show();
-                    this.LoadData("");
-                } else {
-                    Utils.getBox("FAILED", Alert.AlertType.INFORMATION).show();
-                }
-            } catch (NullPointerException e) {
-                Utils.getBox("Vui Lòng Nhập Đầy Đủ Thông Tin", Alert.AlertType.INFORMATION).show();
-            }
 
-        } catch (SQLException ex) {
-            Logger.getLogger(ProductManagementController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(ProductManagementController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            Utils.getBox("Vui Lòng Nhập Đầy Đủ Thông Tin", Alert.AlertType.INFORMATION).show();
         }
 
     }
@@ -273,6 +321,12 @@ public class ProductManagementController implements Initializable {
             btnUpdateProduct.setDisable(false);
             btnAddProduct.setDisable(true);
         }
+
+    }
+
+    public boolean checkIsEmptyInput() {
+
+        return txtDonVi.getText().isEmpty() || txtHangHoa.getText().isEmpty() || txtGiaBan.getText().isEmpty() || txtSoLuong.getText().isEmpty();
 
     }
 

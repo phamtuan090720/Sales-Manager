@@ -39,14 +39,14 @@
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
             </TableView>
-            <Button mnemonicParsing="false" text="Seach">
+            <Button fx:id="btnSeachHH" mnemonicParsing="false" text="Seach">
                <padding>
                   <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
                </padding>
             </Button>
             <TextField fx:id="kwSeachh" promptText="Nhập Tên Hàng Cần Tìm...">
                <GridPane.margin>
-                  <Insets left="100.0" />
+                  <Insets left="100.0" right="400.0" />
                </GridPane.margin>
                <padding>
                   <Insets bottom="10.0" left="10.0" top="10.0" />

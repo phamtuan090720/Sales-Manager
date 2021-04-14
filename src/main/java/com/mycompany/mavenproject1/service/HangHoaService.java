@@ -50,6 +50,28 @@ public class HangHoaService {
         }
         return products;
     }
+    public List<HangHoa> SeachHangHoa(int idNoiSanXuat,int idLoaiHang) throws SQLException {
+        String sql = "SELECT * FROM salemanager.hanghoa where xuatXuId=? or loaiHangId=?";
+        PreparedStatement stm = this.conn.prepareStatement(sql);
+        stm.setInt(1, idNoiSanXuat);
+        stm.setInt(2,idLoaiHang);
+        ResultSet rs = stm.executeQuery();
+        List<HangHoa> products = new ArrayList<>();
+        while (rs.next()) {
+            HangHoa p = new HangHoa();
+            p.setIdHangHoa(rs.getInt("idHangHoa"));
+            p.setTenHang(rs.getString("tenHang"));
+            p.setLoaiHang(rs.getInt("loaiHangId"));
+            p.setXuatXu(rs.getInt("xuatXuId"));
+            p.setGiaBan(rs.getBigDecimal("giaBan"));
+            p.setDonViTinh(rs.getString("donViTinh"));
+            p.setSoLuong(rs.getInt("soLuong"));
+            p.setNgaySX(rs.getDate("ngaySX"));
+            p.setHanSD(rs.getDate("hanSD"));
+            products.add(p);
+        }
+        return products;
+    }
 
     public boolean addHangHoa(HangHoa hh) throws SQLException {
         String sql = "INSERT INTO `salemanager`.`hanghoa` (`tenHang`, `loaiHangId`, `xuatXuId`, `ngaySX`, `hanSD`, `giaBan`, `donViTinh`, `soLuong`) VALUES (?,?,?,?, ?, ?, ?, ?);";
@@ -96,4 +118,5 @@ public class HangHoaService {
         int row = stm.executeUpdate();
         return row > 0;
     }
+    
 }
