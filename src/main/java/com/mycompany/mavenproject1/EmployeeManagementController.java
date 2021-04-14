@@ -132,21 +132,37 @@ public class EmployeeManagementController implements Initializable {
                             try {
                                 NhanVien nvUpdate = new NhanVien();
                                 nvUpdate.setMaNhanVien(nv.getMaNhanVien());
-                                nvUpdate.setTenNhanVien(txtNameEmployee.getText());
-                                nvUpdate.setNghiepVu(cbNghiepVu.getSelectionModel().getSelectedItem().getIdNghiepVu());
-                                nvUpdate.setTaiKhoan(txtAccountEmployee.getText());
-                                nvUpdate.setMatKhau(txtPasswordEmployee.getText());
-                                Connection conn = jdbcUtil.getConn();
-                                NhanVienService s = new NhanVienService(conn);
-                                if (s.updateNhanVien(nvUpdate) == true) {
-                                    Utils.getBox("SUCCESSFUL", Alert.AlertType.INFORMATION).show();
-                                    SetDisableButtonEmployee(true);
-                                    ResetInputEmployee();
-                                    LoadDataTableEmployee("");
-                                } else {
-                                    Utils.getBox("FAILED", Alert.AlertType.ERROR).show();
+                                try {
+                                    if (checkValidateInphut() == true) {
+                                        Utils.getBox("Vui Lòng Nhập Đầy Đủ Thông Tin", Alert.AlertType.INFORMATION).show();
+                                    } else {
+                                        nvUpdate.setTenNhanVien(txtNameEmployee.getText());
+                                        nvUpdate.setTaiKhoan(txtAccountEmployee.getText());
+                                        nvUpdate.setMatKhau(txtPasswordEmployee.getText());
+                                        nvUpdate.setNghiepVu(cbNghiepVu.getSelectionModel().getSelectedItem().getIdNghiepVu());
+                                        Connection conn = jdbcUtil.getConn();
+                                        NhanVienService s = new NhanVienService(conn);
+                                        if (s.updateNhanVien(nvUpdate) == true) {
+                                            Utils.getBox("SUCCESSFUL", Alert.AlertType.INFORMATION).show();
+                                            SetDisableButtonEmployee(true);
+                                            ResetInputEmployee();
+                                            LoadDataTableEmployee("");
+
+                                        } else {
+                                            Utils.getBox("FAILED", Alert.AlertType.ERROR).show();
+                                        }
+                                        conn.close();
+                                    }
+
+                                } catch (NullPointerException evnt) {
+                                    Utils.getBox("Vui Lòng Nhập Đầy Đủ Thông Tin", Alert.AlertType.INFORMATION).show();
                                 }
-                                conn.close();
+//                                if (checkValidateInphut() == true) {
+//                                    Utils.getBox("Vui Lòng Nhập Đầy Đủ Thông Tin", Alert.AlertType.INFORMATION).show();
+//                                } else {
+//
+//                                }
+
                             } catch (SQLException ex) {
                                 Logger.getLogger(EmployeeManagementController.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -207,6 +223,15 @@ public class EmployeeManagementController implements Initializable {
         this.tbEmployee.getColumns().addAll(colId, colName, colAccount, colPassword);
     }
 
+    public boolean checkValidateInphut() {
+        return txtAccountEmployee.getText().isEmpty()
+                || txtNameEmployee.getText().isEmpty()
+                || txtPasswordEmployee.getText().isEmpty();
+    }
+
+    ;
+
+    ;
     @FXML
     private void addNhanVien(ActionEvent event) {
         try {
@@ -214,19 +239,27 @@ public class EmployeeManagementController implements Initializable {
             NhanVienService s = new NhanVienService(conn);
             NhanVien nv = new NhanVien();
             try {
-                nv.setTenNhanVien(txtNameEmployee.getText());
-                nv.setNghiepVu(this.cbNghiepVu.getSelectionModel().getSelectedItem().getIdNghiepVu());
-                nv.setTaiKhoan(txtAccountEmployee.getText());
-                nv.setMatKhau(txtPasswordEmployee.getText());
-                if (s.addNhanVien(nv) == true) {
-                    Utils.getBox("SUCCESSFUL", Alert.AlertType.INFORMATION).show();
-                    this.LoadDataTableEmployee("");
-                    SetDisableButtonEmployee(true);
-                    ResetInputEmployee();
-                    conn.close();
+                if (checkValidateInphut() == true) {
+                    Utils.getBox("Vui Lòng Nhập Đầy Đủ Thông Tin", Alert.AlertType.INFORMATION).show();
                 } else {
-                    Utils.getBox("FAILED", Alert.AlertType.INFORMATION).show();
-                    conn.close();
+                    nv.setTaiKhoan(txtAccountEmployee.getText());
+                    nv.setMatKhau(txtPasswordEmployee.getText());
+                    nv.setTenNhanVien(txtNameEmployee.getText());
+                    try {
+                        nv.setNghiepVu(this.cbNghiepVu.getSelectionModel().getSelectedItem().getIdNghiepVu());
+                        if (s.addNhanVien(nv) == true) {
+                            Utils.getBox("SUCCESSFUL", Alert.AlertType.INFORMATION).show();
+                            this.LoadDataTableEmployee("");
+                            SetDisableButtonEmployee(true);
+                            ResetInputEmployee();
+                            conn.close();
+                        } else {
+                            Utils.getBox("FAILED", Alert.AlertType.INFORMATION).show();
+                            conn.close();
+                        }
+                    } catch (NullPointerException e) {
+                        Utils.getBox("Vui Lòng Nhập Đầy Đủ Thông Tin", Alert.AlertType.INFORMATION).show();
+                    }
                 }
             } catch (NullPointerException e) {
                 Utils.getBox("Vui Lòng Nhập Đầy Đủ Thông Tin", Alert.AlertType.INFORMATION).show();

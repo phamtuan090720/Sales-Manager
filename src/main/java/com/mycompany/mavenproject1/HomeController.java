@@ -89,6 +89,15 @@ public class HomeController implements Initializable {
                 Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+        this.btnCustomer.setOnMouseClicked(e->{
+             try {
+               Parent fxml = FXMLLoader.load(getClass().getResource("CustomerManagement.fxml"));
+               containerPane.getChildren().removeAll();
+               containerPane.getChildren().setAll(fxml);
+            } catch (IOException ex) {
+                Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
     }
     public void LoadScene(String fxml, MouseEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource(fxml));

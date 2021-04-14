@@ -69,6 +69,12 @@ public class ProductManagementController implements Initializable {
     private DatePicker txtHanSuDung;
     @FXML
     private TextField txtDonVi;
+    @FXML
+    private TextField kwSeachh;
+    @FXML
+    private Button rsDateSX;
+    @FXML
+    private Button rsDateHSD;
 
     /**
      * Initializes the controller class.
@@ -90,8 +96,11 @@ public class ProductManagementController implements Initializable {
         LoadData("");
         txtNgaySanXuat.getEditor().setDisable(true);
         txtHanSuDung.getEditor().setDisable(true);
-        btnRsInputProduct.setOnMouseClicked(e->{
+        btnRsInputProduct.setOnMouseClicked(e -> {
             ResetInput();
+        });
+        this.kwSeachh.textProperty().addListener((obj) -> {
+            LoadData(this.kwSeachh.getText());
         });
         this.tbProduct.setRowFactory(obj -> {
             TableRow r = new TableRow();
@@ -108,16 +117,14 @@ public class ProductManagementController implements Initializable {
                     txtSoLuong.setText(Integer.toString(hh.getSoLuong()));
                     cbLoaiHang.getSelectionModel().select(lhs.getLoaiHangById(hh.getLoaiHang()));
                     cbXuatXu.getSelectionModel().select(xxs.getXuatXuById(hh.getXuatXu()));
-                    if (hh.getNgaySX()!= null) {
+                    if (hh.getNgaySX() != null) {
                         txtNgaySanXuat.setValue(convertToLocalDateViaSqlDate(hh.getNgaySX()));
+                    } else {
+                        txtNgaySanXuat.setValue(null);
                     }
-                    else{
-                         txtNgaySanXuat.setValue(null);
-                    }
-                    if (hh.getHanSD()!= null) {
+                    if (hh.getHanSD() != null) {
                         txtHanSuDung.setValue(convertToLocalDateViaSqlDate(hh.getHanSD()));
-                    }
-                    else{
+                    } else {
                         txtHanSuDung.setValue(null);
                     }
                     btnDeleteProduct.setOnAction(new EventHandler<ActionEvent>() {
@@ -134,6 +141,7 @@ public class ProductManagementController implements Initializable {
                                                     Utils.getBox("SUCCESSFUL", Alert.AlertType.INFORMATION).show();
                                                     LoadData("");
                                                     SetDisableButtonProduct(true);
+                                                    ResetInput();
                                                 } else {
                                                     Utils.getBox("FAILED", Alert.AlertType.ERROR).show();
                                                 }
@@ -148,6 +156,44 @@ public class ProductManagementController implements Initializable {
                                     });
                         }
                     });
+                    btnUpdateProduct.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent e) {
+                            Connection conn;
+                            try {
+                                conn = jdbcUtil.getConn();
+                                HangHoaService s = new HangHoaService(conn);
+                                HangHoa hhUpdate = new HangHoa();
+                                try {
+                                    hhUpdate.setIdHangHoa(hh.getIdHangHoa());
+                                    hhUpdate.setTenHang(txtHangHoa.getText());
+                                    hhUpdate.setLoaiHang(cbLoaiHang.getSelectionModel().getSelectedItem().getIdloaiHang());
+                                    hhUpdate.setXuatXu(cbXuatXu.getSelectionModel().getSelectedItem().getIdXuatXu());
+                                    hhUpdate.setDonViTinh(txtDonVi.getText());
+                                    hhUpdate.setGiaBan(new BigDecimal(txtGiaBan.getText()));
+                                    hhUpdate.setSoLuong(Integer.parseInt(txtSoLuong.getText()));
+                                    try {
+                                        hhUpdate.setNgaySX(Date.valueOf(txtNgaySanXuat.getValue()));
+                                        hhUpdate.setHanSD(Date.valueOf(txtHanSuDung.getValue()));
+                                    } catch (NullPointerException evnt) {
+                                        System.out.println("NullPointerException thrown!");
+                                    }
+                                    if (s.updateHangHoa(hhUpdate) == true) {
+                                        Utils.getBox("SUCCESSFUL", Alert.AlertType.INFORMATION).show();
+                                        LoadData("");
+                                    } else {
+                                        Utils.getBox("FAILED", Alert.AlertType.INFORMATION).show();
+                                    }
+                                } catch (NullPointerException evnt) {
+                                    Utils.getBox("Vui Lòng Nhập Đầy Đủ Thông Tin", Alert.AlertType.INFORMATION).show();
+                                }
+                                conn.close();
+                            } catch (SQLException ex) {
+                                Logger.getLogger(EmployeeManagementController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+
+                        }
+                    });
                     conn.close();
                 } catch (SQLException ex) {
                     Logger.getLogger(ProductManagementController.class.getName()).log(Level.SEVERE, null, ex);
@@ -156,7 +202,12 @@ public class ProductManagementController implements Initializable {
             });
             return r;
         });
-
+        rsDateHSD.setOnMouseClicked(e->{
+             txtHanSuDung.setValue(null);
+        });
+        rsDateSX.setOnMouseClicked(e->{
+             txtNgaySanXuat.setValue(null);
+        });
     }
 
     public LocalDate convertToLocalDateViaSqlDate(Date dateToConvert) {
@@ -170,24 +221,29 @@ public class ProductManagementController implements Initializable {
             conn = jdbcUtil.getConn();
             HangHoaService s = new HangHoaService(conn);
             HangHoa hh = new HangHoa();
-            hh.setTenHang(txtHangHoa.getText());
-            hh.setLoaiHang(this.cbLoaiHang.getSelectionModel().getSelectedItem().getIdloaiHang());
-            hh.setXuatXu(this.cbXuatXu.getSelectionModel().getSelectedItem().getIdXuatXu());
-            hh.setDonViTinh(txtDonVi.getText());
-            hh.setGiaBan(new BigDecimal(txtGiaBan.getText()));
-            hh.setSoLuong(Integer.parseInt(txtGiaBan.getText()));
             try {
-                hh.setNgaySX(Date.valueOf(txtNgaySanXuat.getValue()));
-                hh.setHanSD(Date.valueOf(txtHanSuDung.getValue()));
+                hh.setTenHang(txtHangHoa.getText());
+                hh.setLoaiHang(this.cbLoaiHang.getSelectionModel().getSelectedItem().getIdloaiHang());
+                hh.setXuatXu(this.cbXuatXu.getSelectionModel().getSelectedItem().getIdXuatXu());
+                hh.setDonViTinh(txtDonVi.getText());
+                hh.setGiaBan(new BigDecimal(txtGiaBan.getText()));
+                hh.setSoLuong(Integer.parseInt(txtSoLuong.getText()));
+                try {
+                    hh.setNgaySX(Date.valueOf(txtNgaySanXuat.getValue()));
+                    hh.setHanSD(Date.valueOf(txtHanSuDung.getValue()));
+                } catch (NullPointerException e) {
+                    System.out.println("NullPointerException thrown!");
+                }
+                if (s.addHangHoa(hh) == true) {
+                    Utils.getBox("SUCCESSFUL", Alert.AlertType.INFORMATION).show();
+                    this.LoadData("");
+                } else {
+                    Utils.getBox("FAILED", Alert.AlertType.INFORMATION).show();
+                }
             } catch (NullPointerException e) {
-                System.out.println("NullPointerException thrown!");
+                Utils.getBox("Vui Lòng Nhập Đầy Đủ Thông Tin", Alert.AlertType.INFORMATION).show();
             }
-            if (s.addHangHoa(hh) == true) {
-                Utils.getBox("SUCCESSFUL", Alert.AlertType.INFORMATION).show();
-                this.LoadData("");
-            } else {
-                Utils.getBox("FAILED", Alert.AlertType.INFORMATION).show();
-            }
+
         } catch (SQLException ex) {
             Logger.getLogger(ProductManagementController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -219,17 +275,16 @@ public class ProductManagementController implements Initializable {
         }
 
     }
-    public void ResetInput(){
-        txtDonVi.setText("");
-        txtGiaBan.setText("");
+
+    public void ResetInput() {
+        txtDonVi.setText(null);
+        txtGiaBan.setText(null);
         txtHanSuDung.setValue(null);
         txtNgaySanXuat.setValue(null);
-        txtHangHoa.setText("");
-        txtSoLuong.setText("");
+        txtHangHoa.setText(null);
+        txtSoLuong.setText(null);
         cbLoaiHang.getSelectionModel().select(null);
         cbXuatXu.getSelectionModel().select(null);
-        
-  
     }
 
     private void LoadTable() {

@@ -14,13 +14,16 @@
 
 <AnchorPane stylesheets="@homeManagement.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.mavenproject1.ProductManagementController">
    <children>
-      <AnchorPane layoutX="20.0" layoutY="192.0" prefHeight="50.0" AnchorPane.bottomAnchor="400.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <AnchorPane layoutY="211.0" prefHeight="50.0" AnchorPane.bottomAnchor="400.6" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
             <Button fx:id="btnAddProduct" layoutX="14.0" layoutY="10.0" mnemonicParsing="false" onAction="#addProduct" prefHeight="30.0" prefWidth="100.0" text="Add" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="14.0" />
             <Button fx:id="btnUpdateProduct" disable="true" layoutX="124.0" layoutY="10.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Update" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="124.0" />
             <Button fx:id="btnDeleteProduct" disable="true" layoutX="231.0" layoutY="10.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Delete" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="231.0" />
             <Button fx:id="btnRsInputProduct" layoutX="343.0" layoutY="10.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Reset" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="343.0" />
          </children>
+         <padding>
+            <Insets bottom="10.0" />
+         </padding>
       </AnchorPane>
       <GridPane layoutX="10.0" layoutY="10.0" prefHeight="400.0" prefWidth="800.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
          <columnConstraints>
@@ -36,6 +39,19 @@
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
             </TableView>
+            <Button mnemonicParsing="false" text="Seach">
+               <padding>
+                  <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
+               </padding>
+            </Button>
+            <TextField fx:id="kwSeachh" promptText="Nhập Tên Hàng Cần Tìm...">
+               <GridPane.margin>
+                  <Insets left="100.0" />
+               </GridPane.margin>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" top="10.0" />
+               </padding>
+            </TextField>
          </children>
       </GridPane>
       <GridPane layoutX="10.0" AnchorPane.bottomAnchor="510.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
@@ -107,6 +123,8 @@
                   <Insets left="80.0" />
                </GridPane.margin>
             </TextField>
+            <Button fx:id="rsDateSX" mnemonicParsing="false" text="Reset Date" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Button fx:id="rsDateHSD" mnemonicParsing="false" text="Reset Date" GridPane.columnIndex="1" GridPane.rowIndex="4" />
          </children>
       </GridPane>
    </children>
