@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.mavenproject1.HomeController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" stylesheets="@homeManagement.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.mavenproject1.SecondaryController">
    <children>
       <StackPane fx:id="containerPane" layoutX="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
       <AnchorPane prefWidth="250.0" style="-fx-background-color: #004c8c;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -26,7 +26,7 @@
                   </ImageView>
                </children>
             </AnchorPane>
-            <Button fx:id="btnEmployee" layoutX="4.0" layoutY="260.0" mnemonicParsing="false" prefHeight="50.0" stylesheets="@homeManagement.css" text="Employee " textFill="#faf7f7" textOverrun="LEADING_WORD_ELLIPSIS" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <Button fx:id="btnSell" layoutX="4.0" layoutY="260.0" mnemonicParsing="false" prefHeight="50.0" stylesheets="@homeManagement.css" text="Bán Hàng" textFill="#faf7f7" textOverrun="LEADING_WORD_ELLIPSIS" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <padding>
                   <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                </padding>
@@ -34,7 +34,7 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Button>
-            <Button fx:id="btnProduct" layoutX="4.0" layoutY="320.0" mnemonicParsing="false" prefHeight="50.0" stylesheets="@homeManagement.css" text="Product" textFill="#faf7f7" textOverrun="LEADING_WORD_ELLIPSIS" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <Button fx:id="btnRegistration" layoutX="4.0" layoutY="320.0" mnemonicParsing="false" prefHeight="50.0" stylesheets="@homeManagement.css" text="Đăng Ký" textFill="#faf7f7" textOverrun="LEADING_WORD_ELLIPSIS" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <padding>
                   <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                </padding>

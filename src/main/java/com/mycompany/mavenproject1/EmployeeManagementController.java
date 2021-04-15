@@ -44,8 +44,6 @@ public class EmployeeManagementController implements Initializable {
     @FXML
     private TextField kwEmployee;
     @FXML
-    private Button btnSearchEMployee;
-    @FXML
     private ComboBox<NghiepVu> cbNghiepVu;
     @FXML
     private TextField txtPasswordEmployee;
@@ -61,6 +59,8 @@ public class EmployeeManagementController implements Initializable {
     private Button btnDeleteEmployee;
     @FXML
     private Button btnRsInputEmployee;
+    @FXML
+    private Button btnSearchEMployee;
 
     /**
      * Initializes the controller class.

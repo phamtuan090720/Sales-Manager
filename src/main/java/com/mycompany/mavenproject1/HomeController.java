@@ -38,16 +38,16 @@ public class HomeController implements Initializable {
     @FXML
     private Button btnCustomer;
     @FXML
-    private Button btnStatistic;
-    @FXML
-    private Button btnBill;
-    @FXML
     private Button btnLogout;
     @FXML
     private Button btnDasboard;
     private AnchorPane PaneEmployee;
     @FXML
     private StackPane containerPane;
+    @FXML
+    private Button btnStatistic;
+    @FXML
+    private Button btnBill;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.btnLogout.setOnMouseClicked(e -> {

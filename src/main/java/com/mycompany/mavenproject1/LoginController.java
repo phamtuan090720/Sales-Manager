@@ -109,7 +109,7 @@ public class LoginController implements Initializable {
                 conn.close();
             }
         } catch (SQLException ex) {
-            Logger.getLogger(SecondaryController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
