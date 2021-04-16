@@ -26,6 +26,10 @@ public class KhachHangService {
         this.conn = conn;
     }
 
+    public KhachHangService() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     public List<KhachHang> getListKhachHang(String kw) throws SQLException {
         if (kw == null) {
             throw new SQLDataException();
@@ -73,17 +77,17 @@ public class KhachHangService {
         int row = stm.executeUpdate();
         return row > 0;
     }
-    public KhachHang findKhachHangByCMND(String kw) throws SQLException{
-        
+
+    public KhachHang findKhachHangByCMND(String kw) throws SQLException {
+
         KhachHang kh = null;
         String sql = "SELECT * FROM salemanager.khachhangthanthiet where CMND=?;";
         PreparedStatement stm = this.conn.prepareStatement(sql);
         stm.setString(1, kw);
         ResultSet rs = stm.executeQuery();
-        if(!rs.next()){
+        if (!rs.next()) {
             return kh;
-        }
-        else{
+        } else {
             kh = new KhachHang();
             kh.setIdKhachHangThanThiet(rs.getInt("idKhachHangThanThiet"));
             kh.setTenKhachHang(rs.getString("TenKhachHang"));
@@ -92,20 +96,44 @@ public class KhachHangService {
             kh.setDiem(rs.getInt("Diem"));
             kh.setCMND(rs.getString("CMND"));
             return kh;
-        }   
-        
-    };
-       public KhachHang findKhachHangBySDT(String kw) throws SQLException{
-        
+        }
+
+    }
+
+    ;
+     public KhachHang findKhachHangByID(int kw) throws SQLException {
+
+        KhachHang kh = null;
+        String sql = "SELECT * FROM salemanager.khachhangthanthiet where idKhachHangThanThiet=?";
+        PreparedStatement stm = this.conn.prepareStatement(sql);
+        stm.setInt(1, kw);
+        ResultSet rs = stm.executeQuery();
+        if (!rs.next()) {
+            return kh;
+        } else {
+            kh = new KhachHang();
+            kh.setIdKhachHangThanThiet(rs.getInt("idKhachHangThanThiet"));
+            kh.setTenKhachHang(rs.getString("TenKhachHang"));
+            kh.setSDT(rs.getString("SDT"));
+            kh.setDiaChi(rs.getString("DiaChi"));
+            kh.setDiem(rs.getInt("Diem"));
+            kh.setCMND(rs.getString("CMND"));
+            return kh;
+        }
+
+    }
+
+    ;
+       public KhachHang findKhachHangBySDT(String kw) throws SQLException {
+
         KhachHang kh = null;
         String sql = "SELECT * FROM salemanager.khachhangthanthiet where SDT=?;";
         PreparedStatement stm = this.conn.prepareStatement(sql);
         stm.setString(1, kw);
         ResultSet rs = stm.executeQuery();
-        if(!rs.next()){
+        if (!rs.next()) {
             return kh;
-        }
-        else{
+        } else {
             kh = new KhachHang();
             kh.setIdKhachHangThanThiet(rs.getInt("idKhachHangThanThiet"));
             kh.setTenKhachHang(rs.getString("TenKhachHang"));
@@ -114,21 +142,22 @@ public class KhachHangService {
             kh.setDiem(rs.getInt("Diem"));
             kh.setCMND(rs.getString("CMND"));
             return kh;
-        }   
-        
-    };
-    public KhachHang findKhachHangBySDTAndCMND(String sdt,String cmnd) throws SQLException{
-        
+        }
+
+    }
+
+    ;
+    public KhachHang findKhachHangBySDTAndCMND(String sdt, String cmnd) throws SQLException {
+
         KhachHang kh = null;
         String sql = "SELECT * FROM salemanager.khachhangthanthiet where SDT=? and CMND=?;";
         PreparedStatement stm = this.conn.prepareStatement(sql);
         stm.setString(1, sdt);
-        stm.setString(2,cmnd);
+        stm.setString(2, cmnd);
         ResultSet rs = stm.executeQuery();
-        if(!rs.next()){
+        if (!rs.next()) {
             return kh;
-        }
-        else{
+        } else {
             kh = new KhachHang();
             kh.setIdKhachHangThanThiet(rs.getInt("idKhachHangThanThiet"));
             kh.setTenKhachHang(rs.getString("TenKhachHang"));
@@ -137,9 +166,11 @@ public class KhachHangService {
             kh.setDiem(rs.getInt("Diem"));
             kh.setCMND(rs.getString("CMND"));
             return kh;
-        }   
-        
-    };
+        }
+
+    }
+
+    ;
     public boolean addKhachHang(KhachHang kh) throws SQLException {
         String sql = "INSERT INTO `salemanager`.`khachhangthanthiet` "
                 + "(`TenKhachHang`, `SDT`, `DiaChi`, `Diem`, `CMND`)"

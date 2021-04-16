@@ -30,13 +30,14 @@ public class HoaDonService {
     public List<HoaDon> getListHoaDon() throws SQLException {
         String sql = "SELECT * FROM salemanager.hoadon;";
         PreparedStatement stm = this.conn.prepareStatement(sql);
-       
+
         ResultSet rs = stm.executeQuery();
         List<HoaDon> Bills = new ArrayList<>();
         while (rs.next()) {
             HoaDon b = new HoaDon();
             b.setIdHoaDon(rs.getInt("idHoaDon"));
             b.setIDNhanVienBanHang(rs.getInt("IDNhanVienBanHang"));
+            b.setIDKhachHangThanThiet(rs.getInt("IDKhachHangThanThiet"));
             b.setNgayLap(rs.getDate("NgayLap"));
             b.setThanhTien(rs.getBigDecimal("ThanhTien"));
             b.setVAT(rs.getDouble("VAT"));
@@ -44,6 +45,7 @@ public class HoaDonService {
         }
         return Bills;
     }
+
     public List<HoaDon> getListHoaDonByDate(Date kw) throws SQLException {
         String sql = "SELECT * FROM salemanager.hoadon where NgayLap=?";
         PreparedStatement stm = this.conn.prepareStatement(sql);
@@ -54,6 +56,7 @@ public class HoaDonService {
             HoaDon b = new HoaDon();
             b.setIdHoaDon(rs.getInt("idHoaDon"));
             b.setIDNhanVienBanHang(rs.getInt("IDNhanVienBanHang"));
+            b.setIDKhachHangThanThiet(rs.getInt("IDKhachHangThanThiet"));
             b.setNgayLap(rs.getDate("NgayLap"));
             b.setThanhTien(rs.getBigDecimal("ThanhTien"));
             b.setVAT(rs.getDouble("VAT"));
@@ -61,4 +64,21 @@ public class HoaDonService {
         }
         return Bills;
     }
+//
+//    public boolean UpdateListHoaDon(HoaDon hd) throws SQLException {
+//        String sql = "UPDATE `salemanager`.`hoadon` SET `NgayLap` = ?,"
+//                + " `ThanhTien` = ?, "
+//                + "`VAT` = ?,"
+//                + " `IDNhanVienBanHang` = ?"
+//                + "'IDKhachHangThanThiet' = ?"
+//                + " WHERE (`idHoaDon` = ?); ";
+//        PreparedStatement stm = this.conn.prepareStatement(sql);
+//        stm.setInt(4, hd.getIDNhanVienBanHang());
+//        stm.setInt(5, hd.getIDKhachHangThanThiet());
+//        stm.setDate(1, hd.getNgayLap());
+//        stm.setDouble(3, hd.getVAT());
+//        stm.setBigDecimal(2,hd.getThanhTien());
+//        int row = stm.executeUpdate();
+//        return row > 0;
+//    }
 }
