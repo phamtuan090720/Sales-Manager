@@ -101,6 +101,15 @@ public class HomeController implements Initializable {
                 Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+       this.btnBill.setOnMouseClicked(e->{
+            try {
+                Parent fxml = FXMLLoader.load(getClass().getResource("BIllManagement.fxml"));
+                containerPane.getChildren().removeAll();
+                containerPane.getChildren().setAll(fxml);
+            } catch (IOException ex) {
+                Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+       });
     }
 
     public void LoadScene(String fxml, MouseEvent event) throws IOException {

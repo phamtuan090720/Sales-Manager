@@ -74,6 +74,13 @@ public class SecondaryController implements Initializable {
                 Logger.getLogger(SecondaryController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+        btnRegistration.setOnMouseClicked(e-> {
+            try {
+                LoadPane("CustomerManagement.fxml");
+            } catch (IOException ex) {
+                Logger.getLogger(SecondaryController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
         
     }
 

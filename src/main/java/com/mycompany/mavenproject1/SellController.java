@@ -293,6 +293,7 @@ public class SellController implements Initializable {
         });
 
     }
+    
 
     public BigDecimal TinhTongTien() {
         BigDecimal tong = new BigDecimal(0);
