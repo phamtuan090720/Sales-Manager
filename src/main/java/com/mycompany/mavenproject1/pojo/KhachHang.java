@@ -32,6 +32,11 @@ public class KhachHang {
         this.TenKhachHang = TenKhachHang;
     }
 
+    @Override
+    public String toString() {
+        return TenKhachHang;
+    }
+
     public String getSDT() {
         return SDT;
     }

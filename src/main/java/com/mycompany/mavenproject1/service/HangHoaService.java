@@ -50,27 +50,59 @@ public class HangHoaService {
         }
         return products;
     }
-    public List<HangHoa> SeachHangHoa(int idNoiSanXuat,int idLoaiHang) throws SQLException {
-        String sql = "SELECT * FROM salemanager.hanghoa where xuatXuId=? or loaiHangId=?";
+
+    public List<HangHoa> getListHangHoaConTrongKho(String kw) throws SQLException {
+        if (kw == null) {
+            throw new SQLDataException();
+        }
+        String sql = "SELECT * FROM salemanager.hanghoa WHERE tenHang like concat('%', ?, '%')";
         PreparedStatement stm = this.conn.prepareStatement(sql);
-        stm.setInt(1, idNoiSanXuat);
-        stm.setInt(2,idLoaiHang);
+        stm.setString(1, kw);
         ResultSet rs = stm.executeQuery();
         List<HangHoa> products = new ArrayList<>();
         while (rs.next()) {
-            HangHoa p = new HangHoa();
-            p.setIdHangHoa(rs.getInt("idHangHoa"));
-            p.setTenHang(rs.getString("tenHang"));
-            p.setLoaiHang(rs.getInt("loaiHangId"));
-            p.setXuatXu(rs.getInt("xuatXuId"));
-            p.setGiaBan(rs.getBigDecimal("giaBan"));
-            p.setDonViTinh(rs.getString("donViTinh"));
-            p.setSoLuong(rs.getInt("soLuong"));
-            p.setNgaySX(rs.getDate("ngaySX"));
-            p.setHanSD(rs.getDate("hanSD"));
-            products.add(p);
+            if (rs.getInt("soLuong") > 0) {
+                HangHoa p = new HangHoa();
+                p.setIdHangHoa(rs.getInt("idHangHoa"));
+                p.setTenHang(rs.getString("tenHang"));
+                p.setLoaiHang(rs.getInt("loaiHangId"));
+                p.setXuatXu(rs.getInt("xuatXuId"));
+                p.setGiaBan(rs.getBigDecimal("giaBan"));
+                p.setDonViTinh(rs.getString("donViTinh"));
+                p.setSoLuong(rs.getInt("soLuong"));
+                p.setNgaySX(rs.getDate("ngaySX"));
+                p.setHanSD(rs.getDate("hanSD"));
+                products.add(p);
+            }
+
         }
         return products;
+    }
+
+    public List<HangHoa> SeachHangHoaConLaiByIdHangHoa(int idLoaiHang) throws SQLException {
+            String sql = "SELECT * FROM salemanager.hanghoa where loaiHangId=?";
+            PreparedStatement stm = this.conn.prepareStatement(sql);
+            stm.setInt(1, idLoaiHang);
+            ResultSet rs = stm.executeQuery();
+            List<HangHoa> products = new ArrayList<>();
+            while (rs.next()) {
+                if (rs.getInt("soLuong") > 0) {
+                    HangHoa p = new HangHoa();
+                    p.setIdHangHoa(rs.getInt("idHangHoa"));
+                    p.setTenHang(rs.getString("tenHang"));
+                    p.setLoaiHang(rs.getInt("loaiHangId"));
+                    p.setXuatXu(rs.getInt("xuatXuId"));
+                    p.setGiaBan(rs.getBigDecimal("giaBan"));
+                    p.setDonViTinh(rs.getString("donViTinh"));
+                    p.setSoLuong(rs.getInt("soLuong"));
+                    p.setNgaySX(rs.getDate("ngaySX"));
+                    p.setHanSD(rs.getDate("hanSD"));
+                    products.add(p);
+                }
+
+            }
+            return products;
+
     }
 
     public boolean addHangHoa(HangHoa hh) throws SQLException {
@@ -87,7 +119,8 @@ public class HangHoaService {
         int row = stm.executeUpdate();
         return row > 0;
     }
-      public boolean updateHangHoa(HangHoa hh) throws SQLException {
+
+    public boolean updateHangHoa(HangHoa hh) throws SQLException {
         String sql = "UPDATE `salemanager`.`hanghoa` SET "
                 + "`tenHang` = ?,"
                 + " `loaiHangId` = ?,"
@@ -111,12 +144,13 @@ public class HangHoaService {
         int row = stm.executeUpdate();
         return row > 0;
     }
-     public boolean deleleHangHoa(int hangHoaId) throws SQLException {
+
+    public boolean deleleHangHoa(int hangHoaId) throws SQLException {
         String sql = "DELETE FROM `salemanager`.`hanghoa` WHERE (`idHangHoa` = ?);";
         PreparedStatement stm = this.conn.prepareStatement(sql);
         stm.setInt(1, hangHoaId);
         int row = stm.executeUpdate();
         return row > 0;
     }
-    
+
 }

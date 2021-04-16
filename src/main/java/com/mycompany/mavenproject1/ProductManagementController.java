@@ -5,7 +5,6 @@ import com.mycompany.mavenproject1.pojo.LoaiHang;
 import com.mycompany.mavenproject1.pojo.XuatXu;
 import com.mycompany.mavenproject1.service.HangHoaService;
 import com.mycompany.mavenproject1.service.LoaiHangService;
-import com.mycompany.mavenproject1.service.NhanVienService;
 import com.mycompany.mavenproject1.service.XuatXuService;
 import com.mycompany.mavenproject1.service.jdbcUtil;
 import java.math.BigDecimal;
@@ -13,9 +12,7 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -82,6 +79,8 @@ public class ProductManagementController implements Initializable {
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -308,7 +307,7 @@ public class ProductManagementController implements Initializable {
         } catch (SQLException ex) {
             ex.printStackTrace();
             Logger.getLogger(ProductManagementController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } 
     }
 
     public void SetDisableButtonProduct(boolean isAction) {

@@ -4,6 +4,7 @@ module com.mycompany.mavenproject1 {
     requires java.sql;
     requires org.controlsfx.controls;
     requires java.base;
+    requires itextpdf;
     opens com.mycompany.mavenproject1 to javafx.fxml;
     exports com.mycompany.mavenproject1;
     exports com.mycompany.mavenproject1.pojo;

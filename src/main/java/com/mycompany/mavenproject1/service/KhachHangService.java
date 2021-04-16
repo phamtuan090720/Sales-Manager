@@ -117,7 +117,29 @@ public class KhachHangService {
         }   
         
     };
-    
+    public KhachHang findKhachHangBySDTAndCMND(String sdt,String cmnd) throws SQLException{
+        
+        KhachHang kh = null;
+        String sql = "SELECT * FROM salemanager.khachhangthanthiet where SDT=? and CMND=?;";
+        PreparedStatement stm = this.conn.prepareStatement(sql);
+        stm.setString(1, sdt);
+        stm.setString(2,cmnd);
+        ResultSet rs = stm.executeQuery();
+        if(!rs.next()){
+            return kh;
+        }
+        else{
+            kh = new KhachHang();
+            kh.setIdKhachHangThanThiet(rs.getInt("idKhachHangThanThiet"));
+            kh.setTenKhachHang(rs.getString("TenKhachHang"));
+            kh.setSDT(rs.getString("SDT"));
+            kh.setDiaChi(rs.getString("DiaChi"));
+            kh.setDiem(rs.getInt("Diem"));
+            kh.setCMND(rs.getString("CMND"));
+            return kh;
+        }   
+        
+    };
     public boolean addKhachHang(KhachHang kh) throws SQLException {
         String sql = "INSERT INTO `salemanager`.`khachhangthanthiet` "
                 + "(`TenKhachHang`, `SDT`, `DiaChi`, `Diem`, `CMND`)"
