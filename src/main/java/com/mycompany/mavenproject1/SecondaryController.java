@@ -5,8 +5,13 @@
  */
 package com.mycompany.mavenproject1;
 
+import com.mycompany.mavenproject1.pojo.NghiepVu;
+import com.mycompany.mavenproject1.service.NghiepVuService;
+import com.mycompany.mavenproject1.service.jdbcUtil;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,9 +44,12 @@ public class SecondaryController implements Initializable {
     private Button btnLogout;
     @FXML
     private Button btnDasboard;
+    @FXML
+    private Button btnManagement;
 
     /**
      * Initializes the controller class.
+     *
      * @param url
      * @param rb
      */
@@ -53,6 +61,14 @@ public class SecondaryController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(SecondaryController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        checkRole();
+        btnManagement.setOnMouseClicked(e -> {
+            try {
+                LoadScene("home.fxml", e);
+            } catch (IOException ex) {
+                Logger.getLogger(SecondaryController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
         btnSell.setOnMouseClicked(e -> {
             try {
                 LoadPane("sell.fxml");
@@ -74,14 +90,14 @@ public class SecondaryController implements Initializable {
                 Logger.getLogger(SecondaryController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
-        btnRegistration.setOnMouseClicked(e-> {
+        btnRegistration.setOnMouseClicked(e -> {
             try {
                 LoadPane("CustomerManagement.fxml");
             } catch (IOException ex) {
                 Logger.getLogger(SecondaryController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
-        
+
     }
 
     public void LoadScene(String fxml, MouseEvent event) throws IOException {
@@ -91,6 +107,22 @@ public class SecondaryController implements Initializable {
         window.setResizable(false);
         window.setScene(scene);
         window.show();
+    }
+
+    public void checkRole() {
+        try {
+            Connection conn = jdbcUtil.getConn();
+            NghiepVuService s = new NghiepVuService(conn);
+            NghiepVu nghiepVu = s.getNghepVuById(App.getNvLogin().getNghiepVu());
+            if ("quanLy".equals(nghiepVu.getTenNghiepVu())) {
+                btnManagement.setVisible(true);
+            } else {
+
+                btnManagement.setVisible(false);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(SecondaryController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void LoadPane(String fxml) throws IOException {

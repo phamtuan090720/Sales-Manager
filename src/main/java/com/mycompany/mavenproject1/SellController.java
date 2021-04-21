@@ -7,9 +7,12 @@ package com.mycompany.mavenproject1;
 
 import com.mycompany.mavenproject1.pojo.ChiTietHoaDon;
 import com.mycompany.mavenproject1.pojo.HangHoa;
+import com.mycompany.mavenproject1.pojo.HoaDon;
 import com.mycompany.mavenproject1.pojo.KhachHang;
 import com.mycompany.mavenproject1.pojo.LoaiHang;
+import com.mycompany.mavenproject1.service.ChiTietHoaDonService;
 import com.mycompany.mavenproject1.service.HangHoaService;
+import com.mycompany.mavenproject1.service.HoaDonService;
 import com.mycompany.mavenproject1.service.KhachHangService;
 import com.mycompany.mavenproject1.service.LoaiHangService;
 import com.mycompany.mavenproject1.service.XuatXuService;
@@ -17,7 +20,9 @@ import com.mycompany.mavenproject1.service.jdbcUtil;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -90,6 +95,12 @@ public class SellController implements Initializable {
     private List<ChiTietHoaDon> hoaDon;
     @FXML
     private Button btnReset;
+    @FXML
+    private Text txtThanhTien;
+    @FXML
+    private Text txtVAT;
+    @FXML
+    private Button btntest;
 
     public List<ChiTietHoaDon> getHoaDon() {
         return hoaDon;
@@ -184,7 +195,8 @@ public class SellController implements Initializable {
         LoadTableListProduct();
         LoadDataHangHoa("");
         LoadTableBill();
-        txtTongTien.setText("");
+        txtTongTien.setText("0 VNĐ");
+        txtThanhTien.setText("0 VNĐ");
         this.kwSearch.textProperty().addListener((obj) -> {
             LoadDataHangHoa(this.kwSearch.getText());
         });
@@ -215,6 +227,14 @@ public class SellController implements Initializable {
             });
             return r;
         });
+        btnPrintBill.setOnMouseClicked(e -> {
+            if (this.hoaDon.toArray().length > 0) {
+                PrintHoaDon();
+            } else {
+                Utils.getBox("Hóa Đơn Của Bạn Đang Trống", Alert.AlertType.WARNING).show();
+            }
+        });
+
         disableButtonBill(false);
         this.tbBill.setRowFactory(obj -> {
             TableRow r = new TableRow();
@@ -233,8 +253,15 @@ public class SellController implements Initializable {
                                     if (bt == ButtonType.OK) {
                                         hoaDon.remove(ct);
                                         LoadDataBill();
+                                        ResetInput();
+                                        BigDecimal tong = TinhTongTien();
+                                        String Tong = TinhTongTien().toString() + " VNĐ";
+                                        txtTongTien.setText(Tong);
+                                        String thanhTien = String.format("%.2f", ThanhTien(TinhTongTien(), 0.1));
+                                        txtThanhTien.setText(thanhTien);
                                     }
                                 });
+
                     }
                 });
                 btnEditBill.setOnAction(new EventHandler<ActionEvent>() {
@@ -252,6 +279,8 @@ public class SellController implements Initializable {
                             LoadDataBill();
                             String Tong = TinhTongTien().toString() + " VNĐ";
                             txtTongTien.setText(Tong);
+                            String thanhTien = String.format("%.2f", ThanhTien(TinhTongTien(), 0.1));
+                            txtThanhTien.setText(thanhTien);
                         }
                     }
                 });
@@ -288,12 +317,13 @@ public class SellController implements Initializable {
                 BigDecimal tong = TinhTongTien();
                 String Tong = TinhTongTien().toString() + " VNĐ";
                 txtTongTien.setText(Tong);
+                String thanhTien = String.format("%.2f", ThanhTien(TinhTongTien(), 0.1));
+                txtThanhTien.setText(thanhTien);
             }
 
         });
 
     }
-    
 
     public BigDecimal TinhTongTien() {
         BigDecimal tong = new BigDecimal(0);
@@ -304,6 +334,11 @@ public class SellController implements Initializable {
         }
         return tong;
     }
+
+    public BigDecimal ThanhTien(BigDecimal tongTien, double VAT) {
+        return new BigDecimal(VAT).multiply(tongTien).add(tongTien);
+    }
+
     public ChiTietHoaDon timKiemChiTietHoaDon(int x) {
         for (ChiTietHoaDon h : this.hoaDon) {
             if (h.getIdHangHoa() == x) {
@@ -325,6 +360,13 @@ public class SellController implements Initializable {
 
     private boolean checkIsEmpty() {
         return this.txtIDHangHoa.getText().isEmpty() || this.txtSoLuongHangHoa.getText().isEmpty() || this.txtDonGiaHangHoa.getText().isEmpty();
+    }
+
+    private void ResetInput() {
+        txtSoLuongHangHoa.setText("");
+        txtIDHangHoa.setText("");
+        txtDonGiaHangHoa.setText("");
+        txtIDHangHoa.setDisable(false);
     }
 
     private void LoadTableBill() {
@@ -413,6 +455,35 @@ public class SellController implements Initializable {
 
         } catch (SQLException ex) {
             Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    // Hàm Tính Điểm Tích Lũy
+    // Hàm Tính Thành Tiền
+    // Hàm Add ChiTietHoaDon
+    public void PrintHoaDon() {
+        try {
+            Connection conn = jdbcUtil.getConn();
+            ChiTietHoaDonService cthds = new ChiTietHoaDonService(conn);
+            HoaDonService hds = new HoaDonService(conn);
+            HoaDon hd = new HoaDon();
+            LocalDateTime dateNow = java.time.LocalDateTime.now();
+            Date ngayLap = Date.valueOf(dateNow.toLocalDate());
+            hd.setNgayLap(ngayLap);
+            hd.setIDNhanVienBanHang(App.getNvLogin().getMaNhanVien());
+            hd.setVAT(Double.valueOf(0.1));
+            hd.setThanhTien(new BigDecimal(txtThanhTien.getText()));
+            if (cbKhachHang.getSelectionModel().getSelectedItem() != null) {
+                hd.setIDKhachHangThanThiet(cbKhachHang.getSelectionModel().getSelectedItem().getIdKhachHangThanThiet());
+            }
+            if (hds.CreateHoaDon(hd) != null) {
+                Utils.getBox("Success", Alert.AlertType.INFORMATION).show();
+            } else {
+                Utils.getBox("Failed", Alert.AlertType.ERROR).show();
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(SellController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

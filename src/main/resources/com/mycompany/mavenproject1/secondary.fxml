@@ -58,6 +58,14 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Button>
+            <Button fx:id="btnManagement" layoutX="11.0" layoutY="380.0" mnemonicParsing="false" prefHeight="50.0" stylesheets="@homeManagement.css" text="Quản Lý" textFill="#faf7f7" textOverrun="LEADING_WORD_ELLIPSIS" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+               <padding>
+                  <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+               </padding>
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
    </children>

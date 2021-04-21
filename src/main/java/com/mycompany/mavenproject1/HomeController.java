@@ -32,7 +32,7 @@ import javafx.stage.Stage;
  * @author Admin
  */
 public class HomeController implements Initializable {
-    
+
     @FXML
     private Button btnEmployee;
     @FXML
@@ -50,6 +50,8 @@ public class HomeController implements Initializable {
     private Button btnStatistic;
     @FXML
     private Button btnBill;
+    @FXML
+    private Button btnSell;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -101,7 +103,7 @@ public class HomeController implements Initializable {
                 Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
-       this.btnBill.setOnMouseClicked(e->{
+        this.btnBill.setOnMouseClicked(e -> {
             try {
                 Parent fxml = FXMLLoader.load(getClass().getResource("BIllManagement.fxml"));
                 containerPane.getChildren().removeAll();
@@ -109,7 +111,15 @@ public class HomeController implements Initializable {
             } catch (IOException ex) {
                 Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
             }
-       });
+        });
+        this.btnSell.setOnMouseClicked(e -> {
+            try {
+                LoadScene("secondary.fxml", e);
+            } catch (IOException ex) {
+                Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        });
     }
 
     public void LoadScene(String fxml, MouseEvent event) throws IOException {
@@ -120,6 +130,7 @@ public class HomeController implements Initializable {
         window.setScene(scene);
         window.show();
     }
+
     public void LoadPane(String fxml) throws IOException {
         Parent pane = FXMLLoader.load(getClass().getResource(fxml));
         containerPane.getChildren().removeAll();

@@ -11,6 +11,7 @@ import com.mycompany.mavenproject1.pojo.KhachHang;
 import com.mycompany.mavenproject1.service.HoaDonService;
 import com.mycompany.mavenproject1.service.KhachHangService;
 import com.mycompany.mavenproject1.service.jdbcUtil;
+import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.Date;
@@ -28,6 +29,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
@@ -93,7 +95,7 @@ public class BillManagementController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         LoadTables();
         LoadBill();
-        LoadDataBill();
+        LoadDataBills();
         this.txtIDBill.setDisable(true);
         this.txtIDKhachHang.setDisable(true);
         this.tbListBill.setRowFactory(obj -> {
@@ -102,6 +104,7 @@ public class BillManagementController implements Initializable {
             r.setOnMouseClicked(e -> {
                 SetDisableButtonListBill(true);
                 CheckIsEmpty();
+                RestInputKhacHang();
                 HoaDon hd = this.tbListBill.getSelectionModel().getSelectedItem();
                 try {
                     Connection conn = jdbcUtil.getConn();
@@ -126,38 +129,68 @@ public class BillManagementController implements Initializable {
                 txtIDNhanVIen.setText(Integer.toString(hd.getIDNhanVienBanHang()));
                 pcNgayLap.setValue(convertToLocalDateViaSqlDate(hd.getNgayLap()));
                 txtThanhTien.setText(hd.getThanhTien().toString());
-                NumberFormat format = NumberFormat.getPercentInstance(Locale.US);
-                String percentage = format.format(hd.getVAT());
-                txtVAT.setText(percentage);
+//                NumberFormat format = NumberFormat.getPercentInstance(Locale.US);
+//                String percentage = format.format(hd.getVAT());
+                txtVAT.setText(Double.toString(hd.getVAT()));
                 btnSuaListHoaDon.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent e) {
-//                        try {
-//
-//                            if (CheckIsEmpty() == true) {
-//                                Utils.getBox("Vui Long Nhap Thong Tin Day Du", Alert.AlertType.ERROR).show();
-//                            } else {
-//                                Connection conn = jdbcUtil.getConn();
-//                                HoaDon hd = new HoaDon();
-//                                HoaDonService hds = new HoaDonService(conn);
-//                                hd.setIdHoaDon(hd.getIdHoaDon());
-//                                hd.setIDKhachHangThanThiet(hd.getIDKhachHangThanThiet());
-//                                hd.setNgayLap(Date.valueOf(pcNgayLap.getValue()));
-//                                hd.setThanhTien(hd.getThanhTien());
-//                                hd.setIDNhanVienBanHang(hd.getIDNhanVienBanHang());
-////                                hd.setVAT(Double.parseDouble(txtVAT.getText()));
-//                                if (hds.UpdateListHoaDon(hd) == true) {
-//                                    Utils.getBox("Succesfull", Alert.AlertType.ERROR).show();
-//                                    conn.close();
-//                                    LoadDataBill();
-//                                    
-//                                } else {
-//                                    Utils.getBox("Fail", Alert.AlertType.ERROR).show();
-//                                }
-//                            }
-//                        } catch (SQLException ex) {
-//                            Logger.getLogger(BillManagementController.class.getName()).log(Level.SEVERE, null, ex);
-//                        }
+                        try {
+
+                            if (CheckIsEmpty() == true) {
+                                Utils.getBox("Vui Long Nhap Thong Tin Day Du", Alert.AlertType.ERROR).show();
+                            } else {
+                                Connection conn = jdbcUtil.getConn();
+                                HoaDonService s = new HoaDonService(conn);
+                                HoaDon hdUpdate = new HoaDon();
+                                hdUpdate.setIdHoaDon(hd.getIdHoaDon());
+                                hdUpdate.setNgayLap(Date.valueOf(pcNgayLap.getValue()));
+                                hdUpdate.setIDNhanVienBanHang(Integer.parseInt(txtIDNhanVIen.getText()));
+                                hdUpdate.setIDKhachHangThanThiet(hd.getIDKhachHangThanThiet());
+                                hdUpdate.setThanhTien(new BigDecimal(txtThanhTien.getText()));
+                                hdUpdate.setVAT(Double.parseDouble(txtVAT.getText()));
+                                if (s.UpdateListHoaDon(hdUpdate)) {
+                                    Utils.getBox("SUCCESSFULLY", Alert.AlertType.INFORMATION).show();
+                                    conn.close();
+                                    LoadDataBills();
+                                } else {
+                                    Utils.getBox("FAILDED", Alert.AlertType.INFORMATION).show();
+                                    conn.close();
+                                }
+                            }
+                        } catch (SQLException ex) {
+                            Logger.getLogger(BillManagementController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                });
+                btnXoaListHoaDon.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent e) {
+                        Utils.getBox("Ban chac chan xoa khong?", Alert.AlertType.CONFIRMATION)
+                                .showAndWait().ifPresent(bt -> {
+                                    if (bt == ButtonType.OK) {
+                                        try {
+                                            Connection conn = jdbcUtil.getConn();
+                                            HoaDonService s = new HoaDonService(conn);
+
+                                            if (s.deleleHoaDon(hd.getIdHoaDon())) {
+                                                Utils.getBox("SUCCESSFUL", Alert.AlertType.INFORMATION).show();
+                                                SetDisableButtonListBill(true);
+                                                ResetInput();
+                                                LoadDataBills();
+                                            } else {
+                                                Utils.getBox("FAILED", Alert.AlertType.ERROR).show();
+                                            }
+
+                                            conn.close();
+                                        } catch (SQLException ex) {
+
+                                            ex.printStackTrace();
+                                            Logger.getLogger(BillManagementController.class.getName()).log(Level.SEVERE, null, ex);
+                                        }
+                                    }
+                                });
+
                     }
                 });
             });
@@ -178,21 +211,33 @@ public class BillManagementController implements Initializable {
         });
         pcNgayLap.getEditor().setDisable(true);
     }
-    public void ResetInput(){
+
+    public double ParseDouble(String s) {
+        double x = Double.parseDouble(s.replace("%", "")) / 100;
+        return x;
+    }
+
+    public void ResetInput() {
         txtIDBill.setText("");
         txtIDNhanVIen.setText("");
         txtThanhTien.setText("");
         txtVAT.setText("");
         pcNgayLap.setValue(null);
     }
+
+    public void RestInputKhacHang() {
+        txtIDKhachHang.setText("");
+        txtTenKhachHang.setText("");
+        txtSDTKhachHang.setText("");
+        txtDiaChiKhachHang.setText("");
+        txtCMNDKhachHang.setText("");
+        txtDiemTichLuy.setText("");
+    }
+
     public boolean CheckIsEmpty() {
         return txtIDNhanVIen.getText().isEmpty()
                 || txtThanhTien.getText().isEmpty()
-                || txtVAT.getText().isEmpty()
-                || txtSDTKhachHang.getText().isEmpty()
-                || txtTenKhachHang.getText().isEmpty()
-                || txtDiaChiKhachHang.getText().isEmpty()
-                || txtCMNDKhachHang.getText().isEmpty();
+                || txtVAT.getText().isEmpty();
     }
 
     public void SetDisableButtonListBill(boolean isAction) {
@@ -246,7 +291,7 @@ public class BillManagementController implements Initializable {
         this.tbChiTietBill.getColumns().addAll(colIdHH, colSoLuong, colDonGia);
     }
 
-    public void LoadDataBill() {
+    public void LoadDataBills() {
         try {
             this.tbListBill.getItems().clear();
             Connection conn = jdbcUtil.getConn();

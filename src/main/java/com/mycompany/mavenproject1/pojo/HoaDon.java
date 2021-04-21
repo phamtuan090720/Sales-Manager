@@ -16,6 +16,11 @@ public class HoaDon {
     private int idHoaDon;
     private Date NgayLap;
     private BigDecimal ThanhTien;
+
+    @Override
+    public String toString() {
+        return "HoaDon{" + "idHoaDon=" + idHoaDon + ", NgayLap=" + NgayLap + ", ThanhTien=" + ThanhTien + ", VAT=" + VAT + ", IDNhanVienBanHang=" + IDNhanVienBanHang + ", IDKhachHangThanThiet=" + IDKhachHangThanThiet + '}';
+    }
     private double VAT;
     private int IDNhanVienBanHang;
     private int IDKhachHangThanThiet;
