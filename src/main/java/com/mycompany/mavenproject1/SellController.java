@@ -270,17 +270,21 @@ public class SellController implements Initializable {
                         if (checkIsEmpty()) {
                             Utils.getBox("Vui nhập đầy đủ thông tin", Alert.AlertType.ERROR).show();
                         } else {
-                            if (timKiemChiTietHoaDon(Integer.parseInt(txtIDHangHoa.getText())) != null) {
-                                ChiTietHoaDon ct = tbBill.getSelectionModel().getSelectedItem();
-                                ct.setSoLuong(Integer.parseInt(txtSoLuongHangHoa.getText()));
-                                hoaDon.set(hoaDon.indexOf(ct), ct);
+                            if (CheckSoLuongHangHoa(Integer.parseInt(txtIDHangHoa.getText()), Integer.parseInt(txtSoLuongHangHoa.getText())) == false) {
+                                Utils.getBox("Số Lượng Bán Ra Nhiều Hơn Số Lượng Trong Kho", Alert.AlertType.ERROR).show();
+                            } else {
+                                if (timKiemChiTietHoaDon(Integer.parseInt(txtIDHangHoa.getText())) != null) {
+                                    ChiTietHoaDon ct = tbBill.getSelectionModel().getSelectedItem();
+                                    ct.setSoLuong(Integer.parseInt(txtSoLuongHangHoa.getText()));
+                                    hoaDon.set(hoaDon.indexOf(ct), ct);
+                                }
+                                LoadDataBill();
+                                String Tong = TinhTongTien().toString() + " VNĐ";
+                                txtTongTien.setText(Tong);
+                                String thanhTien = String.format("%.2f", ThanhTien(TinhTongTien(), 0.1));
+                                txtThanhTien.setText(thanhTien);
                             }
 
-                            LoadDataBill();
-                            String Tong = TinhTongTien().toString() + " VNĐ";
-                            txtTongTien.setText(Tong);
-                            String thanhTien = String.format("%.2f", ThanhTien(TinhTongTien(), 0.1));
-                            txtThanhTien.setText(thanhTien);
                         }
                     }
                 });
@@ -292,37 +296,64 @@ public class SellController implements Initializable {
             if (checkIsEmpty()) {
                 Utils.getBox("Vui nhập đầy đủ thông tin", Alert.AlertType.ERROR).show();
             } else {
-                if (this.hoaDon.toArray().length > 0) {
-                    if (timKiemChiTietHoaDon(Integer.parseInt(txtIDHangHoa.getText())) != null) {
-                        ChiTietHoaDon ct = timKiemChiTietHoaDon(Integer.parseInt(txtIDHangHoa.getText()));
-                        ct.setSoLuong(ct.getSoLuong() + Integer.parseInt(txtSoLuongHangHoa.getText()));
-                        this.hoaDon.set(this.hoaDon.indexOf(ct), ct);
+                if (CheckSoLuongHangHoa(Integer.parseInt(txtIDHangHoa.getText()), Integer.parseInt(txtSoLuongHangHoa.getText())) == false) {
+                    Utils.getBox("Số Lượng Bán Ra Nhiều Hơn Số Lượng Trong Kho", Alert.AlertType.ERROR).show();
+                } else {
+                    if (this.hoaDon.toArray().length > 0) {
+                        if (timKiemChiTietHoaDon(Integer.parseInt(txtIDHangHoa.getText())) != null) {
+                            ChiTietHoaDon ct = timKiemChiTietHoaDon(Integer.parseInt(txtIDHangHoa.getText()));
+                            if (CheckSoLuongHangHoa(Integer.parseInt(txtIDHangHoa.getText()), ct.getSoLuong() + Integer.parseInt(txtSoLuongHangHoa.getText())) == false) {
+                                Utils.getBox("Số Lượng Bán Ra Nhiều Hơn Số Lượng Trong Kho", Alert.AlertType.ERROR).show();
+                            } else {
+                                ct.setSoLuong(ct.getSoLuong() + Integer.parseInt(txtSoLuongHangHoa.getText()));
+                                this.hoaDon.set(this.hoaDon.indexOf(ct), ct);
+                            }
+
+                        } else {
+                            ChiTietHoaDon ct = new ChiTietHoaDon();
+                            ct.setDonGia(new BigDecimal(txtDonGiaHangHoa.getText()));
+                            ct.setSoLuong(Integer.parseInt(txtSoLuongHangHoa.getText()));
+                            ct.setIdHangHoa(Integer.parseInt(txtIDHangHoa.getText()));
+                            this.hoaDon.add(ct);
+                        }
+
                     } else {
                         ChiTietHoaDon ct = new ChiTietHoaDon();
                         ct.setDonGia(new BigDecimal(txtDonGiaHangHoa.getText()));
                         ct.setSoLuong(Integer.parseInt(txtSoLuongHangHoa.getText()));
                         ct.setIdHangHoa(Integer.parseInt(txtIDHangHoa.getText()));
                         this.hoaDon.add(ct);
-                    }
 
-                } else {
-                    ChiTietHoaDon ct = new ChiTietHoaDon();
-                    ct.setDonGia(new BigDecimal(txtDonGiaHangHoa.getText()));
-                    ct.setSoLuong(Integer.parseInt(txtSoLuongHangHoa.getText()));
-                    ct.setIdHangHoa(Integer.parseInt(txtIDHangHoa.getText()));
-                    this.hoaDon.add(ct);
+                    }
+                    LoadDataBill();
+                    BigDecimal tong = TinhTongTien();
+                    String Tong = TinhTongTien().toString() + " VNĐ";
+                    txtTongTien.setText(Tong);
+                    String thanhTien = String.format("%.2f", ThanhTien(TinhTongTien(), 0.1));
+                    txtThanhTien.setText(thanhTien);
 
                 }
-                LoadDataBill();
-                BigDecimal tong = TinhTongTien();
-                String Tong = TinhTongTien().toString() + " VNĐ";
-                txtTongTien.setText(Tong);
-                String thanhTien = String.format("%.2f", ThanhTien(TinhTongTien(), 0.1));
-                txtThanhTien.setText(thanhTien);
+
             }
 
         });
+        btntest.setOnAction(e -> {
 
+        });
+    }
+
+    public boolean UpdateSoLuongHangHoa(int id, int soLuong) {
+        boolean isUpdateSoLuongHangHoa = true;
+        try {
+            Connection conn = jdbcUtil.getConn();
+            HangHoaService s = new HangHoaService(conn);
+            int soLuongUpdate = s.getHangHoaById(id).getSoLuong() - soLuong;
+            isUpdateSoLuongHangHoa = s.updateSoLuongHangHoa(id, soLuongUpdate);
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(SellController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return isUpdateSoLuongHangHoa;
     }
 
     public BigDecimal TinhTongTien() {
@@ -476,8 +507,26 @@ public class SellController implements Initializable {
             if (cbKhachHang.getSelectionModel().getSelectedItem() != null) {
                 hd.setIDKhachHangThanThiet(cbKhachHang.getSelectionModel().getSelectedItem().getIdKhachHangThanThiet());
             }
-            if (hds.CreateHoaDon(hd) != null) {
-                Utils.getBox("Success", Alert.AlertType.INFORMATION).show();
+            HoaDon hdNew = hds.CreateHoaDon(hd);
+            if (hdNew != null) {
+                boolean isAddChiTietHoaDon = true;
+                for (ChiTietHoaDon h : this.hoaDon) {
+                    h.setIdHoaDon(hdNew.getIdHoaDon());
+                    if (cthds.AddChiTietHoaDon(h)) {
+                        isAddChiTietHoaDon = isAddChiTietHoaDon && UpdateSoLuongHangHoa(h.getIdHangHoa(), h.getSoLuong());
+                    }
+                }
+                if (isAddChiTietHoaDon) {
+                    Utils.getBox("Success", Alert.AlertType.INFORMATION).show();
+                    txtTongTien.setText("0 VNĐ");
+                    txtThanhTien.setText("0");
+                    hoaDon.removeAll(hoaDon);
+                } else {
+                    Utils.getBox("Failed", Alert.AlertType.ERROR).show();
+                }
+
+                LoadDataBill();
+                LoadDataHangHoa("");
             } else {
                 Utils.getBox("Failed", Alert.AlertType.ERROR).show();
             }
@@ -485,6 +534,22 @@ public class SellController implements Initializable {
         } catch (SQLException ex) {
             Logger.getLogger(SellController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public boolean CheckSoLuongHangHoa(int idHangHoa, int soLuongMuonBan) {
+        boolean isCheckSoLuongHangHoa = true;
+        try {
+
+            Connection conn = jdbcUtil.getConn();
+            HangHoaService s = new HangHoaService(conn);
+            if (s.getHangHoaById(idHangHoa).getSoLuong() < soLuongMuonBan) {
+                isCheckSoLuongHangHoa = false;
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(SellController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return isCheckSoLuongHangHoa;
     }
 
     @FXML

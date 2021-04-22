@@ -80,28 +80,28 @@ public class HangHoaService {
     }
 
     public List<HangHoa> SeachHangHoaConLaiByIdHangHoa(int idLoaiHang) throws SQLException {
-            String sql = "SELECT * FROM salemanager.hanghoa where loaiHangId=?";
-            PreparedStatement stm = this.conn.prepareStatement(sql);
-            stm.setInt(1, idLoaiHang);
-            ResultSet rs = stm.executeQuery();
-            List<HangHoa> products = new ArrayList<>();
-            while (rs.next()) {
-                if (rs.getInt("soLuong") > 0) {
-                    HangHoa p = new HangHoa();
-                    p.setIdHangHoa(rs.getInt("idHangHoa"));
-                    p.setTenHang(rs.getString("tenHang"));
-                    p.setLoaiHang(rs.getInt("loaiHangId"));
-                    p.setXuatXu(rs.getInt("xuatXuId"));
-                    p.setGiaBan(rs.getBigDecimal("giaBan"));
-                    p.setDonViTinh(rs.getString("donViTinh"));
-                    p.setSoLuong(rs.getInt("soLuong"));
-                    p.setNgaySX(rs.getDate("ngaySX"));
-                    p.setHanSD(rs.getDate("hanSD"));
-                    products.add(p);
-                }
-
+        String sql = "SELECT * FROM salemanager.hanghoa where loaiHangId=?";
+        PreparedStatement stm = this.conn.prepareStatement(sql);
+        stm.setInt(1, idLoaiHang);
+        ResultSet rs = stm.executeQuery();
+        List<HangHoa> products = new ArrayList<>();
+        while (rs.next()) {
+            if (rs.getInt("soLuong") > 0) {
+                HangHoa p = new HangHoa();
+                p.setIdHangHoa(rs.getInt("idHangHoa"));
+                p.setTenHang(rs.getString("tenHang"));
+                p.setLoaiHang(rs.getInt("loaiHangId"));
+                p.setXuatXu(rs.getInt("xuatXuId"));
+                p.setGiaBan(rs.getBigDecimal("giaBan"));
+                p.setDonViTinh(rs.getString("donViTinh"));
+                p.setSoLuong(rs.getInt("soLuong"));
+                p.setNgaySX(rs.getDate("ngaySX"));
+                p.setHanSD(rs.getDate("hanSD"));
+                products.add(p);
             }
-            return products;
+
+        }
+        return products;
 
     }
 
@@ -149,6 +149,43 @@ public class HangHoaService {
         String sql = "DELETE FROM `salemanager`.`hanghoa` WHERE (`idHangHoa` = ?);";
         PreparedStatement stm = this.conn.prepareStatement(sql);
         stm.setInt(1, hangHoaId);
+        int row = stm.executeUpdate();
+        return row > 0;
+    }
+
+    public HangHoa getHangHoaById(int idHangHoa) throws SQLException {
+        if (idHangHoa <= 0) {
+            throw new SQLDataException();
+        }
+        HangHoa p = null;
+        String sql = "SELECT * FROM salemanager.hanghoa where idHangHoa=?";
+        PreparedStatement stm = this.conn.prepareStatement(sql);
+        stm.setInt(1, idHangHoa);
+        ResultSet rs = stm.executeQuery();
+        if (rs.next()) {
+            p = new HangHoa();
+            p.setIdHangHoa(rs.getInt("idHangHoa"));
+            p.setTenHang(rs.getString("tenHang"));
+            p.setLoaiHang(rs.getInt("loaiHangId"));
+            p.setXuatXu(rs.getInt("xuatXuId"));
+            p.setGiaBan(rs.getBigDecimal("giaBan"));
+            p.setDonViTinh(rs.getString("donViTinh"));
+            p.setSoLuong(rs.getInt("soLuong"));
+            p.setNgaySX(rs.getDate("ngaySX"));
+            p.setHanSD(rs.getDate("hanSD"));
+            return p;
+        }
+        return p;
+    }
+
+    public boolean updateSoLuongHangHoa(int idHangHoa, int SoLuong) throws SQLException {
+        if (idHangHoa <= 0 || SoLuong < 0) {
+            throw new SQLDataException();
+        }
+        String sql = "UPDATE `salemanager`.`hanghoa` SET `soLuong` = ? WHERE (`idHangHoa` =?)";
+        PreparedStatement stm = this.conn.prepareStatement(sql);
+        stm.setInt(1, SoLuong);
+        stm.setInt(2, idHangHoa);
         int row = stm.executeUpdate();
         return row > 0;
     }

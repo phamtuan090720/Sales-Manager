@@ -109,6 +109,7 @@
                   <Text fx:id="txtThanhTien" layoutX="95.0" layoutY="411.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
                   <Text fx:id="txtVAT" layoutX="254.0" layoutY="385.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10%" />
                   <Text layoutX="216.0" layoutY="385.0" strokeType="OUTSIDE" strokeWidth="0.0" text="VAT :" AnchorPane.leftAnchor="216.0" AnchorPane.rightAnchor="131.830859375" />
+                  <Text layoutX="168.0" layoutY="410.0" strokeType="OUTSIDE" strokeWidth="0.0" text="VNĐ" AnchorPane.leftAnchor="170.0" />
                </children>
             </AnchorPane>
          </children>
