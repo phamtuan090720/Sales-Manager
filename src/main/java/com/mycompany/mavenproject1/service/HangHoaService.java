@@ -46,6 +46,7 @@ public class HangHoaService {
             p.setSoLuong(rs.getInt("soLuong"));
             p.setNgaySX(rs.getDate("ngaySX"));
             p.setHanSD(rs.getDate("hanSD"));
+            p.setGiaMua(rs.getBigDecimal("giaMua"));
             products.add(p);
         }
         return products;
@@ -106,7 +107,7 @@ public class HangHoaService {
     }
 
     public boolean addHangHoa(HangHoa hh) throws SQLException {
-        String sql = "INSERT INTO `salemanager`.`hanghoa` (`tenHang`, `loaiHangId`, `xuatXuId`, `ngaySX`, `hanSD`, `giaBan`, `donViTinh`, `soLuong`) VALUES (?,?,?,?, ?, ?, ?, ?);";
+        String sql = "INSERT INTO `salemanager`.`hanghoa` (`tenHang`, `loaiHangId`, `xuatXuId`, `ngaySX`, `hanSD`, `giaBan`, `donViTinh`, `soLuong`,`giaMua`) VALUES (?,?,?,?, ?, ?, ?, ?,?);";
         PreparedStatement stm = this.conn.prepareStatement(sql);
         stm.setString(1, hh.getTenHang());
         stm.setInt(2, hh.getLoaiHang());
@@ -116,6 +117,7 @@ public class HangHoaService {
         stm.setBigDecimal(6, hh.getGiaBan());
         stm.setString(7, hh.getDonViTinh());
         stm.setInt(8, hh.getSoLuong());
+        stm.setBigDecimal(9, hh.getGiaMua());
         int row = stm.executeUpdate();
         return row > 0;
     }
@@ -129,7 +131,8 @@ public class HangHoaService {
                 + " `hanSD` = ?,"
                 + " `giaBan` = ?,"
                 + " `donViTinh` = ?,"
-                + " `soLuong` = ?"
+                + " `soLuong` = ?,"
+                + " `giaMua`=?"
                 + " WHERE (`idHangHoa` = ?);";
         PreparedStatement stm = this.conn.prepareStatement(sql);
         stm.setString(1, hh.getTenHang());
@@ -140,7 +143,8 @@ public class HangHoaService {
         stm.setBigDecimal(6, hh.getGiaBan());
         stm.setString(7, hh.getDonViTinh());
         stm.setInt(8, hh.getSoLuong());
-        stm.setInt(9, hh.getIdHangHoa());
+        stm.setBigDecimal(9, hh.getGiaMua());
+        stm.setInt(10, hh.getIdHangHoa());
         int row = stm.executeUpdate();
         return row > 0;
     }
@@ -173,6 +177,7 @@ public class HangHoaService {
             p.setSoLuong(rs.getInt("soLuong"));
             p.setNgaySX(rs.getDate("ngaySX"));
             p.setHanSD(rs.getDate("hanSD"));
+            p.setGiaMua(rs.getBigDecimal("giaMua"));
             return p;
         }
         return p;

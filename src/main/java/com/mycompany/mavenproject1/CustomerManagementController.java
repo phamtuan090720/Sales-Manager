@@ -215,6 +215,9 @@ public class CustomerManagementController implements Initializable {
         });
         btnRsInputCustomer.setOnMouseClicked(e -> {
             ResetInput();
+            btnDeleteCustomer.setDisable(true);
+            btnUpdateCustomer.setDisable(true);
+            btnAddCustomer.setDisable(false);
         });
     }
 

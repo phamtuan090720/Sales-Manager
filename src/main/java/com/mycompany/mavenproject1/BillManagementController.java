@@ -8,6 +8,7 @@ package com.mycompany.mavenproject1;
 import com.mycompany.mavenproject1.pojo.ChiTietHoaDon;
 import com.mycompany.mavenproject1.pojo.HoaDon;
 import com.mycompany.mavenproject1.pojo.KhachHang;
+import com.mycompany.mavenproject1.service.ChiTietHoaDonService;
 import com.mycompany.mavenproject1.service.HoaDonService;
 import com.mycompany.mavenproject1.service.KhachHangService;
 import com.mycompany.mavenproject1.service.jdbcUtil;
@@ -16,9 +17,7 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.text.NumberFormat;
 import java.time.LocalDate;
-import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -58,23 +57,19 @@ public class BillManagementController implements Initializable {
     @FXML
     private TextField txtThanhTien;
     @FXML
-    private TextField txtIDKhachHang;
+    private Text txtIDKhachHang;
     @FXML
-    private TextField txtTenKhachHang;
+    private Text txtTenKhachHang;
     @FXML
-    private TextField txtSDTKhachHang;
+    private Text txtSDTKhachHang;
     @FXML
-    private TextField txtDiaChiKhachHang;
+    private Text txtDiaChiKhachHang;
     @FXML
-    private TextField txtCMNDKhachHang;
+    private Text txtCMNDKhachHang;
     @FXML
-    private TextField txtDiemTichLuy;
-    @FXML
+    private Text txtDiemTichLuy;
     private Button btnEditBill;
-    @FXML
     private Button btnDeleteBill;
-    @FXML
-    private Text txtTongTien;
     @FXML
     private Button btnPrintBill;
     @FXML
@@ -87,6 +82,8 @@ public class BillManagementController implements Initializable {
     private Button btnSuaListHoaDon;
     @FXML
     private Button btnXoaListHoaDon;
+    @FXML
+    private TextField txtDiemKhachHangSD;
 
     /**
      * Initializes the controller class.
@@ -117,7 +114,6 @@ public class BillManagementController implements Initializable {
                         txtDiaChiKhachHang.setText(kh.getDiaChi());
                         txtCMNDKhachHang.setText(kh.getCMND());
                         txtDiemTichLuy.setText(Integer.toString(kh.getDiem()));
-
                     }
 
                     conn.close();
@@ -129,9 +125,11 @@ public class BillManagementController implements Initializable {
                 txtIDNhanVIen.setText(Integer.toString(hd.getIDNhanVienBanHang()));
                 pcNgayLap.setValue(convertToLocalDateViaSqlDate(hd.getNgayLap()));
                 txtThanhTien.setText(hd.getThanhTien().toString());
+                LoadDataChiTietHoaDon(Integer.parseInt(txtIDBill.getText()));
 //                NumberFormat format = NumberFormat.getPercentInstance(Locale.US);
 //                String percentage = format.format(hd.getVAT());
                 txtVAT.setText(Double.toString(hd.getVAT()));
+                txtDiemKhachHangSD.setText(Integer.toString(hd.getDiemKhachHangSuDung()));
                 btnSuaListHoaDon.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent e) {
@@ -178,6 +176,7 @@ public class BillManagementController implements Initializable {
                                                 SetDisableButtonListBill(true);
                                                 ResetInput();
                                                 LoadDataBills();
+                                                tbChiTietBill.getItems().clear();
                                             } else {
                                                 Utils.getBox("FAILED", Alert.AlertType.ERROR).show();
                                             }
@@ -300,6 +299,16 @@ public class BillManagementController implements Initializable {
             conn.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
+            Logger.getLogger(BillManagementController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public void LoadDataChiTietHoaDon(int id){
+        try {
+            this.tbChiTietBill.getItems().clear();
+            Connection conn = jdbcUtil.getConn();
+            ChiTietHoaDonService s = new ChiTietHoaDonService(conn);
+            this.tbChiTietBill.setItems(FXCollections.observableList(s.getListChiTietById(id)));
+        } catch (SQLException ex) {
             Logger.getLogger(BillManagementController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

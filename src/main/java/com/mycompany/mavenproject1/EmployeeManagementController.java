@@ -82,6 +82,9 @@ public class EmployeeManagementController implements Initializable {
         LoadDataTableEmployee("");
         this.btnRsInputEmployee.setOnMouseClicked(e -> {
             ResetInputEmployee();
+            btnDeleteEmployee.setDisable(true);
+            btnUpdateEmpyee.setDisable(true);
+            btnAddEmployee.setDisable(false);
         });
         this.tbEmployee.setRowFactory(obj -> {
             TableRow r = new TableRow();

@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -42,6 +43,7 @@ public class HoaDonService {
             b.setNgayLap(rs.getDate("NgayLap"));
             b.setThanhTien(rs.getBigDecimal("ThanhTien"));
             b.setVAT(rs.getDouble("VAT"));
+            b.setDiemKhachHangSuDung(rs.getInt("diemKhachHangSuDung"));
             Bills.add(b);
         }
         return Bills;
@@ -65,13 +67,14 @@ public class HoaDonService {
                     + ", `ThanhTien`"
                     + ", `VAT`"
                     + ", `IDNhanVienBanHang`"
-                    + ", `IDKhachHangThanThiet`) VALUES (?,?,?,?,?);";
+                    + ", `IDKhachHangThanThiet`,`diemKhachHangSuDung`) VALUES (?,?,?,?,?,?);";
             PreparedStatement stm = this.conn.prepareStatement(sql);
             stm.setDate(1, hd.getNgayLap());
             stm.setBigDecimal(2, hd.getThanhTien());
             stm.setDouble(3, hd.getVAT());
             stm.setInt(4, hd.getIDNhanVienBanHang());
             stm.setInt(5, hd.getIDKhachHangThanThiet());
+            stm.setInt(6, hd.getDiemKhachHangSuDung());
             row = stm.executeUpdate();
         }
 
@@ -143,5 +146,27 @@ public class HoaDonService {
         stm.setInt(5, hd.getIdHoaDon());
         int row = stm.executeUpdate();
         return row > 0;
+    }
+
+    public List<HoaDon> getListHoaDonByMonth(int month) throws SQLException{
+        int year = java.time.LocalDate.now().getYear();
+        String sql = "SELECT * FROM salemanager.hoadon where month(NgayLap) = ? and year(NgayLap)=?";
+        PreparedStatement stm = this.conn.prepareStatement(sql);
+        stm.setInt(1, month);
+        stm.setInt(2, year);
+        ResultSet rs = stm.executeQuery();
+        List<HoaDon> Bills = new ArrayList<>();
+        while (rs.next()) {
+            HoaDon b = new HoaDon();
+            b.setIdHoaDon(rs.getInt("idHoaDon"));
+            b.setIDNhanVienBanHang(rs.getInt("IDNhanVienBanHang"));
+            b.setIDKhachHangThanThiet(rs.getInt("IDKhachHangThanThiet"));
+            b.setNgayLap(rs.getDate("NgayLap"));
+            b.setThanhTien(rs.getBigDecimal("ThanhTien"));
+            b.setVAT(rs.getDouble("VAT"));
+            b.setDiemKhachHangSuDung(rs.getInt("diemKhachHangSuDung"));
+            Bills.add(b);
+        }
+        return Bills;
     }
 }

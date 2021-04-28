@@ -76,9 +76,12 @@ public class ProductManagementController implements Initializable {
     private Button rsDateHSD;
     @FXML
     private Button btnSeachHH;
+    @FXML
+    private TextField txtGiaNhapHang;
 
     /**
      * Initializes the controller class.
+     *
      * @param url
      * @param rb
      */
@@ -124,12 +127,28 @@ public class ProductManagementController implements Initializable {
                 }
             }
         });
+        txtGiaNhapHang.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue,
+                    String newValue) {
+                try {
+                    if (!newValue.matches("\\d*")) {
+                        txtSoLuong.setText(newValue.replaceAll("[^\\d]", ""));
+                    }
+                } catch (NullPointerException e) {
+
+                }
+            }
+        });
 
         txtNgaySanXuat.getEditor().setDisable(true);
         txtHanSuDung.getEditor().setDisable(true);
 
         btnRsInputProduct.setOnMouseClicked(e -> {
             ResetInput();
+            btnAddProduct.setDisable(false);
+            btnUpdateProduct.setDisable(true);
+            btnDeleteProduct.setDisable(true);
         });
         this.kwSeachh.textProperty().addListener((obj) -> {
             LoadData(this.kwSeachh.getText());
@@ -150,6 +169,7 @@ public class ProductManagementController implements Initializable {
                         txtSoLuong.setText(Integer.toString(hh.getSoLuong()));
                         cbLoaiHang.getSelectionModel().select(lhs.getLoaiHangById(hh.getLoaiHang()));
                         cbXuatXu.getSelectionModel().select(xxs.getXuatXuById(hh.getXuatXu()));
+                        txtGiaNhapHang.setText(hh.getGiaMua().toString());
 
                     } catch (NullPointerException evnt) {
 
@@ -211,6 +231,7 @@ public class ProductManagementController implements Initializable {
                                         hhUpdate.setDonViTinh(txtDonVi.getText());
                                         hhUpdate.setGiaBan(new BigDecimal(txtGiaBan.getText()));
                                         hhUpdate.setSoLuong(Integer.parseInt(txtSoLuong.getText()));
+                                        hhUpdate.setGiaMua(new BigDecimal(txtGiaNhapHang.getText()));
                                         try {
                                             hhUpdate.setNgaySX(Date.valueOf(txtNgaySanXuat.getValue()));
                                             hhUpdate.setHanSD(Date.valueOf(txtHanSuDung.getValue()));
@@ -272,6 +293,7 @@ public class ProductManagementController implements Initializable {
                     hh.setDonViTinh(txtDonVi.getText());
                     hh.setGiaBan(new BigDecimal(txtGiaBan.getText()));
                     hh.setSoLuong(Integer.parseInt(txtSoLuong.getText()));
+                    hh.setGiaMua(new BigDecimal(txtGiaNhapHang.getText()));
                     try {
                         hh.setNgaySX(Date.valueOf(txtNgaySanXuat.getValue()));
                         hh.setHanSD(Date.valueOf(txtHanSuDung.getValue()));
@@ -307,7 +329,7 @@ public class ProductManagementController implements Initializable {
         } catch (SQLException ex) {
             ex.printStackTrace();
             Logger.getLogger(ProductManagementController.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+        }
     }
 
     public void SetDisableButtonProduct(boolean isAction) {
@@ -325,8 +347,11 @@ public class ProductManagementController implements Initializable {
 
     public boolean checkIsEmptyInput() {
 
-        return txtDonVi.getText().isEmpty() || txtHangHoa.getText().isEmpty() || txtGiaBan.getText().isEmpty() || txtSoLuong.getText().isEmpty();
-
+        return txtDonVi.getText().isEmpty()
+                || txtHangHoa.getText().isEmpty()
+                || txtGiaBan.getText().isEmpty()
+                || txtSoLuong.getText().isEmpty()
+                || txtGiaNhapHang.getText().isEmpty();
     }
 
     public void ResetInput() {
@@ -351,11 +376,13 @@ public class ProductManagementController implements Initializable {
         colHanSD.setCellValueFactory(new PropertyValueFactory("hanSD"));
         TableColumn colGiaBan = new TableColumn("Giá Bán");
         colGiaBan.setCellValueFactory(new PropertyValueFactory("giaBan"));
+        TableColumn colGiaNhapHang = new TableColumn("Giá Nhập Hàng");
+        colGiaNhapHang.setCellValueFactory(new PropertyValueFactory("giaMua"));
         TableColumn colSoLuong = new TableColumn("Số Lượng Còn");
         colSoLuong.setCellValueFactory(new PropertyValueFactory("soLuong"));
         TableColumn colDonVi = new TableColumn("Đơn Vị Tính");
         colDonVi.setCellValueFactory(new PropertyValueFactory("donViTinh"));
-        this.tbProduct.getColumns().addAll(colId, colName, colNgaySX, colHanSD, colGiaBan, colSoLuong, colDonVi);
+        this.tbProduct.getColumns().addAll(colId, colName, colNgaySX, colHanSD, colGiaBan, colGiaNhapHang, colSoLuong, colDonVi);
     }
 
 }

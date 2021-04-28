@@ -25,6 +25,15 @@ public class HangHoa {
     private Date ngaySX;
     private Date hanSD;
     private BigDecimal giaBan;
+    private BigDecimal giaMua;
+
+    public BigDecimal getGiaMua() {
+        return giaMua;
+    }
+
+    public void setGiaMua(BigDecimal giaMua) {
+        this.giaMua = giaMua;
+    }
 
     public BigDecimal getGiaBan() {
         return giaBan;

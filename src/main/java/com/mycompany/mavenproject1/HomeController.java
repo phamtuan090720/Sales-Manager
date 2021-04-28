@@ -85,6 +85,15 @@ public class HomeController implements Initializable {
                 Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+         this.btnStatistic.setOnMouseClicked(e -> {
+            try {
+                Parent fxml = FXMLLoader.load(getClass().getResource("Static.fxml"));
+                containerPane.getChildren().removeAll();
+                containerPane.getChildren().setAll(fxml);
+            } catch (IOException ex) {
+                Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
         this.btnDasboard.setOnMouseClicked(e -> {
             try {
                 Parent fxml = FXMLLoader.load(getClass().getResource("Dashboard.fxml"));

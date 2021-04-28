@@ -75,6 +75,7 @@
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <children>
                                     <Label text="SDT" />
@@ -84,10 +85,10 @@
                                     <ComboBox fx:id="cbKhachHang" prefHeight="26.0" prefWidth="150.0" promptText="Khách Hàng" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                     <Label text="Điểm" GridPane.rowIndex="3" />
                                     <TextField fx:id="txtDiemTichLuy" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <Button fx:id="btnSuDungDiem" mnemonicParsing="false" text="Sử Dụng Điểm" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                  </children>
                               </GridPane>
                               <Text fx:id="txtNotiSearchKH" fill="#e71111" layoutX="83.0" layoutY="165.0" strokeType="OUTSIDE" strokeWidth="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="150.0" />
-                              <Button fx:id="btntest" layoutX="68.0" layoutY="145.0" mnemonicParsing="false" text="Test" />
                            </children>
                         </AnchorPane>
                      </children>
@@ -103,13 +104,19 @@
                   <Button fx:id="btnEditBill" layoutX="34.0" layoutY="441.0" mnemonicParsing="false" prefWidth="50.0" text="Edit" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" />
                   <Button fx:id="btnPrintBill" layoutX="174.0" layoutY="439.0" mnemonicParsing="false" prefWidth="50.0" text="Print " AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="130.0" />
                   <Button fx:id="btnDeleteBill" layoutX="110.0" layoutY="441.0" mnemonicParsing="false" prefWidth="50.0" text="Delete" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="70.0" />
-                  <Label layoutX="14.0" layoutY="373.0" text="Tổng Tiền" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="308.4" />
-                  <Text fx:id="txtTongTien" layoutX="95.0" layoutY="386.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" AnchorPane.leftAnchor="95.0" AnchorPane.rightAnchor="258.06328125" />
-                  <Label layoutX="14.0" layoutY="397.0" text="Thành Tiền" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="302.8" />
-                  <Text fx:id="txtThanhTien" layoutX="95.0" layoutY="411.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-                  <Text fx:id="txtVAT" layoutX="254.0" layoutY="385.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10%" />
-                  <Text layoutX="216.0" layoutY="385.0" strokeType="OUTSIDE" strokeWidth="0.0" text="VAT :" AnchorPane.leftAnchor="216.0" AnchorPane.rightAnchor="131.830859375" />
-                  <Text layoutX="168.0" layoutY="410.0" strokeType="OUTSIDE" strokeWidth="0.0" text="VNĐ" AnchorPane.leftAnchor="170.0" />
+                  <Label layoutX="14.0" layoutY="364.0" text="Tổng Tiền" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="308.4" />
+                  <Text fx:id="txtTongTien" layoutX="95.0" layoutY="378.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" AnchorPane.leftAnchor="95.0" AnchorPane.rightAnchor="258.06328125" />
+                  <Label layoutX="11.0" layoutY="415.0" text="Thành Tiền" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="305.8" />
+                  <Text fx:id="txtThanhTien" layoutX="95.0" layoutY="428.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                  <Text fx:id="txtVAT" layoutX="255.0" layoutY="378.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10%" />
+                  <Text layoutX="216.0" layoutY="378.0" strokeType="OUTSIDE" strokeWidth="0.0" text="VAT :" AnchorPane.leftAnchor="216.0" AnchorPane.rightAnchor="131.830859375" />
+                  <Text layoutX="161.0" layoutY="428.0" strokeType="OUTSIDE" strokeWidth="0.0" text="VNĐ" AnchorPane.leftAnchor="161.0" />
+                  <Text layoutX="169.0" layoutY="378.0" strokeType="OUTSIDE" strokeWidth="0.0" text="X" AnchorPane.leftAnchor="169.0" />
+                  <Text layoutX="-1.0" layoutY="404.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-" />
+                  <Text layoutX="14.0" layoutY="404.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Điểm Khách Hàng:" />
+                  <Text fx:id="txtDiemKhachHangSuDung" layoutX="130.0" layoutY="404.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
+                  <Text layoutX="186.0" layoutY="404.0" strokeType="OUTSIDE" strokeWidth="0.0" text="100 VNĐ" />
+                  <Text layoutX="169.0" layoutY="404.0" strokeType="OUTSIDE" strokeWidth="0.0" text="X" />
                </children>
             </AnchorPane>
          </children>

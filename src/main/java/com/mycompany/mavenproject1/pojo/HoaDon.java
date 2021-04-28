@@ -24,7 +24,13 @@ public class HoaDon {
     private double VAT;
     private int IDNhanVienBanHang;
     private int IDKhachHangThanThiet;
-
+    private int diemKhachHangSuDung;
+    public int getDiemKhachHangSuDung() {
+        return diemKhachHangSuDung;
+    }
+    public void setDiemKhachHangSuDung(int diemKhachHangSuDung) {
+        this.diemKhachHangSuDung = diemKhachHangSuDung;
+    }
     public int getIdHoaDon() {
         return idHoaDon;
     }

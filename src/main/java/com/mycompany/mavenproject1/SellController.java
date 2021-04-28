@@ -100,7 +100,9 @@ public class SellController implements Initializable {
     @FXML
     private Text txtVAT;
     @FXML
-    private Button btntest;
+    private Button btnSuDungDiem;
+    @FXML
+    private Text txtDiemKhachHangSuDung;
 
     public List<ChiTietHoaDon> getHoaDon() {
         return hoaDon;
@@ -206,6 +208,18 @@ public class SellController implements Initializable {
         this.txtCMNDKhachHang.textProperty().addListener((obj) -> {
             SearchKhachHang(txtSDTKhachHang.getText(), txtCMNDKhachHang.getText());
         });
+        btnSuDungDiem.setDisable(true);
+        btnSuDungDiem.setOnMouseClicked(e -> {
+            if (this.cbKhachHang.getSelectionModel().getSelectedItem() != null) {
+                KhachHang kh = this.cbKhachHang.getSelectionModel().getSelectedItem();
+                txtDiemKhachHangSuDung.setText(Integer.toString(kh.getDiem()));
+                String thanhTien = String.format("%.2f", ThanhTien(TinhTongTien(), 0.1, Integer.parseInt(txtDiemKhachHangSuDung.getText())));
+                txtThanhTien.setText(thanhTien);
+            } else {
+                Utils.getBox("Không Có Khách Hàng", Alert.AlertType.WARNING).show();
+            }
+
+        });
         btnResetLoaiHang.setOnMouseClicked(e -> {
             cbLoaiHang.setPromptText("Loại Hàng");
             cbLoaiHang.setValue(null);
@@ -216,6 +230,8 @@ public class SellController implements Initializable {
             txtIDHangHoa.setText("");
             txtDonGiaHangHoa.setText("");
             txtIDHangHoa.setDisable(false);
+            btnDeleteBill.setDisable(true);
+            btnEditBill.setDisable(true);
         });
         this.tbListProduct.setRowFactory(obj -> {
             TableRow r = new TableRow();
@@ -234,17 +250,21 @@ public class SellController implements Initializable {
                 Utils.getBox("Hóa Đơn Của Bạn Đang Trống", Alert.AlertType.WARNING).show();
             }
         });
-
         disableButtonBill(false);
         this.tbBill.setRowFactory(obj -> {
             TableRow r = new TableRow();
             r.setOnMouseClicked(e -> {
                 disableButtonBill(true);
                 ChiTietHoaDon ct = this.tbBill.getSelectionModel().getSelectedItem();
-                txtIDHangHoa.setText(Integer.toString(ct.getIdHangHoa()));
-                txtIDHangHoa.setDisable(true);
-                txtDonGiaHangHoa.setText(ct.getDonGia().toString());
-                txtSoLuongHangHoa.setText(Integer.toString(ct.getSoLuong()));
+                try {
+                    txtIDHangHoa.setText(Integer.toString(ct.getIdHangHoa()));
+                    txtIDHangHoa.setDisable(true);
+                    txtDonGiaHangHoa.setText(ct.getDonGia().toString());
+                    txtSoLuongHangHoa.setText(Integer.toString(ct.getSoLuong()));
+                } catch (NullPointerException event) {
+
+                }
+
                 btnDeleteBill.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent e) {
@@ -254,10 +274,9 @@ public class SellController implements Initializable {
                                         hoaDon.remove(ct);
                                         LoadDataBill();
                                         ResetInput();
-                                        BigDecimal tong = TinhTongTien();
                                         String Tong = TinhTongTien().toString() + " VNĐ";
                                         txtTongTien.setText(Tong);
-                                        String thanhTien = String.format("%.2f", ThanhTien(TinhTongTien(), 0.1));
+                                        String thanhTien = String.format("%.2f", ThanhTien(TinhTongTien(), 0.1, Integer.parseInt(txtDiemKhachHangSuDung.getText())));
                                         txtThanhTien.setText(thanhTien);
                                     }
                                 });
@@ -281,7 +300,7 @@ public class SellController implements Initializable {
                                 LoadDataBill();
                                 String Tong = TinhTongTien().toString() + " VNĐ";
                                 txtTongTien.setText(Tong);
-                                String thanhTien = String.format("%.2f", ThanhTien(TinhTongTien(), 0.1));
+                                String thanhTien = String.format("%.2f", ThanhTien(TinhTongTien(), 0.1, Integer.parseInt(txtDiemKhachHangSuDung.getText())));
                                 txtThanhTien.setText(thanhTien);
                             }
 
@@ -300,6 +319,7 @@ public class SellController implements Initializable {
                     Utils.getBox("Số Lượng Bán Ra Nhiều Hơn Số Lượng Trong Kho", Alert.AlertType.ERROR).show();
                 } else {
                     if (this.hoaDon.toArray().length > 0) {
+                        btnSuDungDiem.setDisable(false);
                         if (timKiemChiTietHoaDon(Integer.parseInt(txtIDHangHoa.getText())) != null) {
                             ChiTietHoaDon ct = timKiemChiTietHoaDon(Integer.parseInt(txtIDHangHoa.getText()));
                             if (CheckSoLuongHangHoa(Integer.parseInt(txtIDHangHoa.getText()), ct.getSoLuong() + Integer.parseInt(txtSoLuongHangHoa.getText())) == false) {
@@ -318,6 +338,7 @@ public class SellController implements Initializable {
                         }
 
                     } else {
+                        btnSuDungDiem.setDisable(false);
                         ChiTietHoaDon ct = new ChiTietHoaDon();
                         ct.setDonGia(new BigDecimal(txtDonGiaHangHoa.getText()));
                         ct.setSoLuong(Integer.parseInt(txtSoLuongHangHoa.getText()));
@@ -329,15 +350,12 @@ public class SellController implements Initializable {
                     BigDecimal tong = TinhTongTien();
                     String Tong = TinhTongTien().toString() + " VNĐ";
                     txtTongTien.setText(Tong);
-                    String thanhTien = String.format("%.2f", ThanhTien(TinhTongTien(), 0.1));
+                    String thanhTien = String.format("%.2f", ThanhTien(TinhTongTien(), 0.1, Integer.parseInt(txtDiemKhachHangSuDung.getText())));
                     txtThanhTien.setText(thanhTien);
 
                 }
 
             }
-
-        });
-        btntest.setOnAction(e -> {
 
         });
     }
@@ -366,8 +384,9 @@ public class SellController implements Initializable {
         return tong;
     }
 
-    public BigDecimal ThanhTien(BigDecimal tongTien, double VAT) {
-        return new BigDecimal(VAT).multiply(tongTien).add(tongTien);
+    public BigDecimal ThanhTien(BigDecimal tongTien, double VAT, int diem) {
+        BigDecimal quyRaTien = new BigDecimal(diem).multiply(new BigDecimal(100));
+        return new BigDecimal(VAT).multiply(tongTien).add(tongTien).subtract(quyRaTien);
     }
 
     public ChiTietHoaDon timKiemChiTietHoaDon(int x) {
@@ -446,6 +465,11 @@ public class SellController implements Initializable {
         this.tbListProduct.getColumns().addAll(colId, colName, colNgaySX, colHanSD, colGiaBan, colSoLuong, colDonVi);
     }
 
+    private int TinhDiemTichLuy(BigDecimal thanhTien) {
+        int diemTichLuy = thanhTien.intValue() / 1000;
+        return diemTichLuy;
+    }
+
     public void SearchKhachHang(String sdt, String cmnd) {
         try {
             Connection conn = jdbcUtil.getConn();
@@ -497,6 +521,7 @@ public class SellController implements Initializable {
             Connection conn = jdbcUtil.getConn();
             ChiTietHoaDonService cthds = new ChiTietHoaDonService(conn);
             HoaDonService hds = new HoaDonService(conn);
+            KhachHangService khs = new KhachHangService(conn);
             HoaDon hd = new HoaDon();
             LocalDateTime dateNow = java.time.LocalDateTime.now();
             Date ngayLap = Date.valueOf(dateNow.toLocalDate());
@@ -506,6 +531,7 @@ public class SellController implements Initializable {
             hd.setThanhTien(new BigDecimal(txtThanhTien.getText()));
             if (cbKhachHang.getSelectionModel().getSelectedItem() != null) {
                 hd.setIDKhachHangThanThiet(cbKhachHang.getSelectionModel().getSelectedItem().getIdKhachHangThanThiet());
+                hd.setDiemKhachHangSuDung(Integer.parseInt(txtDiemKhachHangSuDung.getText()));
             }
             HoaDon hdNew = hds.CreateHoaDon(hd);
             if (hdNew != null) {
@@ -521,6 +547,20 @@ public class SellController implements Initializable {
                     txtTongTien.setText("0 VNĐ");
                     txtThanhTien.setText("0");
                     hoaDon.removeAll(hoaDon);
+                    txtDiemKhachHangSuDung.setText("0");
+                    btnSuDungDiem.setDisable(true);
+                    if (cbKhachHang.getSelectionModel().getSelectedItem() != null) {
+                        KhachHang kh = khs.findKhachHangByID(hd.getIDKhachHangThanThiet());
+                        int diem = kh.getDiem() -  hd.getDiemKhachHangSuDung() + TinhDiemTichLuy(hd.getThanhTien());
+                        kh.setDiem(diem);
+                        if(khs.updateKhachHang(kh)){
+                            SearchKhachHang(kh.getSDT(),kh.getCMND());
+                        }
+                        else{
+                             Utils.getBox("Failed KH", Alert.AlertType.ERROR).show();
+                        }
+                    }
+
                 } else {
                     Utils.getBox("Failed", Alert.AlertType.ERROR).show();
                 }
