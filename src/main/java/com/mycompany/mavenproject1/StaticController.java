@@ -9,6 +9,7 @@ import com.mycompany.mavenproject1.pojo.HoaDon;
 import com.mycompany.mavenproject1.service.HangHoaService;
 import com.mycompany.mavenproject1.service.HoaDonService;
 import com.mycompany.mavenproject1.service.jdbcUtil;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -23,13 +24,20 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Side;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 /**
@@ -39,36 +47,53 @@ import javafx.util.Duration;
  */
 public class StaticController implements Initializable {
 
-    @FXML
     private PieChart staticChart;
+    @FXML
+    private Button btnThongKeTheoThang;
+    @FXML
+    private Button btnThongKeTheoNam;
+    @FXML
+    private Button btnThongKeTheoQuy;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        staticChart.setTitle("CoronaVirus Statistics COVID-19");
-        ObservableList<PieChart.Data> ol = FXCollections.observableArrayList(getListData());
-        staticChart.setData(ol);
-
-        for (PieChart.Data data : staticChart.getData()) {
-            data.nameProperty().set(data.getName() + " : " + (int) data.getPieValue());
-            data.getNode().addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    Utils.getBox(data.getName(), Alert.AlertType.INFORMATION).show();
-                }
-            });
-        }
+        btnThongKeTheoThang.setOnMouseClicked(e->{
+            try {
+//                StackPane secondaryLayout = new StackPane();
+                Parent root = FXMLLoader.load(getClass().getResource("StaticByMonth.fxml"));
+                Scene secondScene = new Scene(root);
+                // New window (Stage)
+                Stage newWindow = new Stage();
+                newWindow.setTitle("Thống Kê Theo Tháng");
+                newWindow.setScene(secondScene);
+                
+                // Specifies the modality for new window.
+                newWindow.initModality(Modality.WINDOW_MODAL);
+                
+                newWindow.show();
+            } catch (IOException ex) {
+                Logger.getLogger(StaticController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+//        staticChart.setTitle("CoronaVirus Statistics COVID-19");
+//        ObservableList<PieChart.Data> ol = FXCollections.observableArrayList(getListData());
+//        staticChart.setData(ol);
+//
+//        for (PieChart.Data data : staticChart.getData()) {
+//            data.nameProperty().set(data.getName() + " : " + (int) data.getPieValue());
+//            data.getNode().addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+//                @Override
+//                public void handle(MouseEvent event) {
+//                    Utils.getBox(data.getName(), Alert.AlertType.INFORMATION).show();
+//                }
+//            });
+//        }
     }
 
-    public List<PieChart.Data> getListData() {
-        List<PieChart.Data> list = new ArrayList<>();
-        list.add(new PieChart.Data("haha", 10));
-        return list;
-    }
 
-    ;
 //    public List<HoaDon> getListHoaDon() {
 //         List<HoaDon> listHH;
 //        try {

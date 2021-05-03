@@ -1,10 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane stylesheets="@homeManagement.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.mavenproject1.StaticController">
+<AnchorPane minHeight="800.0" minWidth="750.0" stylesheets="@homeManagement.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.mavenproject1.StaticController">
    <children>
-      <PieChart fx:id="staticChart" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <AnchorPane layoutX="7.0" layoutY="300.0" prefHeight="200.0" prefWidth="742.0" AnchorPane.bottomAnchor="300.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="300.0">
+         <children>
+            <Button fx:id="btnThongKeTheoThang" layoutX="14.0" layoutY="50.0" minHeight="100.0" minWidth="150.0" mnemonicParsing="false" prefHeight="100.0" prefWidth="186.0" text="Tháng" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="50.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnThongKeTheoNam" layoutX="282.0" layoutY="48.0" minHeight="100.0" minWidth="150.0" mnemonicParsing="false" prefHeight="100.0" prefWidth="186.0" text="Năm" AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="50.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnThongKeTheoQuy" layoutX="282.0" layoutY="50.0" minHeight="100.0" minWidth="150.0" mnemonicParsing="false" prefHeight="100.0" prefWidth="186.0" text="Quý" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="282.0" AnchorPane.rightAnchor="281.6" AnchorPane.topAnchor="50.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Text layoutX="14.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Thống Kê Theo:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+         </children>
+      </AnchorPane>
+      <Text layoutX="296.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Thống Kê Bán Hàng" AnchorPane.leftAnchor="296.0" AnchorPane.rightAnchor="296.0166015625" AnchorPane.topAnchor="20.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>
