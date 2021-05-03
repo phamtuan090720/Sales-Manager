@@ -148,11 +148,11 @@ public class BillManagementController implements Initializable {
                                 hdUpdate.setThanhTien(new BigDecimal(txtThanhTien.getText()));
                                 hdUpdate.setVAT(Double.parseDouble(txtVAT.getText()));
                                 if (s.UpdateListHoaDon(hdUpdate)) {
-                                    Utils.getBox("SUCCESSFULLY", Alert.AlertType.INFORMATION).show();
+                                    Utils.getBox("Thành Công", Alert.AlertType.INFORMATION).show();
                                     conn.close();
                                     LoadDataBills();
                                 } else {
-                                    Utils.getBox("FAILDED", Alert.AlertType.INFORMATION).show();
+                                    Utils.getBox("Thất Bại", Alert.AlertType.INFORMATION).show();
                                     conn.close();
                                 }
                             }
@@ -172,13 +172,13 @@ public class BillManagementController implements Initializable {
                                             HoaDonService s = new HoaDonService(conn);
 
                                             if (s.deleleHoaDon(hd.getIdHoaDon())) {
-                                                Utils.getBox("SUCCESSFUL", Alert.AlertType.INFORMATION).show();
+                                                Utils.getBox("Thành Công", Alert.AlertType.INFORMATION).show();
                                                 SetDisableButtonListBill(true);
                                                 ResetInput();
                                                 LoadDataBills();
                                                 tbChiTietBill.getItems().clear();
                                             } else {
-                                                Utils.getBox("FAILED", Alert.AlertType.ERROR).show();
+                                                Utils.getBox("Thất Bại", Alert.AlertType.ERROR).show();
                                             }
 
                                             conn.close();

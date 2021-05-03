@@ -29,7 +29,7 @@ public class App extends Application {
         scene = new Scene(loadFXML("Login"));
         stage.setResizable(false);
         stage.setScene(scene);
-        stage.setTitle("Sale Management");
+        stage.setTitle("Quản Lý Bán Hàng");
         stage.show();
     }
     static void setRoot(String fxml) throws IOException {

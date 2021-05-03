@@ -111,12 +111,12 @@ public class EmployeeManagementController implements Initializable {
                                                 NhanVienService s = new NhanVienService(conn);
 
                                                 if (s.deleleNhanVien(nv.getMaNhanVien())) {
-                                                    Utils.getBox("SUCCESSFUL", Alert.AlertType.INFORMATION).show();
+                                                    Utils.getBox("Thành Công", Alert.AlertType.INFORMATION).show();
                                                     SetDisableButtonEmployee(true);
                                                     ResetInputEmployee();
                                                     LoadDataTableEmployee("");
                                                 } else {
-                                                    Utils.getBox("FAILED", Alert.AlertType.ERROR).show();
+                                                    Utils.getBox("Thất Bại", Alert.AlertType.ERROR).show();
                                                 }
 
                                                 conn.close();
@@ -146,13 +146,13 @@ public class EmployeeManagementController implements Initializable {
                                         Connection conn = jdbcUtil.getConn();
                                         NhanVienService s = new NhanVienService(conn);
                                         if (s.updateNhanVien(nvUpdate) == true) {
-                                            Utils.getBox("SUCCESSFUL", Alert.AlertType.INFORMATION).show();
+                                            Utils.getBox("Thành Công", Alert.AlertType.INFORMATION).show();
                                             SetDisableButtonEmployee(true);
                                             ResetInputEmployee();
                                             LoadDataTableEmployee("");
 
                                         } else {
-                                            Utils.getBox("FAILED", Alert.AlertType.ERROR).show();
+                                            Utils.getBox("Thất Bại", Alert.AlertType.ERROR).show();
                                         }
                                         conn.close();
                                     }

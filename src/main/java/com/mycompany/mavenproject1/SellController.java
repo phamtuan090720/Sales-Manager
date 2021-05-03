@@ -543,7 +543,7 @@ public class SellController implements Initializable {
                     }
                 }
                 if (isAddChiTietHoaDon) {
-                    Utils.getBox("Success", Alert.AlertType.INFORMATION).show();
+                    Utils.getBox("Thânh Công", Alert.AlertType.INFORMATION).show();
                     txtTongTien.setText("0 VNĐ");
                     txtThanhTien.setText("0");
                     hoaDon.removeAll(hoaDon);
@@ -557,18 +557,18 @@ public class SellController implements Initializable {
                             SearchKhachHang(kh.getSDT(),kh.getCMND());
                         }
                         else{
-                             Utils.getBox("Failed KH", Alert.AlertType.ERROR).show();
+                             Utils.getBox("Thất Bại", Alert.AlertType.ERROR).show();
                         }
                     }
 
                 } else {
-                    Utils.getBox("Failed", Alert.AlertType.ERROR).show();
+                    Utils.getBox("Thất Bại", Alert.AlertType.ERROR).show();
                 }
 
                 LoadDataBill();
                 LoadDataHangHoa("");
             } else {
-                Utils.getBox("Failed", Alert.AlertType.ERROR).show();
+                Utils.getBox("Thất Bại", Alert.AlertType.ERROR).show();
             }
 
         } catch (SQLException ex) {

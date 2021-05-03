@@ -142,12 +142,12 @@ public class CustomerManagementController implements Initializable {
                                             KhachHangService s = new KhachHangService(conn);
 
                                             if (s.deleleKhachHang(c.getIdKhachHangThanThiet())) {
-                                                Utils.getBox("SUCCESSFUL", Alert.AlertType.INFORMATION).show();
+                                                Utils.getBox("Thành Công", Alert.AlertType.INFORMATION).show();
                                                 SetDisableButtonCustomer(true);
                                                 ResetInput();
                                                 LoadData("");
                                             } else {
-                                                Utils.getBox("FAILED", Alert.AlertType.ERROR).show();
+                                                Utils.getBox("Thất Bại", Alert.AlertType.ERROR).show();
                                             }
 
                                             conn.close();
@@ -186,14 +186,14 @@ public class CustomerManagementController implements Initializable {
                                         }
                                     }
                                     if (s.updateKhachHang(khUpdate) == true) {
-                                        Utils.getBox("SUCCESSFUL", Alert.AlertType.INFORMATION).show();
+                                        Utils.getBox("Thành Công", Alert.AlertType.INFORMATION).show();
                                         conn.close();
                                         ResetInput();
                                         LoadData("");
                                         SetDisableButtonCustomer(true);
 
                                     } else {
-                                        Utils.getBox("FAILED", Alert.AlertType.INFORMATION).show();
+                                        Utils.getBox("Thất Bại", Alert.AlertType.INFORMATION).show();
                                         conn.close();
                                     }
                                 }
@@ -294,13 +294,13 @@ public class CustomerManagementController implements Initializable {
                         kh.setDiaChi(txtDiaChiCustomer.getText());
                         kh.setCMND(txtCMNDCustomer.getText());
                         if (s.addKhachHang(kh) == true) {
-                            Utils.getBox("SUCCESSFUL", Alert.AlertType.INFORMATION).show();
+                            Utils.getBox("Thành Công", Alert.AlertType.INFORMATION).show();
                             this.LoadData("");
                             SetDisableButtonCustomer(true);
                             ResetInput();
                             conn.close();
                         } else {
-                            Utils.getBox("FAILED", Alert.AlertType.INFORMATION).show();
+                            Utils.getBox("Thất Bại", Alert.AlertType.INFORMATION).show();
                             conn.close();
                         }
 

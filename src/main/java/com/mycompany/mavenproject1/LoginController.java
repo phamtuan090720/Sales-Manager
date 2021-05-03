@@ -73,7 +73,7 @@ public class LoginController implements Initializable {
     }
     
     public void showDialog(String info, String header, String title) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setContentText(info);
         alert.setHeaderText(header);
         alert.setTitle(title);
@@ -92,7 +92,7 @@ public class LoginController implements Initializable {
                 NhanVien nv = nvsv.Login(username, password);
                 if (nv != null) {
                     String alert = "Wellcome " + nv.getTenNhanVien() + "!";
-                    showDialog(alert, null, "Successful");
+                    showDialog(alert, null, "Đăng Nhập Thành Công");
                     int idNghiepVu = nv.getNghiepVu();
                     NghiepVu nghiepVu = nghiepVuSv.getNghepVuById(idNghiepVu);
                     App.setNvLogin(nv);
@@ -121,6 +121,7 @@ public class LoginController implements Initializable {
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setResizable(true);
         window.setScene(scene);
+        window.setTitle("Quản Lý Bán Hàng");
         window.show();
     }
     

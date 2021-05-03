@@ -85,7 +85,7 @@ public class StaticController implements Initializable {
                 Scene secondScene = new Scene(root);
                 // New window (Stage)
                 Stage newWindow = new Stage();
-                newWindow.setTitle("Thống Kê Theo Tháng");
+                newWindow.setTitle("Thống Kê Theo Quý");
                 newWindow.setScene(secondScene);
                 
                 // Specifies the modality for new window.

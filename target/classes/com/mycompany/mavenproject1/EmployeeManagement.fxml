@@ -16,10 +16,10 @@
    <children>
       <AnchorPane layoutY="172.0" prefHeight="50.0" AnchorPane.bottomAnchor="400.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
-            <Button fx:id="btnAddEmployee" layoutX="14.0" layoutY="10.0" mnemonicParsing="false" onAction="#addNhanVien" prefHeight="30.0" prefWidth="100.0" text="Add" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="14.0" />
-            <Button fx:id="btnUpdateEmpyee" disable="true" layoutX="124.0" layoutY="10.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Update" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="124.0" />
-            <Button fx:id="btnDeleteEmployee" disable="true" layoutX="231.0" layoutY="10.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Delete" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="231.0" />
-            <Button fx:id="btnRsInputEmployee" layoutX="343.0" layoutY="10.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Reset" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="343.0" />
+            <Button fx:id="btnAddEmployee" layoutX="14.0" layoutY="10.0" mnemonicParsing="false" onAction="#addNhanVien" prefHeight="30.0" prefWidth="100.0" text="Thêm " AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="14.0" />
+            <Button fx:id="btnUpdateEmpyee" disable="true" layoutX="124.0" layoutY="10.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Sửa" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="124.0" />
+            <Button fx:id="btnDeleteEmployee" disable="true" layoutX="231.0" layoutY="10.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Xóa" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="231.0" />
+            <Button fx:id="btnRsInputEmployee" layoutX="343.0" layoutY="10.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Trở Lại" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="343.0" />
          </children>
       </AnchorPane>
       <GridPane prefHeight="400.0" prefWidth="800.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
@@ -45,7 +45,7 @@
                   <Font size="15.0" />
                </font>
             </TextField>
-            <Button fx:id="btnSearchEMployee" mnemonicParsing="false" prefHeight="40.0" prefWidth="94.0" text="Seach" textFill="WHITE" GridPane.columnIndex="1">
+            <Button fx:id="btnSearchEMployee" mnemonicParsing="false" prefHeight="40.0" prefWidth="94.0" text="Tìm Kiếm" textFill="WHITE" GridPane.columnIndex="1">
                <font>
                   <Font size="14.0" />
                </font>

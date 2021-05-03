@@ -25,14 +25,14 @@
                         <Image url="@../../../icon/shop.png" />
                      </image>
                   </ImageView>
-                  <Text fill="#f7f7f7" fontSmoothingType="LCD" layoutX="50.0" layoutY="156.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Management">
+                  <Text fill="#f7f7f7" fontSmoothingType="LCD" layoutX="23.0" layoutY="156.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hệ Thống Quản Lý">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>
                   </Text>
                </children>
             </AnchorPane>
-            <Button fx:id="btnEmployee" layoutX="4.0" layoutY="260.0" mnemonicParsing="false" prefHeight="50.0" stylesheets="@homeManagement.css" text="Employee " textFill="#faf7f7" textOverrun="LEADING_WORD_ELLIPSIS" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <Button fx:id="btnEmployee" layoutX="4.0" layoutY="260.0" mnemonicParsing="false" prefHeight="50.0" stylesheets="@homeManagement.css" text="Nhân Viên" textFill="#faf7f7" textOverrun="LEADING_WORD_ELLIPSIS" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <padding>
                   <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                </padding>
@@ -40,7 +40,7 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Button>
-            <Button fx:id="btnProduct" layoutX="4.0" layoutY="320.0" mnemonicParsing="false" prefHeight="50.0" stylesheets="@homeManagement.css" text="Product" textFill="#faf7f7" textOverrun="LEADING_WORD_ELLIPSIS" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <Button fx:id="btnProduct" layoutX="4.0" layoutY="320.0" mnemonicParsing="false" prefHeight="50.0" stylesheets="@homeManagement.css" text="Hàng Hóa" textFill="#faf7f7" textOverrun="LEADING_WORD_ELLIPSIS" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <padding>
                   <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                </padding>
@@ -48,7 +48,7 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Button>
-            <Button fx:id="btnCustomer" layoutY="380.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="270.0" stylesheets="@homeManagement.css" text="Customer" textFill="#faf7f7" textOverrun="LEADING_WORD_ELLIPSIS" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <Button fx:id="btnCustomer" layoutY="380.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="270.0" stylesheets="@homeManagement.css" text="Khách Hàng Thân Thiết" textFill="#faf7f7" textOverrun="LEADING_WORD_ELLIPSIS" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <padding>
                   <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                </padding>
@@ -56,7 +56,7 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Button>
-            <Button fx:id="btnStatistic" layoutY="440.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="270.0" stylesheets="@homeManagement.css" text="Statistic" textFill="#faf7f7" textOverrun="LEADING_WORD_ELLIPSIS" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <Button fx:id="btnStatistic" layoutY="440.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="270.0" stylesheets="@homeManagement.css" text="Thống Kê" textFill="#faf7f7" textOverrun="LEADING_WORD_ELLIPSIS" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <padding>
                   <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                </padding>
@@ -64,7 +64,7 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Button>
-            <Button fx:id="btnBill" layoutX="4.0" layoutY="500.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="279.0" stylesheets="@homeManagement.css" text="Bill" textFill="#faf7f7" textOverrun="LEADING_WORD_ELLIPSIS" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <Button fx:id="btnBill" layoutX="4.0" layoutY="500.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="279.0" stylesheets="@homeManagement.css" text="Hóa Đơn" textFill="#faf7f7" textOverrun="LEADING_WORD_ELLIPSIS" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <padding>
                   <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                </padding>
@@ -72,7 +72,7 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Button>
-            <Button fx:id="btnLogout" layoutX="4.0" layoutY="636.0" mnemonicParsing="false" prefHeight="50.0" stylesheets="@homeManagement.css" text="Log Out" textFill="#faf7f7" textOverrun="LEADING_WORD_ELLIPSIS" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <Button fx:id="btnLogout" layoutX="4.0" layoutY="636.0" mnemonicParsing="false" prefHeight="50.0" stylesheets="@homeManagement.css" text="Đăng Xuất" textFill="#faf7f7" textOverrun="LEADING_WORD_ELLIPSIS" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <padding>
                   <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                </padding>
@@ -80,7 +80,7 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Button>
-            <Button fx:id="btnDasboard" layoutX="1.0" layoutY="200.0" mnemonicParsing="false" prefHeight="50.0" stylesheets="@homeManagement.css" text="Dasboard" textFill="#faf7f7" textOverrun="LEADING_WORD_ELLIPSIS" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <Button fx:id="btnDasboard" layoutX="1.0" layoutY="200.0" mnemonicParsing="false" prefHeight="50.0" stylesheets="@homeManagement.css" text="Trang Chủ" textFill="#faf7f7" textOverrun="LEADING_WORD_ELLIPSIS" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <padding>
                   <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                </padding>

@@ -31,17 +31,20 @@
    <right>
       <AnchorPane prefHeight="200.0" prefWidth="450.0" BorderPane.alignment="CENTER">
          <children>
-            <TextField fx:id="txtUsername" layoutX="169.0" layoutY="165.0" promptText="Username" style="-fx-background-color: transparent; -fx-border-color: #0598ff; -fx-border-width: 0px 0px 2px 0px;" />
-            <PasswordField fx:id="txtPassword" layoutX="169.0" layoutY="232.0" promptText="Password" style="-fx-background-color: transpaernt; -fx-border-color: #0598ff; -fx-border-width: 0px 0px 2px 0px;" />
-            <Button fx:id="btnLogin" layoutX="163.0" layoutY="339.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="34.0" prefWidth="163.0" style="-fx-background-color: #0598ff;" text="Login" textFill="WHITE">
+            <TextField fx:id="txtUsername" layoutX="169.0" layoutY="165.0" promptText="Tài Khoản" style="-fx-background-color: transparent; -fx-border-color: #0598ff; -fx-border-width: 0px 0px 2px 0px;" />
+            <PasswordField fx:id="txtPassword" layoutX="169.0" layoutY="232.0" promptText="Mật Khẩu" style="-fx-background-color: transpaernt; -fx-border-color: #0598ff; -fx-border-width: 0px 0px 2px 0px;" />
+            <Button fx:id="btnLogin" layoutX="163.0" layoutY="339.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="34.0" prefWidth="163.0" style="-fx-background-color: #0598ff;" text="Đăng Nhập" textFill="WHITE">
                <font>
                    
                    
                   <Font size="15.0" />
                </font>
             </Button>
-            <Hyperlink alignment="CENTER" contentDisplay="CENTER" layoutX="161.0" layoutY="417.0" prefHeight="25.0" prefWidth="165.0" text="Forgot Your Password ?" />
-            <Text fill="#0598ff" layoutX="185.0" layoutY="125.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User Login">
+            <Hyperlink alignment="CENTER" contentDisplay="CENTER" layoutX="161.0" layoutY="417.0" prefHeight="25.0" prefWidth="165.0" text="Quên Mật Khẩu ?">
+               <font>
+                  <Font size="14.0" />
+               </font></Hyperlink>
+            <Text fill="#0598ff" layoutX="185.0" layoutY="125.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Đăng Nhập">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>

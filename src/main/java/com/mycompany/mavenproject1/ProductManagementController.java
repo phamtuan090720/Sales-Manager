@@ -196,12 +196,12 @@ public class ProductManagementController implements Initializable {
                                                 HangHoaService s = new HangHoaService(conn);
 
                                                 if (s.deleleHangHoa(hh.getIdHangHoa())) {
-                                                    Utils.getBox("SUCCESSFUL", Alert.AlertType.INFORMATION).show();
+                                                    Utils.getBox("Thành Công", Alert.AlertType.INFORMATION).show();
                                                     LoadData("");
                                                     SetDisableButtonProduct(true);
                                                     ResetInput();
                                                 } else {
-                                                    Utils.getBox("FAILED", Alert.AlertType.ERROR).show();
+                                                    Utils.getBox("Thất Bại", Alert.AlertType.ERROR).show();
                                                 }
 
                                                 conn.close();
@@ -239,10 +239,10 @@ public class ProductManagementController implements Initializable {
                                             System.out.println("NullPointerException thrown!");
                                         }
                                         if (s.updateHangHoa(hhUpdate) == true) {
-                                            Utils.getBox("SUCCESSFUL", Alert.AlertType.INFORMATION).show();
+                                            Utils.getBox("Thành Công", Alert.AlertType.INFORMATION).show();
                                             LoadData("");
                                         } else {
-                                            Utils.getBox("FAILED", Alert.AlertType.INFORMATION).show();
+                                            Utils.getBox("Thất Bại", Alert.AlertType.INFORMATION).show();
                                         }
                                     } catch (NullPointerException evnt) {
                                         Utils.getBox("Vui Lòng Nhập Đầy Đủ Thông Tin", Alert.AlertType.INFORMATION).show();
@@ -301,10 +301,10 @@ public class ProductManagementController implements Initializable {
                         System.out.println("NullPointerException thrown!");
                     }
                     if (s.addHangHoa(hh) == true) {
-                        Utils.getBox("SUCCESSFUL", Alert.AlertType.INFORMATION).show();
+                        Utils.getBox("Thành Công", Alert.AlertType.INFORMATION).show();
                         this.LoadData("");
                     } else {
-                        Utils.getBox("FAILED", Alert.AlertType.INFORMATION).show();
+                        Utils.getBox("Thất Bại", Alert.AlertType.INFORMATION).show();
                     }
                 } catch (NullPointerException e) {
                     Utils.getBox("Vui Lòng Nhập Đầy Đủ Thông Tin", Alert.AlertType.INFORMATION).show();
