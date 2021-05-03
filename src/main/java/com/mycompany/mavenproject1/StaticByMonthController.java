@@ -35,6 +35,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 
 /**
  * FXML Controller class
@@ -49,6 +50,8 @@ public class StaticByMonthController implements Initializable {
     private PieChart ChartDoanhThu;
     @FXML
     private ComboBox<Thang> cbThang;
+    @FXML
+    private Text txtTongDoanhThu;
 
     /**
      * Initializes the controller class.
@@ -57,33 +60,23 @@ public class StaticByMonthController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         this.cbThang.setItems(FXCollections.observableList(thang()));
 
-//        getDataSoLuong(5);
-//        ChartDoanhThu.setTitle("CoronaVirus Statistics COVID-19");
-//        ObservableList<PieChart.Data> ol = FXCollections.observableArrayList(getListData());
-//        ChartDoanhThu.setData(ol);
-//        for (PieChart.Data data : ChartDoanhThu.getData()) {
-//            data.nameProperty().set(data.getName() + " : " + (int) data.getPieValue());
-//            data.getNode().addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-//                @Override
-//                public void handle(MouseEvent event) {
-//                    Utils.getBox(data.getName(), Alert.AlertType.INFORMATION).show();
-//                }
-//            });
-//        }
+        txtTongDoanhThu.setText("0 VNĐ");
     }
 
     ;
-    public List<PieChart.Data> getListData() {
+    public List<PieChart.Data> getListDataDoanhThuSanPham(int month) {
         List<PieChart.Data> list = new ArrayList<>();
-        list.add(new PieChart.Data("haha", 10));
-        return list;
-    }
+        try {
+            Connection conn = jdbcUtil.getConn();
+            StaticService ss = new StaticService(conn);
+            HangHoaService hhs = new HangHoaService(conn);
+            for (int id : ss.getDistinctIDHangHoaByMonth(month)) {
+                list.add(new PieChart.Data(hhs.getHangHoaById(id).getTenHang(), Double.valueOf(ss.staticDoanhThuSanPhamByMonth(month, id).toString())));
+            }
 
-    ;
-     public List<PieChart.Data> getListData2() {
-        List<PieChart.Data> list = new ArrayList<>();
-        list.add(new PieChart.Data("hihi", 20));
-        list.add(new PieChart.Data("hoho", 10));
+        } catch (SQLException ex) {
+            Logger.getLogger(StaticByMonthController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return list;
     }
 
@@ -102,6 +95,18 @@ public class StaticByMonthController implements Initializable {
             Logger.getLogger(StaticByMonthController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
+    }
+
+    public void TongDoanhThu(int month) {
+        try {
+            Connection conn = jdbcUtil.getConn();
+            StaticService ss = new StaticService(conn);
+            txtTongDoanhThu.setText(ss.staticTongDoanhThuByMonth(month).toString() + " VNĐ");
+
+        } catch (SQLException ex) {
+            Logger.getLogger(StaticByMonthController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     ;
@@ -164,11 +169,20 @@ public class StaticByMonthController implements Initializable {
         int month = this.cbThang.getSelectionModel().getSelectedItem().getValue();
 
         if (getDataSoLuong(month).size() <= 0) {
-            chartSoLuongHangBanDuoc.setTitle("Không có dữ liệu bán hàng trong tháng "+month);
-            ObservableList<PieChart.Data> ol2 = FXCollections.observableArrayList(getDataSoLuong(month));
-            chartSoLuongHangBanDuoc.setData(ol2);
+            chartSoLuongHangBanDuoc.setTitle("Không có dữ liệu số lượng sản phấm bán ra trong tháng " + month);
+            ObservableList<PieChart.Data> listSL = FXCollections.observableArrayList(getDataSoLuong(month));
+            chartSoLuongHangBanDuoc.setData(listSL);
+            ChartDoanhThu.setTitle("Không có dữ liệu doanh thu tháng  " + month);
+            ObservableList<PieChart.Data> ol = FXCollections.observableArrayList(getListDataDoanhThuSanPham(month));
+            ChartDoanhThu.setData(ol);
+            try {
+                TongDoanhThu(month);
+            } catch (NullPointerException e) {
+                txtTongDoanhThu.setText("0 VNĐ");
+            }
+
         } else {
-            chartSoLuongHangBanDuoc.setTitle("Thống Kê Tháng " + month);
+            chartSoLuongHangBanDuoc.setTitle("Thống Kê Số Lượng Sản Phẩm Bán Ra Tháng " + month);
             ObservableList<PieChart.Data> ol2 = FXCollections.observableArrayList(getDataSoLuong(month));
             chartSoLuongHangBanDuoc.setData(ol2);
             for (PieChart.Data data : chartSoLuongHangBanDuoc.getData()) {
@@ -180,6 +194,19 @@ public class StaticByMonthController implements Initializable {
                     }
                 });
             }
+            ChartDoanhThu.setTitle("Thống Kê Doanh Thu Tháng " + month);
+            ObservableList<PieChart.Data> ol = FXCollections.observableArrayList(getListDataDoanhThuSanPham(month));
+            ChartDoanhThu.setData(ol);
+            for (PieChart.Data data : ChartDoanhThu.getData()) {
+                data.nameProperty().set(data.getName() + " : " + (int) data.getPieValue() + "VNĐ");
+                data.getNode().addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        Utils.getBox(data.getName(), Alert.AlertType.INFORMATION).show();
+                    }
+                });
+            }
+            TongDoanhThu(month);
         }
     }
 

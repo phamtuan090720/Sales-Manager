@@ -78,6 +78,24 @@ public class StaticController implements Initializable {
                 Logger.getLogger(StaticController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+         btnThongKeTheoQuy.setOnMouseClicked(e->{
+            try {
+//                StackPane secondaryLayout = new StackPane();
+                Parent root = FXMLLoader.load(getClass().getResource("StaticByQuy.fxml"));
+                Scene secondScene = new Scene(root);
+                // New window (Stage)
+                Stage newWindow = new Stage();
+                newWindow.setTitle("Thống Kê Theo Tháng");
+                newWindow.setScene(secondScene);
+                
+                // Specifies the modality for new window.
+                newWindow.initModality(Modality.WINDOW_MODAL);
+                
+                newWindow.show();
+            } catch (IOException ex) {
+                Logger.getLogger(StaticController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
 //        staticChart.setTitle("CoronaVirus Statistics COVID-19");
 //        ObservableList<PieChart.Data> ol = FXCollections.observableArrayList(getListData());
 //        staticChart.setData(ol);
