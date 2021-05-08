@@ -116,10 +116,11 @@ public class StaticService {
             throw new SQLDataException();
         }
         int count = 0;
-        String sql = "SELECT SUM(salemanager.chitiethoadon.SoLuong)  AS tong"
-                + " FROM salemanager.chitiethoadon,salemanager.hoadon"
-                + " where salemanager.hoadon.idHoaDon = salemanager.chitiethoadon.IDHoaDon"
-                + " and year(salemanager.hoadon.NgayLap)=? and IDHangHoa=?;";
+        String sql = "SELECT SUM(salemanager.chitiethoadon.SoLuong) AS tong "
+                + "from salemanager.chitiethoadon,salemanager.hoadon "
+                + "where salemanager.hoadon.idHoaDon = salemanager.chitiethoadon.IDHoaDon "
+                + "and  year(salemanager.hoadon.NgayLap)=? "
+                + "and IDHangHoa=?;";
         PreparedStatement stm = this.conn.prepareStatement(sql);
         stm.setInt(1, year);
         stm.setInt(2, idHH);

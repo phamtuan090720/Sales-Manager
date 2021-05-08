@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -172,6 +173,12 @@ public class CustomerManagementController implements Initializable {
                             try {
                                 if (checkValidateInphut() == true) {
                                     Utils.getBox("Vui Lòng Nhập Đầy Đủ Thông Tin", Alert.AlertType.INFORMATION).show();
+                                } else if (checkNumberInString() == true) {
+                                    Utils.getBox("Trong Tên Không Được Chứa Số", Alert.AlertType.ERROR).show();
+                                } else if (CheckLengthCMND() == true) {
+                                    Utils.getBox("Độ dài của CMND không hợp lệ", Alert.AlertType.ERROR).show();
+                                } else if (CheckLengthSDT() == true) {
+                                    Utils.getBox("Độ dài của SDT không hợp lệ", Alert.AlertType.ERROR).show();
                                 } else {
 
                                     khUpdate.setTenKhachHang(txtNameCustomer.getText());
@@ -221,6 +228,22 @@ public class CustomerManagementController implements Initializable {
         });
     }
 
+    public boolean CheckLengthCMND() {
+        return txtCMNDCustomer.getText().length() < 9 || txtCMNDCustomer.getText().length() > 12;
+    }
+
+    public boolean CheckLengthSDT() {
+        return txtSDTCustomer.getText().length() < 10 || txtSDTCustomer.getText().length() > 12;
+    }
+
+    public boolean checkNumberInString() {
+        String regex = "(.)*(\\d)(.)*";
+        Pattern pattern = Pattern.compile(regex);
+        boolean containsNumber = pattern.matcher(txtNameCustomer.getText()).matches();
+        return containsNumber;
+    }
+
+    ;
     private void LoadData(String kw) {
         try {
             this.tbCustomer.getItems().clear();
@@ -277,7 +300,13 @@ public class CustomerManagementController implements Initializable {
             }
             try {
                 if (checkValidateInphut() == true) {
-                    Utils.getBox("Vui Lòng Nhập Đầy Đủ Thông Tin", Alert.AlertType.INFORMATION).show();
+                    Utils.getBox("Vui Lòng Nhập Đầy Đủ Thông Tin", Alert.AlertType.ERROR).show();
+                } else if (checkNumberInString() == true) {
+                    Utils.getBox("Trong Tên Không Được Chứa Số", Alert.AlertType.ERROR).show();
+                } else if (CheckLengthCMND() == true) {
+                    Utils.getBox("Độ dài của CMND không hợp lệ", Alert.AlertType.ERROR).show();
+                } else if (CheckLengthSDT() == true) {
+                    Utils.getBox("Độ dài của SDT không hợp lệ", Alert.AlertType.ERROR).show();
                 } else {
                     if (s.findKhachHangByCMND(txtCMNDCustomer.getText()) != null || s.findKhachHangBySDT(txtSDTCustomer.getText()) != null) {
 

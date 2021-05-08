@@ -17,6 +17,7 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -138,6 +139,10 @@ public class EmployeeManagementController implements Initializable {
                                 try {
                                     if (checkValidateInphut() == true) {
                                         Utils.getBox("Vui Lòng Nhập Đầy Đủ Thông Tin", Alert.AlertType.INFORMATION).show();
+                                    } else if (checkLengthGreater6() == true) {
+                                        Utils.getBox("Password phải lớn hơn 6 chữ số!", Alert.AlertType.INFORMATION).show();
+                                    } else if (checkNumberInString() == true) {
+                                        Utils.getBox("Trong Tên có chứa số!", Alert.AlertType.INFORMATION).show();
                                     } else {
                                         nvUpdate.setTenNhanVien(txtNameEmployee.getText());
                                         nvUpdate.setTaiKhoan(txtAccountEmployee.getText());
@@ -160,11 +165,6 @@ public class EmployeeManagementController implements Initializable {
                                 } catch (NullPointerException evnt) {
                                     Utils.getBox("Vui Lòng Nhập Đầy Đủ Thông Tin", Alert.AlertType.INFORMATION).show();
                                 }
-//                                if (checkValidateInphut() == true) {
-//                                    Utils.getBox("Vui Lòng Nhập Đầy Đủ Thông Tin", Alert.AlertType.INFORMATION).show();
-//                                } else {
-//
-//                                }
 
                             } catch (SQLException ex) {
                                 Logger.getLogger(EmployeeManagementController.class.getName()).log(Level.SEVERE, null, ex);
@@ -233,7 +233,16 @@ public class EmployeeManagementController implements Initializable {
     }
 
     ;
+    public boolean checkLengthGreater6() {
+        return txtPasswordEmployee.getText().length() < 6;
+    }
 
+    public boolean checkNumberInString() {
+        String regex = "(.)*(\\d)(.)*";
+        Pattern pattern = Pattern.compile(regex);
+        boolean containsNumber = pattern.matcher(txtNameEmployee.getText()).matches();
+        return containsNumber;
+    }
     ;
     @FXML
     private void addNhanVien(ActionEvent event) {
@@ -247,6 +256,10 @@ public class EmployeeManagementController implements Initializable {
                 } else {
                     if (s.findAccount(txtAccountEmployee.getText()) != null) {
                         Utils.getBox("Tài Khoản Đã Tồn Tại", Alert.AlertType.INFORMATION).show();
+                    } else if (checkLengthGreater6() == true) {
+                        Utils.getBox("Password phải lớn hơn 6 chữ số!", Alert.AlertType.INFORMATION).show();
+                    } else if (checkNumberInString() == true) {
+                        Utils.getBox("Trong Tên có chứa số!", Alert.AlertType.INFORMATION).show();
                     } else {
                         nv.setTaiKhoan(txtAccountEmployee.getText());
                         nv.setMatKhau(txtPasswordEmployee.getText());

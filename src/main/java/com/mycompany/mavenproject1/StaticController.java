@@ -60,7 +60,7 @@ public class StaticController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        btnThongKeTheoThang.setOnMouseClicked(e->{
+        btnThongKeTheoThang.setOnMouseClicked(e -> {
             try {
 //                StackPane secondaryLayout = new StackPane();
                 Parent root = FXMLLoader.load(getClass().getResource("StaticByMonth.fxml"));
@@ -69,16 +69,16 @@ public class StaticController implements Initializable {
                 Stage newWindow = new Stage();
                 newWindow.setTitle("Thống Kê Theo Tháng");
                 newWindow.setScene(secondScene);
-                
+
                 // Specifies the modality for new window.
                 newWindow.initModality(Modality.WINDOW_MODAL);
-                
+
                 newWindow.show();
             } catch (IOException ex) {
                 Logger.getLogger(StaticController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
-         btnThongKeTheoQuy.setOnMouseClicked(e->{
+        btnThongKeTheoQuy.setOnMouseClicked(e -> {
             try {
 //                StackPane secondaryLayout = new StackPane();
                 Parent root = FXMLLoader.load(getClass().getResource("StaticByQuy.fxml"));
@@ -87,10 +87,28 @@ public class StaticController implements Initializable {
                 Stage newWindow = new Stage();
                 newWindow.setTitle("Thống Kê Theo Quý");
                 newWindow.setScene(secondScene);
-                
+
                 // Specifies the modality for new window.
                 newWindow.initModality(Modality.WINDOW_MODAL);
-                
+
+                newWindow.show();
+            } catch (IOException ex) {
+                Logger.getLogger(StaticController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        btnThongKeTheoNam.setOnMouseClicked(e -> {
+            try {
+//                StackPane secondaryLayout = new StackPane();
+                Parent root = FXMLLoader.load(getClass().getResource("StaticByYear.fxml"));
+                Scene secondScene = new Scene(root);
+                // New window (Stage)
+                Stage newWindow = new Stage();
+                newWindow.setTitle("Thống Kê Theo Năm");
+                newWindow.setScene(secondScene);
+
+                // Specifies the modality for new window.
+                newWindow.initModality(Modality.WINDOW_MODAL);
+
                 newWindow.show();
             } catch (IOException ex) {
                 Logger.getLogger(StaticController.class.getName()).log(Level.SEVERE, null, ex);
@@ -110,7 +128,6 @@ public class StaticController implements Initializable {
 //            });
 //        }
     }
-
 
 //    public List<HoaDon> getListHoaDon() {
 //         List<HoaDon> listHH;
