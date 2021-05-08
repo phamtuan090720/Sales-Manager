@@ -25,6 +25,9 @@ public class NhanVienService {
         this.conn = conn;
     }
     public NhanVien Login(String username,String password) throws SQLException{
+        if(username == null || password == null){
+            throw new SQLDataException();
+        }
         NhanVien nv = null;
         String sql = "SELECT * FROM salemanager.nhanvien where TaiKhoan=? and MatKhau=?;";
         PreparedStatement stm = this.conn.prepareStatement(sql);
