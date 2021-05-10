@@ -162,105 +162,106 @@ public class KhachHangTester {
     @Test
     @DisplayName("Kiem thu chuc nang Add Khach Hang")
     public void testAddKhachHangSuccess() throws SQLException {
-       
+
+        KhachHangService s = new KhachHangService(CONN);
+        KhachHang c = new KhachHang();
+        c.setTenKhachHang("tran");
+        c.setSDT("035123456");
+        c.setCMND("0789456123");
+        c.setDiaChi("Chuồng Heo");
+        c.setDiem(0);
+        Assertions.assertTrue(s.addKhachHang(c));
+
+    }
+
+    @Test
+    @DisplayName("Kiem thu chuc nang Add Khach Hang Trùng CMND hoặc SDT")
+    public void testAddKhachHangDuplicateCMND()  {
+
+        try {
             KhachHangService s = new KhachHangService(CONN);
             KhachHang c = new KhachHang();
+            c.setTenKhachHang("ngan");
+            c.setSDT("0363902002");
+            c.setCMND("066200000083");
+            c.setDiaChi("Chuồng Heo");
+            c.setDiem(0);
+            Assertions.assertFalse(s.addKhachHang(c));
+        } catch (SQLException ex) {
+            Logger.getLogger(KhachHangTester.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+//
+    @Test
+    @DisplayName("Kiem thu chuc nang Add Khach Hang Trùng CMND hoặc SDT")
+    public void testAddKhachHangDuplicateSDT()  {
+
+        try {
+            KhachHangService s = new KhachHangService(CONN);
+            KhachHang kh = new KhachHang();
+            kh.setTenKhachHang("uyen");
+            kh.setSDT("0358833453");
+            kh.setCMND("066200000080");
+            kh.setDiaChi("Chuồng Heo");
+            kh.setDiem(0);
+            Assertions.assertFalse(s.addKhachHang(kh));
+        } catch (SQLException ex) {
+            Logger.getLogger(KhachHangTester.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    @Test
+    @DisplayName("Kiem thu chuc nang Update Khach Hang thành công")
+    public void testUpdateKhachHangSuccess() throws SQLException {
+
+        KhachHangService s = new KhachHangService(CONN);
+        KhachHang c = new KhachHang();
+        c.setIdKhachHangThanThiet(6);
+        c.setTenKhachHang("Tuan Pham");
+        c.setSDT("0368921284");
+        c.setCMND("0966123456");
+        c.setDiaChi("Chuồng Lợn");
+        c.setDiem(0);
+        Assertions.assertTrue(s.updateKhachHang(c));
+
+    }
+
+    @Test
+    @DisplayName("Kiem thu chuc nang Update Khach Hang Trùng CMND ")
+    public void testUpdateKhachHangDuplicateCMND()  {
+        try {
+            KhachHangService s = new KhachHangService(CONN);
+            KhachHang c = new KhachHang();
+            c.setIdKhachHangThanThiet(14);
             c.setTenKhachHang("Nghia");
-            c.setSDT("0358833453");
+            c.setSDT("0345987987");
             c.setCMND("066200000082");
             c.setDiaChi("Chuồng Heo");
             c.setDiem(0);
-            Assertions.assertTrue(s.addKhachHang(c));
-       
+            Assertions.assertFalse(s.updateKhachHang(c));
+        } catch (SQLException ex) {
+            Logger.getLogger(KhachHangTester.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
-//    @Test
-//    @DisplayName("Kiem thu chuc nang Add Khach Hang Trùng CMND hoặc SDT")
-//    public void testAddKhachHangDuplicateCMND() {
-//
-//        try {
-//            KhachHangService s = new KhachHangService(CONN);
-//            KhachHang c = new KhachHang();
-//            c.setTenKhachHang("Nghia");
-//            c.setSDT("0363902002");
-//            c.setCMND("066200000083");
-//            c.setDiaChi("Chuồng Heo");
-//            c.setDiem(0);
-//            Assertions.assertFalse(s.addKhachHang(c));
-//        } catch (SQLException ex) {
-//            Logger.getLogger(KhachHangTester.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//
-//    }
-//
-//    @Test
-//    @DisplayName("Kiem thu chuc nang Add Khach Hang Trùng CMND hoặc SDT")
-//    public void testAddKhachHangDuplicateSDT() {
-//        try {
-//            KhachHangService s = new KhachHangService(CONN);
-//            KhachHang kh = new KhachHang();
-//            kh.setTenKhachHang("Nghia");
-//            kh.setSDT("0358833453");
-//            kh.setCMND("066200000082");
-//            kh.setDiaChi("Chuồng Heo");
-//            kh.setDiem(0);
-//            Assertions.assertFalse(s.addKhachHang(kh));
-//        } catch (SQLException ex) {
-//            Logger.getLogger(KhachHangTester.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
-//
-//    @Test
-//    @DisplayName("Kiem thu chuc nang Update Khach Hang thành công")
-//    public void testUpdateKhachHangSuccess() {
-//        try {
-//            KhachHangService s = new KhachHangService(CONN);
-//            KhachHang c = new KhachHang();
-//            c.setIdKhachHangThanThiet(6);
-//            c.setTenKhachHang("Tuan Pham");
-//            c.setSDT("0363902003");
-//            c.setCMND("026020643");
-//            c.setDiaChi("Chuồng Lợn");
-//            c.setDiem(0);
-//            Assertions.assertTrue(s.updateKhachHang(c));
-//        } catch (SQLException ex) {
-//            Logger.getLogger(KhachHangTester.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
+    @Test
+    @DisplayName("Kiem thu chuc nang Update Khach Hang Trùng SDT ")
+    public void testUpdateKhachHangDuplicateSDT()  {
+        try {
+            KhachHangService s = new KhachHangService(CONN);
+            KhachHang c2 = new KhachHang();
+            c2.setIdKhachHangThanThiet(57);
+            c2.setTenKhachHang("Nghia");
+            c2.setSDT("0345987987");
+            c2.setCMND("0123987654");
+            c2.setDiaChi("Chuồng Heo");
+            c2.setDiem(0);
+            Assertions.assertFalse(s.updateKhachHang(c2));
+        } catch (SQLException ex) {
+            Logger.getLogger(KhachHangTester.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
-//    @Test
-//    @DisplayName("Kiem thu chuc nang Update Khach Hang Trùng CMND ")
-//    public void testUpdateKhachHangDuplicateCMND() {
-//        try {
-//            KhachHangService s = new KhachHangService(CONN);
-//            KhachHang c = new KhachHang();
-//            c.setIdKhachHangThanThiet(14);
-//            c.setTenKhachHang("Nghia");
-//            c.setSDT("0358833453");
-//            c.setCMND("066200000083");
-//            c.setDiaChi("Chuồng Heo");
-//            c.setDiem(0);
-//
-//            Assertions.assertFalse(s.updateKhachHang(c));
-//
-//        } catch (SQLException ex3) {
-//            Logger.getLogger(KhachHangTester.class.getName()).log(Level.SEVERE, null, ex3);
-//        }
-//    }
-
-//    @Test
-//    @DisplayName("Kiem thu chuc nang Update Khach Hang Trùng SDT ")
-//    public void testUpdateKhachHangDuplicateSDT() throws SQLException{
-//        KhachHangService s = new KhachHangService(CONN);
-//        KhachHang c2 = new KhachHang();
-//        c2.setIdKhachHangThanThiet(14);
-//        c2.setTenKhachHang("Nghia");
-//        c2.setSDT("0363902003");
-//        c2.setCMND("066200000082");
-//        c2.setDiaChi("Chuồng Heo");
-//        c2.setDiem(0);
-//        Assertions.assertFalse(s.updateKhachHang(c2));
-//
-//    }
+    }
 
 }
