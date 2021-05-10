@@ -139,7 +139,8 @@ public class HangHoaTester {
                  s.addHangHoa(p);
              });
     }
-     @Test
+    @Test
+    @DisplayName("Thêm hàng hóa với loại hàng hóa không có trong DataBase")
     @Tag("add-product")
     public void tesAddProductWithInvalidCate() {
             HangHoa p = new HangHoa();
@@ -158,6 +159,7 @@ public class HangHoaTester {
     }
     
     @Test
+    @DisplayName("Thêm hàng hóa với các trường thuộc tính đứng")
     @Tag("add-product")
     public void tesAddProduct() {
         try {
@@ -198,4 +200,57 @@ public class HangHoaTester {
             Logger.getLogger(HangHoaTester.class.getName()).log(Level.SEVERE, null, ex);
         };
     }
+    @ParameterizedTest
+    @CsvSource({", 10000, 15000, 100, 2, 2, chai", 
+         "Bia Tiger,10000, 15000, 100, 2 , 2,"})
+    @DisplayName("Thêm Khách Hàng Với Name Hoặc Unit empty")
+    @Tag("critical")
+    public void  testAddProductNullNameUnit(String name, BigDecimal importPrice,
+            BigDecimal price, int count,  int cateId, int originId, String unit) { 
+        
+        try {
+            HangHoaService s = new HangHoaService(conn);
+            
+            HangHoa p = new HangHoa();
+            p.setTenHang(name);
+            p.setGiaMua(importPrice);
+            p.setGiaBan(price);
+            p.setDonViTinh(unit);
+            p.setSoLuong(count);
+            p.setLoaiHang(cateId);
+            p.setXuatXu(originId);
+            
+            Assertions.assertFalse(s.addHangHoa(p));
+        } catch (SQLException ex) {
+            Logger.getLogger(HangHoaTester.class.getName()).log(Level.SEVERE, null, ex);
+        }    
+    }
+    @ParameterizedTest
+    @DisplayName("update-product-null-Name-or-unit")
+    @CsvSource({"37,, 10000, 13000, 100, 2, 2,chai ",
+                "37,Bia SaiGon,10000 ,13000 ,100 , 2, 2, "})
+    public void testUpdateProductFailed(int Id, String name, BigDecimal importPrice,
+            BigDecimal price, int count,  int cateId, int originId, String unit) {  
+          
+        try {
+            HangHoaService s = new HangHoaService(conn);
+            HangHoa p = new HangHoa();
+            p.setIdHangHoa(Id);
+            p.setTenHang(name);
+            p.setGiaMua(importPrice);
+            p.setGiaBan(price);
+            p.setDonViTinh(unit);
+            p.setSoLuong(count);
+            p.setLoaiHang(cateId);
+            p.setXuatXu(originId);
+            
+            Assertions.assertFalse(s.updateHangHoa(p));
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(HangHoaTester.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }       
+    
+        
 }

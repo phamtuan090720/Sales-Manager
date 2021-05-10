@@ -13,6 +13,7 @@ import java.sql.SQLDataException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -29,7 +30,20 @@ public class KhachHangService {
     public KhachHangService() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+ public boolean CheckLengthCMND(String kw) {
+        return kw.length() < 9 || kw.length() > 12;
+    }
 
+    public boolean CheckLengthSDT(String kw) {
+        return kw.length() < 10 || kw.length() > 12;
+    }
+
+    public boolean checkNumberInString(String kw) {
+        String regex = "(.)*(\\d)(.)*";
+        Pattern pattern = Pattern.compile(regex);
+        boolean containsNumber = pattern.matcher(kw).matches();
+        return containsNumber;
+    }
     public List<KhachHang> getListKhachHang(String kw) throws SQLException {
         if (kw == null) {
             throw new SQLDataException();

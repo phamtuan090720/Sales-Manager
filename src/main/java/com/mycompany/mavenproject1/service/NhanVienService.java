@@ -13,6 +13,7 @@ import java.sql.SQLDataException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -67,7 +68,33 @@ public class NhanVienService {
              }
          return listNhanVien;
     }
+    public boolean checkNumberInString(String kw) {
+        String regex = "(.)*(\\d)(.)*";
+        Pattern pattern = Pattern.compile(regex);
+        boolean containsNumber = pattern.matcher(kw).matches();
+        return containsNumber;
+    }
+    public boolean checkValidateInphut(String kw) {
+        return kw.isEmpty();
+    }
+
+    ;
+    public boolean checkLengthGreater6(String kw) {
+        return kw.length() < 6;
+    }
+
+ 
+
     public boolean addNhanVien(NhanVien nv) throws SQLException {
+        if (checkLengthGreater6(nv.getMatKhau()) == true 
+                || checkNumberInString(nv.getTenNhanVien()) == true
+                || checkValidateInphut(nv.getMatKhau()) == true
+                || checkValidateInphut(nv.getTenNhanVien()) == true
+                || checkValidateInphut(nv.getTaiKhoan()) == true
+                || nv.getNghiepVu() <= 0 == true
+                ){
+            throw new SQLDataException();
+        };
         String sql = "INSERT INTO `salemanager`.`nhanvien` (`TenNhanVien`, `NghiepVuID`, `TaiKhoan`, `MatKhau`) VALUES (?, ?, ?, ?);";
         PreparedStatement stm = this.conn.prepareStatement(sql);
         stm.setString(1, nv.getTenNhanVien());
@@ -85,6 +112,15 @@ public class NhanVienService {
         return row > 0;
     }
     public boolean updateNhanVien(NhanVien nv) throws SQLException {
+        if (checkLengthGreater6(nv.getMatKhau()) == true 
+                || checkNumberInString(nv.getTenNhanVien()) == true
+                || checkValidateInphut(nv.getMatKhau()) == true
+                || checkValidateInphut(nv.getTenNhanVien()) == true
+                || checkValidateInphut(nv.getTaiKhoan()) == true
+                || nv.getNghiepVu() <= 0 == true
+                ){
+            throw new SQLDataException();
+        };
         String sql = "UPDATE `salemanager`.`nhanvien` SET `TenNhanVien` = ?, `NghiepVuID` = ?, `TaiKhoan` = ?, `MatKhau` = ? WHERE (`MaNhanVien` = ?);";
         PreparedStatement stm = this.conn.prepareStatement(sql);
         stm.setString(1, nv.getTenNhanVien());
