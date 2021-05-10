@@ -98,7 +98,7 @@ public class HoaDonService {
         }
     }
 
-    public List<HoaDon> getListHoaDonByDate(Date kw) throws SQLException {
+    public List<HoaDon> getListHoaDonByDate(Date kw) throws SQLException    {
         if (kw == null) {
             throw new SQLDataException();
         }
