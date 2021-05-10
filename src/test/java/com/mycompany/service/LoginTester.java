@@ -7,7 +7,6 @@ package com.mycompany.service;
 
 import com.mycompany.mavenproject1.service.NhanVienService;
 import com.mycompany.mavenproject1.service.jdbcUtil;
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;

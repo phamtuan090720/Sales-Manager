@@ -6,7 +6,6 @@
 package com.mycompany.mavenproject1.service;
 
 import com.mycompany.mavenproject1.pojo.ChiTietHoaDon;
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

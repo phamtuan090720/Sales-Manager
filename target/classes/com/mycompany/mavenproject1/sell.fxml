@@ -155,9 +155,19 @@
             </ComboBox>
             <Button fx:id="btnResetLoaiHang" mnemonicParsing="false" text="Đặt Lại " GridPane.columnIndex="1">
                <GridPane.margin>
-                  <Insets left="167.0" />
+                  <Insets left="300.0" />
                </GridPane.margin>
             </Button>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ID" GridPane.columnIndex="1">
+               <GridPane.margin>
+                  <Insets left="180.0" />
+               </GridPane.margin>
+            </Text>
+            <TextField fx:id="kwSearchID" maxWidth="50.0" GridPane.columnIndex="1">
+               <GridPane.margin>
+                  <Insets left="200.0" />
+               </GridPane.margin>
+            </TextField>
          </children>
       </GridPane>
    </children>

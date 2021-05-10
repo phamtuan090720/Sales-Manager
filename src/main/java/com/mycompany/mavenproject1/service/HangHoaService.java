@@ -182,6 +182,31 @@ public class HangHoaService {
         }
         return p;
     }
+     public HangHoa getHangHoaSoLuongLonHonKhongById(int idHangHoa) throws SQLException {
+        if (idHangHoa <= 0) {
+            throw new SQLDataException();
+        }
+        HangHoa p = null;
+        String sql = "SELECT * FROM salemanager.hanghoa where idHangHoa=? and soLuong > 0";
+        PreparedStatement stm = this.conn.prepareStatement(sql);
+        stm.setInt(1, idHangHoa);
+        ResultSet rs = stm.executeQuery();
+        if (rs.next()) {
+            p = new HangHoa();
+            p.setIdHangHoa(rs.getInt("idHangHoa"));
+            p.setTenHang(rs.getString("tenHang"));
+            p.setLoaiHang(rs.getInt("loaiHangId"));
+            p.setXuatXu(rs.getInt("xuatXuId"));
+            p.setGiaBan(rs.getBigDecimal("giaBan"));
+            p.setDonViTinh(rs.getString("donViTinh"));
+            p.setSoLuong(rs.getInt("soLuong"));
+            p.setNgaySX(rs.getDate("ngaySX"));
+            p.setHanSD(rs.getDate("hanSD"));
+            p.setGiaMua(rs.getBigDecimal("giaMua"));
+            return p;
+        }
+        return p;
+    }
 
     public boolean updateSoLuongHangHoa(int idHangHoa, int SoLuong) throws SQLException {
         if (idHangHoa <= 0 || SoLuong < 0) {

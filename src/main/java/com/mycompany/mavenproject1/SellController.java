@@ -103,6 +103,8 @@ public class SellController implements Initializable {
     private Button btnSuDungDiem;
     @FXML
     private Text txtDiemKhachHangSuDung;
+    @FXML
+    private TextField kwSearchID;
 
     public List<ChiTietHoaDon> getHoaDon() {
         return hoaDon;
@@ -202,6 +204,28 @@ public class SellController implements Initializable {
         this.kwSearch.textProperty().addListener((obj) -> {
             LoadDataHangHoa(this.kwSearch.getText());
         });
+        this.kwSearchID.textProperty().addListener((obj) -> {
+
+            try {
+                this.tbListProduct.getItems().clear();
+                Connection conn = jdbcUtil.getConn();
+                List<HangHoa> list = new ArrayList<>();
+
+                HangHoaService s = new HangHoaService(conn);
+                try {
+                    HangHoa p = s.getHangHoaSoLuongLonHonKhongById(Integer.parseInt(this.kwSearchID.getText()));
+                    list.add(p);
+                } catch (NumberFormatException err) {
+                    LoadDataHangHoa("");
+                }
+
+                this.tbListProduct.setItems(FXCollections.observableList(list));
+                conn.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(SellController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        });
         this.txtSDTKhachHang.textProperty().addListener((obj) -> {
             SearchKhachHang(txtSDTKhachHang.getText(), txtCMNDKhachHang.getText());
         });
@@ -223,7 +247,10 @@ public class SellController implements Initializable {
         btnResetLoaiHang.setOnMouseClicked(e -> {
             cbLoaiHang.setPromptText("Loại Hàng");
             cbLoaiHang.setValue(null);
+            kwSearch.setText("");
+            kwSearchID.setText("");
             LoadDataHangHoa("");
+            
         });
         btnReset.setOnMouseClicked(e -> {
             txtSoLuongHangHoa.setText("");
@@ -551,13 +578,12 @@ public class SellController implements Initializable {
                     btnSuDungDiem.setDisable(true);
                     if (cbKhachHang.getSelectionModel().getSelectedItem() != null) {
                         KhachHang kh = khs.findKhachHangByID(hd.getIDKhachHangThanThiet());
-                        int diem = kh.getDiem() -  hd.getDiemKhachHangSuDung() + TinhDiemTichLuy(hd.getThanhTien());
+                        int diem = kh.getDiem() - hd.getDiemKhachHangSuDung() + TinhDiemTichLuy(hd.getThanhTien());
                         kh.setDiem(diem);
-                        if(khs.updateKhachHang(kh)){
-                            SearchKhachHang(kh.getSDT(),kh.getCMND());
-                        }
-                        else{
-                             Utils.getBox("Thất Bại", Alert.AlertType.ERROR).show();
+                        if (khs.updateKhachHang(kh)) {
+                            SearchKhachHang(kh.getSDT(), kh.getCMND());
+                        } else {
+                            Utils.getBox("Thất Bại", Alert.AlertType.ERROR).show();
                         }
                     }
 
